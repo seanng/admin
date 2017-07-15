@@ -45,7 +45,7 @@ app.use('/api', (req, res) => {
           console.error('API ERROR:', pretty.render(reason));
           res.status(reason.status || 500).json(reason);
         }
-      },
+      }
     );
   } else {
     res.status(404).end('NOT FOUND');

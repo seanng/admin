@@ -14,6 +14,7 @@ injectGlobal`
 
   body.fontLoaded {
     font-family: "Open Sans", sans-serif;
+    letter-spacing: .045rem;
   }
 
   #app {

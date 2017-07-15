@@ -9,7 +9,7 @@ describe('<App />', () => {
     const renderedComponent = shallow(
       <App>
         {children}
-      </App>,
+      </App>
     );
     expect(renderedComponent.contains(children)).toBe(true);
   });

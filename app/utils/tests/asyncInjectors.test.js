@@ -31,9 +31,7 @@ function* testSaga() {
   yield put({ type: 'TEST', payload: 'yup' });
 }
 
-const sagas = [
-  testSaga,
-];
+const sagas = [testSaga];
 
 describe('asyncInjectors', () => {
   let store;

@@ -1,0 +1,2 @@
+CREATE USER root WITH PASSWORD 'Ca$hmere1';
+CREATE DATABASE haven;

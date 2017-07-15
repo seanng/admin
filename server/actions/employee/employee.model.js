@@ -9,12 +9,12 @@ Employee.beforeCreate(user =>
     const updatedUser = { ...user };
     updatedUser.password = hashedPw;
     return updatedUser;
-  }),
+  })
 );
 
 Employee.Instance.prototype.comparePassword = function comparePassword(
   candidatePassword,
-  cb,
+  cb
 ) {
   bcrypt.compare(
     candidatePassword,
@@ -27,10 +27,10 @@ Employee.Instance.prototype.comparePassword = function comparePassword(
       console.log(
         'candidate password: ',
         candidatePassword,
-        this.getDataValue('password'),
+        this.getDataValue('password')
       );
       return cb(null, isMatch);
-    },
+    }
   );
 };
 

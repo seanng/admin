@@ -9,12 +9,12 @@ Customer.beforeCreate(user =>
     const updatedUser = { ...user };
     updatedUser.password = hashedPw;
     return updatedUser;
-  }),
+  })
 );
 
 Customer.Instance.prototype.comparePassword = function comparePassword(
   candidatePassword,
-  cb,
+  cb
 ) {
   bcrypt.compare(
     candidatePassword,
@@ -24,7 +24,7 @@ Customer.Instance.prototype.comparePassword = function comparePassword(
         return cb(err);
       }
       return cb(null, isMatch);
-    },
+    }
   );
 };
 

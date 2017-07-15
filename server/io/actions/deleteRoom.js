@@ -10,7 +10,7 @@ const deleteRoom = (hotelId, roomNumber, respond) => {
       cache
         .del(key)
         .then(() => respond(null, roomNumber))
-        .catch(delHashErr => respond(delHashErr)),
+        .catch(delHashErr => respond(delHashErr))
     )
     .catch(delFromSetErr => respond(delFromSetErr));
 };

@@ -14,7 +14,10 @@ if (!test('-e', 'internals/templates')) {
 process.stdout.write('Cleanup started...');
 
 // Reuse existing LanguageProvider and i18n tests
-mv('app/containers/LanguageProvider/tests', 'internals/templates/containers/LanguageProvider');
+mv(
+  'app/containers/LanguageProvider/tests',
+  'internals/templates/containers/LanguageProvider'
+);
 cp('app/tests/i18n.test.js', 'internals/templates/tests/i18n.test.js');
 
 // Cleanup components/
@@ -28,12 +31,12 @@ mv('internals/templates/containers', 'app');
 mv('internals/templates/tests', 'app');
 
 // Handle translations/
-rm('-rf', 'app/translations')
+rm('-rf', 'app/translations');
 mv('internals/templates/translations', 'app');
 
 // Handle utils/
 rm('-rf', 'app/utils');
-mv('internals/templates/utils', 'app')
+mv('internals/templates/utils', 'app');
 
 // Replace the files in the root app/ folder
 cp('internals/templates/app.js', 'app/app.js');
@@ -50,7 +53,9 @@ rm('-rf', 'internals/templates');
 addCheckMark();
 
 // Commit the changes
-if (exec('git add . --all && git commit -qm "Remove default example"').code !== 0) {
+if (
+  exec('git add . --all && git commit -qm "Remove default example"').code !== 0
+) {
   echo('\nError: Git commit failed');
   exit(1);
 }

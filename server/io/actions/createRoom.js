@@ -40,7 +40,7 @@ const createRoom = (hotelId, roomNumber, respond) => {
           employeeId,
           customerName: '( empty )',
           status: 'Available',
-        }),
+        })
       )
       .catch(error => {
         respond(error);

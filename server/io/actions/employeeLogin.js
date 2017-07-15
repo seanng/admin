@@ -24,6 +24,6 @@ module.exports = (client, action) => {
         type: 'app/Login/EMPLOYEE_LOGIN_ERROR',
         err: 'Invalid password',
       });
-    }),
+    })
   );
 };

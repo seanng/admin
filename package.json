@@ -43,12 +43,12 @@
     "test": "cross-env NODE_ENV=test jest --coverage",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "prettier": "prettier --single-quote --trailing-comma es5 --write \"app/**/*.js\" "
+    "prettier": "prettier --single-quote --trailing-comma es5 --write \"**/*.js\" "
   },
   "lint-staged": {
     "*.js": [
       "prettier",
-      "eslint --fix --quiet",
+      "eslint --fix --quiet --ignore-path .gitignore --ignore-pattern internals/scripts",
       "git add"
     ]
   },
@@ -115,10 +115,6 @@
       "arrow-body-style": [
         2,
         "as-needed"
-      ],
-      "comma-dangle": [
-        2,
-        "always-multiline"
       ],
       "import/imports-first": 0,
       "import/newline-after-import": 0,

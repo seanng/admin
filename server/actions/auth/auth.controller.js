@@ -15,7 +15,7 @@ controller.postAuth = (res, rej, req) => {
         return res({ data: { token: signToken(user.id), user } });
       }
       return res({ data: { error: 'Invalid password' } });
-    }),
+    })
   );
 };
 

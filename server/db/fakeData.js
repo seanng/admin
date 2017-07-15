@@ -352,11 +352,11 @@ module.exports = {
                           lastName,
                           password,
                         });
-                      }, Promise.resolve()),
-                    ),
-                ),
-            ),
-        ),
+                      }, Promise.resolve())
+                    )
+                )
+            )
+        )
     );
   },
 };

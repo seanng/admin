@@ -16,7 +16,7 @@ const fetchRooms = (hotelId, respond) => {
             newRoom.roomNumber = key.split(':')[2];
             return rooms.push(newRoom);
           }),
-        Promise.resolve(),
+        Promise.resolve()
       )
       .then(() => {
         respond(rooms);

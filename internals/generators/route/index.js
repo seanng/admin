@@ -7,7 +7,10 @@ const componentExists = require('../utils/componentExists');
 
 function reducerExists(comp) {
   try {
-    fs.accessSync(path.join(__dirname, `../../../app/containers/${comp}/reducer.js`), fs.F_OK);
+    fs.accessSync(
+      path.join(__dirname, `../../../app/containers/${comp}/reducer.js`),
+      fs.F_OK
+    );
     return true;
   } catch (e) {
     return false;
@@ -16,7 +19,10 @@ function reducerExists(comp) {
 
 function sagasExists(comp) {
   try {
-    fs.accessSync(path.join(__dirname, `../../../app/containers/${comp}/sagas.js`), fs.F_OK);
+    fs.accessSync(
+      path.join(__dirname, `../../../app/containers/${comp}/sagas.js`),
+      fs.F_OK
+    );
     return true;
   } catch (e) {
     return false;
@@ -25,39 +31,44 @@ function sagasExists(comp) {
 
 function trimTemplateFile(template) {
   // Loads the template file and trims the whitespace and then returns the content as a string.
-  return fs.readFileSync(path.join(__dirname, `./${template}`), 'utf8').replace(/\s*$/, '');
+  return fs
+    .readFileSync(path.join(__dirname, `./${template}`), 'utf8')
+    .replace(/\s*$/, '');
 }
 
 module.exports = {
   description: 'Add a route',
-  prompts: [{
-    type: 'input',
-    name: 'component',
-    message: 'Which component should the route show?',
-    validate: (value) => {
-      if ((/.+/).test(value)) {
-        return componentExists(value) ? true : `"${value}" doesn't exist.`;
-      }
+  prompts: [
+    {
+      type: 'input',
+      name: 'component',
+      message: 'Which component should the route show?',
+      validate: value => {
+        if (/.+/.test(value)) {
+          return componentExists(value) ? true : `"${value}" doesn't exist.`;
+        }
 
-      return 'The path is required';
+        return 'The path is required';
+      },
     },
-  }, {
-    type: 'input',
-    name: 'path',
-    message: 'Enter the path of the route.',
-    default: '/about',
-    validate: (value) => {
-      if ((/.+/).test(value)) {
-        return true;
-      }
+    {
+      type: 'input',
+      name: 'path',
+      message: 'Enter the path of the route.',
+      default: '/about',
+      validate: value => {
+        if (/.+/.test(value)) {
+          return true;
+        }
 
-      return 'path is required';
+        return 'path is required';
+      },
     },
-  }],
+  ],
 
   // Add the route to the routes.js file above the error route
   // TODO smarter route adding
-  actions: (data) => {
+  actions: data => {
     const actions = [];
     if (reducerExists(data.component)) {
       data.useSagas = sagasExists(data.component); // eslint-disable-line no-param-reassign

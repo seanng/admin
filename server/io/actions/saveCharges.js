@@ -6,14 +6,14 @@ const saveCharges = (charges, totalCharge, stayId, respond) =>
   charges
     .reduce(
       (promiseChain, charge) => Surcharge.create(charge),
-      Promise.resolve(),
+      Promise.resolve()
     )
     .then(() =>
       Stay.update({ totalCharge }, { where: { id: stayId } }).then(() =>
         Surcharge.findAll({ where: { stayId } }).then(updatedCharges =>
-          respond(null, updatedCharges, totalCharge),
-        ),
-      ),
+          respond(null, updatedCharges, totalCharge)
+        )
+      )
     );
 
 module.exports = (client, action) => {

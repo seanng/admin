@@ -9,4 +9,9 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
+export const CHECK_AUTH = 'server/CHECK_AUTH';
 export const DEFAULT_LOCALE = 'en';
+
+export const VALIDATE_TOKEN = 'app/app/VALIDATE_TOKEN';
+export const INVALIDATE_TOKEN = 'app/app/INVALIDATE_TOKEN';
+export const LOGOUT = 'app/app/LOGOUT';

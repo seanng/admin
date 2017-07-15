@@ -3,6 +3,7 @@ const socketIO = require('socket.io');
 
 const routeHandler = (io, client) =>
   client.on('action', action => {
+    console.log('an action has come in.', action);
     if (action.type && action.type.split('server/')[1]) {
       const actionInSnake = action.type.split('server/')[1];
       const actionInCamel = actionInSnake
@@ -23,6 +24,7 @@ const routeHandler = (io, client) =>
 module.exports = server => {
   const io = socketIO.listen(server);
   io.on('connection', client => {
+    console.log('io connected.');
     routeHandler(io, client);
   });
   return io;

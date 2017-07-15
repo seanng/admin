@@ -11,15 +11,16 @@
 
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import H1 from 'components/fonts/H1';
 import messages from './messages';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class HomePage extends React.PureComponent {
   render() {
     return (
-      <h1>
+      <H1>
         <FormattedMessage {...messages.header} />
-      </h1>
+      </H1>
     );
   }
 }

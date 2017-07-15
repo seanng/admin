@@ -6,7 +6,7 @@ const cipher = Promise.promisify(bcrypt.hash);
 
 Employee.beforeCreate(user =>
   cipher(user.password, null, null).then(hashedPw => {
-    const updatedUser = { ...user };
+    const updatedUser = Object.assign({}, user);
     updatedUser.password = hashedPw;
     return updatedUser;
   })

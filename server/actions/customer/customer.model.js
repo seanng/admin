@@ -6,9 +6,8 @@ const cipher = Promise.promisify(bcrypt.hash);
 
 Customer.beforeCreate(user =>
   cipher(user.password, null, null).then(hashedPw => {
-    const updatedUser = { ...user };
-    updatedUser.password = hashedPw;
-    return updatedUser;
+    // eslint-disable-next-line no-param-reassign
+    user.password = hashedPw;
   })
 );
 

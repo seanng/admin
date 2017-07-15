@@ -15,8 +15,6 @@ const ngrok =
     : false;
 const resolve = require('path').resolve;
 const app = express();
-
-const { preloadData } = require('./db/fakeData');
 const actions = require('./actions');
 const mapUrl = require('./utils/url');
 
@@ -85,7 +83,7 @@ const server = app.listen(port, host, err => {
   }
 
   // preload with fake data
-  preloadData();
+  // require('./db/fakeData')()
 });
 
 // initialize server-side sockets

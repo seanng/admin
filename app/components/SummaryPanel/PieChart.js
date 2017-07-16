@@ -5,13 +5,26 @@ import { VictoryPie } from 'victory';
 const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
-  height: 26rem;
+  height: 24rem;
 `;
 
 function PieChart({ data }) {
+  const pieStyles = {
+    labels: {
+      fill: 'white',
+      fontSize: 20,
+      fontWeight: 'bold',
+    },
+  };
   return (
     <Wrapper>
-      <VictoryPie padAngle={3} innerRadius={100} data={data} />
+      <VictoryPie
+        padAngle={3}
+        innerRadius={5}
+        data={data}
+        labelRadius={80}
+        style={pieStyles}
+      />
     </Wrapper>
   );
 }

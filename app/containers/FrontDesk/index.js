@@ -8,6 +8,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import SummaryPanel from 'components/SummaryPanel';
+import ActionPanel from 'components/ActionPanel';
 import { fetchRooms } from './actions';
 import { selectRooms, selectHasLoaded } from './selectors';
 import ContainerWrapper from './ContainerWrapper';
@@ -29,7 +30,7 @@ export class FrontDesk extends React.PureComponent {
           <SummaryPanel rooms={this.props.rooms} />
         </SideWrapper>
         <SideWrapper right>
-          <div />
+          <ActionPanel />
         </SideWrapper>
       </ContainerWrapper>
     );

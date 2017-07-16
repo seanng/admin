@@ -4,10 +4,19 @@
  *
  */
 
-import { DEFAULT_ACTION } from './constants';
+import { LOG_IN, HANDLE_INPUT_CHANGE } from './constants';
 
-export function defaultAction() {
+export function logIn(info) {
   return {
-    type: DEFAULT_ACTION,
+    type: LOG_IN,
+    info,
+  };
+}
+
+export function handleInputChange(key, value) {
+  return {
+    type: HANDLE_INPUT_CHANGE,
+    key,
+    value,
   };
 }

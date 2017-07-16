@@ -83,7 +83,8 @@ const server = app.listen(port, host, err => {
   }
 
   // preload with fake data
-  // require('./db/fakeData')()
+  // eslint-disable-next-line global-require
+  require('./db/fakeData').preloadData();
 });
 
 // initialize server-side sockets

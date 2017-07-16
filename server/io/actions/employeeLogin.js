@@ -5,25 +5,33 @@ const { reply } = require('../helpers');
 module.exports = (client, action) => {
   const { email, password } = action.info;
 
-  Employee.findOne({ where: { email } }).then(user =>
-    user.comparePassword(password, (err, isMatch) => {
-      console.log('ismatch?', isMatch);
-      if (err) {
+  Employee.findOne({ where: { email } })
+    .then(user =>
+      user.comparePassword(password, (err, isMatch) => {
+        if (err) {
+          console.log('the actual err: ', err);
+          return reply(client, {
+            type: 'app/Login/EMPLOYEE_LOGIN_ERROR',
+            msg: 'DB Error',
+          });
+        } else if (isMatch) {
+          return reply(client, {
+            type: 'app/Login/EMPLOYEE_LOGIN_SUCCESS',
+            token: signToken(user.id),
+            user,
+          });
+        }
         return reply(client, {
           type: 'app/Login/EMPLOYEE_LOGIN_ERROR',
-          err: 'DB Error',
+          msg: 'Invalid password',
         });
-      } else if (isMatch) {
-        return reply(client, {
-          type: 'app/Login/EMPLOYEE_LOGIN_SUCCESS',
-          token: signToken(user.id),
-          user,
-        });
-      }
+      })
+    )
+    .catch(err => {
+      console.log('what is the error in Catch? ', err);
       return reply(client, {
         type: 'app/Login/EMPLOYEE_LOGIN_ERROR',
-        err: 'Invalid password',
+        msg: 'No such user',
       });
-    })
-  );
+    });
 };

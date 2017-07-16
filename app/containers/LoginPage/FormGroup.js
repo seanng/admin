@@ -6,13 +6,18 @@ const Wrapper = styled.div`margin-bottom: 1.5rem;`;
 
 const Label = styled.div`margin-bottom: 0.5rem;`;
 
-function FormGroup({ label, inputType }) {
+function FormGroup({ label, inputType, inputValue, onInputChange }) {
   return (
     <Wrapper>
       <Label>
         {label}
       </Label>
-      <Input type={inputType} />
+      <Input
+        type={inputType}
+        value={inputValue}
+        onChange={onInputChange}
+        name={label}
+      />
     </Wrapper>
   );
 }

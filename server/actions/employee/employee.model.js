@@ -6,9 +6,8 @@ const cipher = Promise.promisify(bcrypt.hash);
 
 Employee.beforeCreate(user =>
   cipher(user.password, null, null).then(hashedPw => {
-    const updatedUser = Object.assign({}, user);
-    updatedUser.password = hashedPw;
-    return updatedUser;
+    // eslint-disable-next-line no-param-reassign
+    user.password = hashedPw;
   })
 );
 
@@ -20,15 +19,15 @@ Employee.Instance.prototype.comparePassword = function comparePassword(
     candidatePassword,
     this.getDataValue('password'),
     (err, isMatch) => {
-      if (err) {
-        return cb(err);
-      }
-
       console.log(
         'candidate password: ',
         candidatePassword,
         this.getDataValue('password')
       );
+      if (err) {
+        return cb(err);
+      }
+
       return cb(null, isMatch);
     }
   );

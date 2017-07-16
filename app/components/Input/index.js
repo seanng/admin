@@ -17,8 +17,16 @@ const inputStyle = {
   padding: '0.65rem 0.8rem',
 };
 
-function Input({ type }) {
-  return <input type={type} style={inputStyle} />;
+function Input({ type, value, onChange, name }) {
+  return (
+    <input
+      type={type}
+      style={inputStyle}
+      value={value}
+      onChange={onChange}
+      name={name}
+    />
+  );
 }
 
 export default Input;

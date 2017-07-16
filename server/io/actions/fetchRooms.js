@@ -9,7 +9,7 @@ const fetchRooms = (hotelId, respond) => {
       .reduce(
         (promiseChain, key) =>
           cache.hgetall(key).then(room => {
-            const newRoom = { ...room };
+            const newRoom = Object.assign({}, room);
             if (newRoom.status === 'Available') {
               newRoom.customerName = '( empty )';
             }
@@ -28,11 +28,11 @@ module.exports = client =>
   fetchRooms(1, rooms => {
     if (!rooms) {
       return reply(client, {
-        type: 'FETCH_ROOMS_ERROR',
+        type: 'app/FrontDesk/FETCH_ROOMS_ERROR',
       });
     }
     return reply(client, {
-      type: 'FETCH_ROOMS_SUCCESS',
+      type: 'app/FrontDesk/FETCH_ROOMS_SUCCESS',
       rooms,
     });
   });

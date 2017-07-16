@@ -8,6 +8,7 @@ import { routerMiddleware } from 'react-router-redux';
 import createSocketIoMiddleware from 'redux-socket.io';
 import createSagaMiddleware from 'redux-saga';
 import io from 'socket.io-client';
+import logger from 'redux-logger';
 import createReducer from './reducers';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -21,6 +22,7 @@ export default function configureStore(initialState = {}, history) {
     socketIoMiddleware,
     sagaMiddleware,
     routerMiddleware(history),
+    logger,
   ];
 
   const enhancers = [applyMiddleware(...middlewares)];

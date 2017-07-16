@@ -8,16 +8,58 @@ import React from 'react';
 // import styled from 'styled-components';
 
 import { FormattedMessage } from 'react-intl';
+import colors from 'themes/colors';
 import Card from 'components/Card';
-import H3 from 'components/fonts/H3';
+import H5 from 'components/fonts/H5';
+import PieChart from './PieChart';
+import Body from './Body';
+import Legend from './Legend';
 import messages from './messages';
 
-function SummaryPanel() {
+function SummaryPanel({ rooms }) {
+  const roomsJS = rooms.toJS();
+  const filteredRooms = {
+    inbound: roomsJS.filter(stay => stay.status === 'Inbound').length,
+    checkedIn: roomsJS.filter(stay => stay.status === 'Checked In').length,
+    checkedOut: roomsJS.filter(stay => stay.status === 'Checked Out').length,
+    available: roomsJS.filter(stay => stay.status === 'Available').length,
+  };
+  const roomsData = [
+    {
+      x: 1,
+      y: filteredRooms.inbound,
+      label: filteredRooms.inbound,
+      fill: colors.bsWarning,
+    },
+    {
+      x: 2,
+      y: filteredRooms.checkedIn,
+      label: filteredRooms.checkedIn,
+      fill: colors.bsDanger,
+    },
+    {
+      x: 3,
+      y: filteredRooms.checkedOut,
+      label: filteredRooms.checkedOut,
+      fill: colors.bsPrimary,
+    },
+    {
+      x: 3,
+      y: filteredRooms.available,
+      label: filteredRooms.available,
+      fill: colors.bsSuccess,
+    },
+  ];
+
   return (
     <Card>
-      <H3>
+      <H5>
         <FormattedMessage {...messages.header} />
-      </H3>
+      </H5>
+      <Body>
+        <PieChart data={roomsData} />
+        <Legend />
+      </Body>
     </Card>
   );
 }

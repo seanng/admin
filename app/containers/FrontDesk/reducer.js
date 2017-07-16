@@ -5,14 +5,19 @@
  */
 
 import { fromJS } from 'immutable';
-import { DEFAULT_ACTION } from './constants';
+import { FETCH_ROOMS_SUCCESS, FETCH_ROOMS_ERROR } from './constants';
 
-const initialState = fromJS({});
+const initialState = fromJS({
+  rooms: [],
+  hasLoaded: false,
+});
 
 function frontDeskReducer(state = initialState, action) {
   switch (action.type) {
-    case DEFAULT_ACTION:
+    case FETCH_ROOMS_ERROR:
       return state;
+    case FETCH_ROOMS_SUCCESS:
+      return state.merge({ rooms: action.rooms, hasLoaded: true });
     default:
       return state;
   }

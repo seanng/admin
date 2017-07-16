@@ -4,10 +4,10 @@
  *
  */
 
-import { DEFAULT_ACTION } from './constants';
+import { FETCH_ROOMS } from './constants';
 
-export function defaultAction() {
+export function fetchRooms() {
   return {
-    type: DEFAULT_ACTION,
+    type: FETCH_ROOMS,
   };
 }

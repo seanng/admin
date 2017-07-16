@@ -8,20 +8,28 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import SummaryPanel from 'components/SummaryPanel';
-import makeSelectFrontDesk from './selectors';
+import { fetchRooms } from './actions';
+import { selectRooms, selectHasLoaded } from './selectors';
 import ContainerWrapper from './ContainerWrapper';
 import SideWrapper from './SideWrapper';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class FrontDesk extends React.PureComponent {
+  componentDidMount() {
+    this.props.fetchRooms();
+  }
+
   render() {
+    if (!this.props.hasLoaded) {
+      return <ContainerWrapper />;
+    }
     return (
       <ContainerWrapper>
         <SideWrapper>
-          <SummaryPanel />
+          <SummaryPanel rooms={this.props.rooms} />
         </SideWrapper>
         <SideWrapper right>
-          <SummaryPanel />
+          <div />
         </SideWrapper>
       </ContainerWrapper>
     );
@@ -29,12 +37,14 @@ export class FrontDesk extends React.PureComponent {
 }
 
 const mapStateToProps = createStructuredSelector({
-  FrontDesk: makeSelectFrontDesk(),
+  rooms: selectRooms(),
+  hasLoaded: selectHasLoaded(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
+    fetchRooms: () => dispatch(fetchRooms()),
   };
 }
 

@@ -239,6 +239,7 @@
     "react-router-scroll": "0.4.1",
     "redux": "3.6.0",
     "redux-immutable": "3.0.8",
+    "redux-logger": "^3.0.6",
     "redux-saga": "0.14.0",
     "redux-socket.io": "^1.4.0",
     "reselect": "2.5.4",
@@ -246,6 +247,7 @@
     "sequelize": "^3.30.4",
     "socket.io": "^2.0.3",
     "styled-components": "1.1.2",
+    "victory": "^0.21.2",
     "warning": "3.0.0",
     "whatwg-fetch": "2.0.1"
   },

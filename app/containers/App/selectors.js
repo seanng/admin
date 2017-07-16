@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 // makeSelectLocationState expects a plain JS object for the routing state
-const makeSelectLocationState = () => {
+export const makeSelectLocationState = () => {
   let prevRoutingState;
   let prevRoutingStateJS;
 
@@ -17,11 +17,20 @@ const makeSelectLocationState = () => {
   };
 };
 
-const makeSelectGlobal = state => state.get('global');
+export const selectUser = () =>
+  createSelector(selectGlobalDomain(), substate => substate.get('user'));
 
-// substates
+export const selectBottomNavItems = () =>
+  createSelector(selectGlobalDomain(), substate =>
+    substate.get('bottomNavItems')
+  );
 
-const selectUser = () =>
-  createSelector(makeSelectGlobal, substate => substate.get('user'));
+export const selectHasLoaded = () =>
+  createSelector(selectGlobalDomain(), substate => substate.get('hasLoaded'));
 
-export { makeSelectLocationState, makeSelectGlobal, selectUser };
+const selectGlobalDomain = () => state => state.get('global');
+
+const makeSelectGlobal = () =>
+  createSelector(selectGlobalDomain(), substate => substate.toJS());
+
+export default makeSelectGlobal;

@@ -19,13 +19,32 @@ export default function createRoutes(store) {
   return [
     {
       path: '/',
-      name: 'home',
+      name: 'frontdesk',
       getComponent(nextState, cb) {
         const importModules = Promise.all([import('containers/HomePage')]);
 
         const renderRoute = loadModule(cb);
 
         importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/Settings/reducer'),
+          import('containers/Settings'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('settings', reducer.default);
           renderRoute(component);
         });
 

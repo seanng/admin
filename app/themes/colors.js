@@ -1,6 +1,7 @@
 const defaultTheme = {
   textPrimary: '#24262E',
   primaryBackground: '#EDEFF5',
+  navBarTop: 'rgb(124, 77, 255)',
   white: '#FFF',
   inputText: '#464a4c',
   bsPrimary: '#0041f5',

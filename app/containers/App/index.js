@@ -13,11 +13,18 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { createStructuredSelector, createSelector } from 'reselect';
+import { createStructuredSelector } from 'reselect';
 import LoginPage from 'containers/LoginPage';
 import LoadingPage from 'components/LoadingPage';
-import { checkAuth, invalidateToken } from './actions';
-import { makeSelectGlobal, selectUser } from './selectors';
+import Navigation from 'components/Navigation';
+import Container from 'components/Container';
+import {
+  checkAuth,
+  invalidateToken,
+  logout,
+  setBottomNavItems,
+} from './actions';
+import { selectUser, selectBottomNavItems, selectHasLoaded } from './selectors';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends React.PureComponent {
@@ -29,10 +36,30 @@ class App extends React.PureComponent {
     return this.props.invalidateToken();
   }
 
+  viewDashboard = () => {
+    this.props.router.push('/');
+    this.props.setBottomNavItems('dashboard');
+  };
+
+  viewAccount = () => {
+    this.props.router.push('/settings');
+    this.props.setBottomNavItems('account');
+  };
+
   renderApplication() {
     return (
       <div>
-        {React.Children.toArray(this.props.children)}
+        <Navigation
+          location={this.props.locationState}
+          viewDashboard={this.viewDashboard}
+          viewAccount={this.viewAccount}
+          bottomNavItems={this.props.bottomNavItems}
+          pathname={this.props.location.pathname}
+          logout={this.props.logout}
+        />
+        <Container>
+          {React.Children.toArray(this.props.children)}
+        </Container>
       </div>
     );
   }
@@ -50,14 +77,15 @@ function mapDispatchToProps(dispatch) {
     dispatch,
     checkAuth: token => dispatch(checkAuth(token)),
     invalidateToken: () => dispatch(invalidateToken()),
+    setBottomNavItems: view => dispatch(setBottomNavItems(view)),
+    logout: () => dispatch(logout()),
   };
 }
 
 const mapStateToProps = createStructuredSelector({
-  hasLoaded: createSelector(makeSelectGlobal, substate =>
-    substate.get('hasLoaded')
-  ),
+  hasLoaded: selectHasLoaded(),
   user: selectUser(),
+  bottomNavItems: selectBottomNavItems(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

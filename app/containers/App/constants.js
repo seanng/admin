@@ -14,4 +14,5 @@ export const DEFAULT_LOCALE = 'en';
 
 export const VALIDATE_TOKEN = 'app/app/VALIDATE_TOKEN';
 export const INVALIDATE_TOKEN = 'app/app/INVALIDATE_TOKEN';
+export const SET_BOTTOM_NAV_ITEMS = 'app/app/SET_BOTTOM_NAV_ITEMS';
 export const LOGOUT = 'app/app/LOGOUT';

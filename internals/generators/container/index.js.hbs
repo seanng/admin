@@ -4,7 +4,7 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 {{#if wantHeaders}}
 import Helmet from 'react-helmet';
@@ -20,7 +20,8 @@ import makeSelect{{properCase name}} from './selectors';
 import messages from './messages';
 {{/if}}
 
-export class {{ properCase name }} extends React.{{{ component }}} { // eslint-disable-line react/prefer-stateless-function
+// eslint-disable-next-line react/prefer-stateless-function
+export class {{ properCase name }} extends React.{{{ component }}} {
   render() {
     return (
       <div>
@@ -39,10 +40,6 @@ export class {{ properCase name }} extends React.{{{ component }}} { // eslint-d
     );
   }
 }
-
-{{ properCase name }}.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
 
 {{#if wantActionsAndReducer}}
 const mapStateToProps = createStructuredSelector({

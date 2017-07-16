@@ -19,13 +19,17 @@ export default function createRoutes(store) {
   return [
     {
       path: '/',
-      name: 'frontdesk',
+      name: 'frontDesk',
       getComponent(nextState, cb) {
-        const importModules = Promise.all([import('containers/HomePage')]);
+        const importModules = Promise.all([
+          import('containers/FrontDesk/reducer'),
+          import('containers/FrontDesk'),
+        ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([component]) => {
+        importModules.then(([reducer, component]) => {
+          injectReducer('frontDesk', reducer.default);
           renderRoute(component);
         });
 

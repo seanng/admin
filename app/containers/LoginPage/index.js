@@ -34,7 +34,7 @@ export class LoginPage extends React.PureComponent {
     const { email, password } = this.props.LoginPage;
     return (
       <Container>
-        <Card width={28}>
+        <Card maxWidth="28rem">
           <H5 mb={2.5}>Sign in to continue</H5>
           <FormGroup
             label="Email"

@@ -18,12 +18,12 @@ module.exports = (client, action) =>
   checkIn(1, action.roomNumber, (err, roomData) => {
     if (err) {
       return reply(client, {
-        type: 'CHECK_IN_ERROR',
+        type: 'app/FrontDesk/CHECK_IN_ERROR',
         err,
       });
     }
     return reply(client, {
-      type: 'CHECK_IN_SUCCESS',
+      type: 'app/FrontDesk/CHECK_IN_SUCCESS',
       roomData,
     });
     // need to also update iOS

@@ -20,7 +20,7 @@ module.exports = (client, action) => {
   return checkAuth(token, (err, user) => {
     if (err) {
       return reply(client, {
-        type: 'app/app/INVALIDATE_CURRENT_USER',
+        type: 'app/app/INVALIDATE_TOKEN',
         err,
         token,
       });

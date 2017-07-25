@@ -21,12 +21,12 @@ module.exports = (client, action) =>
   deleteRoom(1, action.roomNumber, (err, roomNumber) => {
     if (err) {
       return reply(client, {
-        type: 'DELETE_ROOM_ERROR',
+        type: 'app/FrontDesk/DELETE_ROOM_ERROR',
         err,
       });
     }
     return reply(client, {
-      type: 'DELETE_ROOM_SUCCESS',
+      type: 'app/FrontDesk/DELETE_ROOM_SUCCESS',
       roomNumber,
     });
   });

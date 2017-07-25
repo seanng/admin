@@ -14,12 +14,12 @@ module.exports = (client, action) => {
   return makeAvailable(1, roomNumber, err => {
     if (err) {
       return reply(client, {
-        type: 'MAKE_AVAILABLE_ERROR',
+        type: 'app/FrontDesk/MAKE_AVAILABLE_ERROR',
         err,
       });
     }
     return reply(client, {
-      type: 'MAKE_AVAILABLE_SUCCESS',
+      type: 'app/FrontDesk/MAKE_AVAILABLE_SUCCESS',
       roomNumber,
       key,
     });

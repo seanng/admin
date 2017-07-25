@@ -10,6 +10,7 @@ import colors from 'themes/colors';
 const Button = styled.div`
   display: inline-block;
   line-height: 1.25;
+  text-align: center;
   border: 1px solid transparent;
   padding: 0.5rem 1rem;
   font-size: 1rem;
@@ -23,6 +24,7 @@ const Button = styled.div`
   margin-right: ${props => (props.mr ? `${props.mr}rem` : '0')};
   margin-left: ${props => (props.ml ? `${props.ml}rem` : '0')};
   margin-top: ${props => (props.mt ? `${props.mt}rem` : '0')};
+  width: ${props => props.width && `${props.width}rem`};
 `;
 
 export default Button;

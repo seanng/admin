@@ -17,12 +17,11 @@ import Legend from './Legend';
 import messages from './messages';
 
 function SummaryPanel({ rooms }) {
-  const roomsJS = rooms.toJS();
   const filteredRooms = {
-    inbound: roomsJS.filter(stay => stay.status === 'Inbound').length,
-    checkedIn: roomsJS.filter(stay => stay.status === 'Checked In').length,
-    checkedOut: roomsJS.filter(stay => stay.status === 'Checked Out').length,
-    available: roomsJS.filter(stay => stay.status === 'Available').length,
+    inbound: rooms.filter(stay => stay.status === 'Inbound').length,
+    checkedIn: rooms.filter(stay => stay.status === 'Checked In').length,
+    checkedOut: rooms.filter(stay => stay.status === 'Checked Out').length,
+    available: rooms.filter(stay => stay.status === 'Available').length,
   };
   const roomsData = [
     {

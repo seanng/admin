@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import SummaryPanel from 'components/SummaryPanel';
 import ActionPanel from 'components/ActionPanel';
-import { fetchRooms } from './actions';
+import { fetchRooms, deleteRoom, checkIn, makeAvailable } from './actions';
 import { selectRooms, selectHasLoaded } from './selectors';
 import ContainerWrapper from './ContainerWrapper';
 import SideWrapper from './SideWrapper';
@@ -20,17 +20,34 @@ export class FrontDesk extends React.PureComponent {
     this.props.fetchRooms();
   }
 
+  handleActionClick = (roomNumber, status, index) => {
+    switch (status) {
+      case 'Available':
+        return this.props.deleteRoom(roomNumber);
+      case 'Checked Out':
+        return this.props.makeAvailable(roomNumber, index);
+      case 'Inbound':
+        return this.props.checkIn(roomNumber);
+      default:
+        return null;
+    }
+  };
+
   render() {
     if (!this.props.hasLoaded) {
       return <ContainerWrapper />;
     }
+    const rooms = this.props.rooms.toJS();
     return (
       <ContainerWrapper>
         <SideWrapper>
-          <SummaryPanel rooms={this.props.rooms} />
+          <SummaryPanel rooms={rooms} />
         </SideWrapper>
         <SideWrapper right>
-          <ActionPanel />
+          <ActionPanel
+            rooms={rooms}
+            handleActionClick={this.handleActionClick}
+          />
         </SideWrapper>
       </ContainerWrapper>
     );
@@ -46,6 +63,10 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     fetchRooms: () => dispatch(fetchRooms()),
+    makeAvailable: (roomNumber, index) =>
+      dispatch(makeAvailable(roomNumber, index)),
+    deleteRoom: roomNumber => dispatch(deleteRoom(roomNumber)),
+    checkIn: roomNumber => dispatch(checkIn(roomNumber)),
   };
 }
 

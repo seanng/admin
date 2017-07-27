@@ -8,7 +8,6 @@ const retrieveStays = (hotelId, respond) => {
     include: [Customer],
   })
     .then(stays => {
-      console.log('mamama stays', stays);
       const newStays = stays.map(stay => ({
         bookingTime: stay.bookingTime,
         checkInTime: stay.checkInTime,

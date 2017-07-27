@@ -38,7 +38,7 @@ const createRoom = (hotelId, roomNumber, respond) => {
         respond(null, {
           roomNumber,
           employeeId,
-          customerName: '( empty )',
+          customerName: null,
           status: 'Available',
         })
       )

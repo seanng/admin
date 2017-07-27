@@ -17,6 +17,8 @@ const resolve = require('path').resolve;
 const app = express();
 const actions = require('./actions');
 const mapUrl = require('./utils/url');
+const preloadDbData = require('./db/fakeData');
+const preloadCacheData = require('./cache/fakeData');
 
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
 // app.use('/api', myApi);
@@ -83,8 +85,9 @@ const server = app.listen(port, host, err => {
   }
 
   // preload with fake data
+  preloadDbData();
+  preloadCacheData();
   // eslint-disable-next-line global-require
-  require('./db/fakeData').preloadData();
 });
 
 // initialize server-side sockets

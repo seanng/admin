@@ -2,7 +2,6 @@ const cache = require('../../cache/config');
 const { reply } = require('../helpers');
 
 const deleteRoom = (hotelId, roomNumber, respond) => {
-  console.log('deleting room.');
   const key = `${hotelId}:room:${roomNumber}`;
   return cache
     .srem(`${hotelId}:available`, roomNumber)

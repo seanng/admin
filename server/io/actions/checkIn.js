@@ -4,8 +4,7 @@ const { reply } = require('../helpers');
 const checkIn = (hotelId, roomNumber, respond) => {
   const key = `${hotelId}:room:${roomNumber}`;
   const checkInTime = Date.now();
-  console.log('checkintime:', checkInTime);
-  const status = 'Checked In';
+  const status = 'Occupied';
   cache
     .hmset(key, 'status', status, 'checkInTime', checkInTime)
     .then(() => respond(null, { roomNumber, status, checkInTime }))

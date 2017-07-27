@@ -259,104 +259,101 @@ Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian 
   ],
 };
 
-module.exports = {
-  preloadData: () => {
-    sequelize.sync({ force: true }).then(() =>
-      fakeData.customers
-        .reduce((promiseChain, customer) => {
-          const { firstName, lastName, email, phoneNo, password } = customer;
-          return Customer.create({
-            firstName,
-            lastName,
-            email,
-            phoneNo,
-            password,
-          });
-        }, Promise.resolve())
-        .then(() =>
-          fakeData.hotels
-            .reduce((promiseChain, hotel) => {
-              const {
-                name,
-                rate,
-                currency,
-                policies,
-                photos,
-                amenities,
-                lat,
-                lng,
-                address,
-              } = hotel;
-              return Hotel.create({
-                name,
-                rate,
-                currency,
-                policies,
-                photos,
-                amenities,
-                lat,
-                lng,
-                address,
-              });
-            }, Promise.resolve())
-            .then(() =>
-              fakeData.stays
-                .reduce((promiseChain, stay) => {
-                  const {
-                    hotelId,
-                    customerId,
-                    status,
-                    roomNumber,
-                    bookingTime,
-                    checkInTime,
-                    checkOutTime,
-                    totalCharge,
-                    roomCharge,
-                  } = stay;
-                  return Stay.create({
-                    hotelId,
-                    customerId,
-                    status,
-                    roomNumber,
-                    bookingTime,
-                    checkInTime,
-                    checkOutTime,
-                    totalCharge,
-                    roomCharge,
-                  });
-                }, Promise.resolve())
-                .then(() =>
-                  fakeData.surcharges
-                    .reduce((promiseChain, surcharge) => {
-                      const { stayId, service, status, charge } = surcharge;
-                      return Surcharge.create({
-                        stayId,
-                        service,
-                        status,
-                        charge,
+module.exports = () =>
+  sequelize.sync({ force: true }).then(() =>
+    fakeData.customers
+      .reduce((promiseChain, customer) => {
+        const { firstName, lastName, email, phoneNo, password } = customer;
+        return Customer.create({
+          firstName,
+          lastName,
+          email,
+          phoneNo,
+          password,
+        });
+      }, Promise.resolve())
+      .then(() =>
+        fakeData.hotels
+          .reduce((promiseChain, hotel) => {
+            const {
+              name,
+              rate,
+              currency,
+              policies,
+              photos,
+              amenities,
+              lat,
+              lng,
+              address,
+            } = hotel;
+            return Hotel.create({
+              name,
+              rate,
+              currency,
+              policies,
+              photos,
+              amenities,
+              lat,
+              lng,
+              address,
+            });
+          }, Promise.resolve())
+          .then(() =>
+            fakeData.stays
+              .reduce((promiseChain, stay) => {
+                const {
+                  hotelId,
+                  customerId,
+                  status,
+                  roomNumber,
+                  bookingTime,
+                  checkInTime,
+                  checkOutTime,
+                  totalCharge,
+                  roomCharge,
+                } = stay;
+                return Stay.create({
+                  hotelId,
+                  customerId,
+                  status,
+                  roomNumber,
+                  bookingTime,
+                  checkInTime,
+                  checkOutTime,
+                  totalCharge,
+                  roomCharge,
+                });
+              }, Promise.resolve())
+              .then(() =>
+                fakeData.surcharges
+                  .reduce((promiseChain, surcharge) => {
+                    const { stayId, service, status, charge } = surcharge;
+                    return Surcharge.create({
+                      stayId,
+                      service,
+                      status,
+                      charge,
+                    });
+                  }, Promise.resolve())
+                  .then(() =>
+                    fakeData.employees.reduce((promiseChain, employee) => {
+                      const {
+                        hotelId,
+                        email,
+                        firstName,
+                        lastName,
+                        password,
+                      } = employee;
+                      return Employee.create({
+                        hotelId,
+                        email,
+                        firstName,
+                        lastName,
+                        password,
                       });
                     }, Promise.resolve())
-                    .then(() =>
-                      fakeData.employees.reduce((promiseChain, employee) => {
-                        const {
-                          hotelId,
-                          email,
-                          firstName,
-                          lastName,
-                          password,
-                        } = employee;
-                        return Employee.create({
-                          hotelId,
-                          email,
-                          firstName,
-                          lastName,
-                          password,
-                        });
-                      }, Promise.resolve())
-                    )
-                )
-            )
-        )
-    );
-  },
-};
+                  )
+              )
+          )
+      )
+  );

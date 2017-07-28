@@ -17,6 +17,11 @@ export const selectHasLoaded = () =>
     substate.get('hasLoaded')
   );
 
+export const selectActiveFilter = () =>
+  createSelector(selectFrontDeskDomain(), substate =>
+    substate.get('activeFilter')
+  );
+
 /**
  * Default selector used by FrontDesk
  */

@@ -9,8 +9,14 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import SummaryPanel from 'components/SummaryPanel';
 import ActionPanel from 'components/ActionPanel';
-import { fetchRooms, deleteRoom, checkIn, makeAvailable } from './actions';
-import { selectRooms, selectHasLoaded } from './selectors';
+import {
+  fetchRooms,
+  deleteRoom,
+  checkIn,
+  makeAvailable,
+  setFilter,
+} from './actions';
+import { selectRooms, selectHasLoaded, selectActiveFilter } from './selectors';
 import ContainerWrapper from './ContainerWrapper';
 import SideWrapper from './SideWrapper';
 
@@ -24,13 +30,17 @@ export class FrontDesk extends React.PureComponent {
     switch (status) {
       case 'Available':
         return this.props.deleteRoom(roomNumber);
-      case 'Checked Out':
+      case 'Not Ready':
         return this.props.makeAvailable(roomNumber, index);
-      case 'Inbound':
+      case 'Reserved':
         return this.props.checkIn(roomNumber);
       default:
         return null;
     }
+  };
+
+  handleFilterChange = val => {
+    this.props.setFilter(val.label);
   };
 
   render() {
@@ -40,13 +50,15 @@ export class FrontDesk extends React.PureComponent {
     const rooms = this.props.rooms.toJS();
     return (
       <ContainerWrapper>
-        <SideWrapper>
+        <SideWrapper flex={3}>
           <SummaryPanel rooms={rooms} />
         </SideWrapper>
-        <SideWrapper right>
+        <SideWrapper flex={4} right>
           <ActionPanel
             rooms={rooms}
             handleActionClick={this.handleActionClick}
+            activeFilter={this.props.activeFilter}
+            handleFilterChange={this.handleFilterChange}
           />
         </SideWrapper>
       </ContainerWrapper>
@@ -57,6 +69,7 @@ export class FrontDesk extends React.PureComponent {
 const mapStateToProps = createStructuredSelector({
   rooms: selectRooms(),
   hasLoaded: selectHasLoaded(),
+  activeFilter: selectActiveFilter(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -67,6 +80,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(makeAvailable(roomNumber, index)),
     deleteRoom: roomNumber => dispatch(deleteRoom(roomNumber)),
     checkIn: roomNumber => dispatch(checkIn(roomNumber)),
+    setFilter: filter => dispatch(setFilter(filter)),
   };
 }
 

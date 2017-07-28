@@ -18,28 +18,28 @@ import messages from './messages';
 
 function SummaryPanel({ rooms }) {
   const filteredRooms = {
-    inbound: rooms.filter(stay => stay.status === 'Inbound').length,
-    checkedIn: rooms.filter(stay => stay.status === 'Checked In').length,
-    checkedOut: rooms.filter(stay => stay.status === 'Checked Out').length,
+    reserved: rooms.filter(stay => stay.status === 'Reserved').length,
+    occupied: rooms.filter(stay => stay.status === 'Occupied').length,
+    notReady: rooms.filter(stay => stay.status === 'Not Ready').length,
     available: rooms.filter(stay => stay.status === 'Available').length,
   };
   const roomsData = [
     {
       x: 1,
-      y: filteredRooms.inbound,
-      label: filteredRooms.inbound,
+      y: filteredRooms.reserved,
+      label: filteredRooms.reserved,
       fill: colors.bsWarning,
     },
     {
       x: 2,
-      y: filteredRooms.checkedIn,
-      label: filteredRooms.checkedIn,
+      y: filteredRooms.occupied,
+      label: filteredRooms.occupied,
       fill: colors.bsDanger,
     },
     {
       x: 3,
-      y: filteredRooms.checkedOut,
-      label: filteredRooms.checkedOut,
+      y: filteredRooms.notReady,
+      label: filteredRooms.notReady,
       fill: colors.bsPrimary,
     },
     {

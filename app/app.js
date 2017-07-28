@@ -16,6 +16,7 @@ import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { useScroll } from 'react-router-scroll';
 import FontFaceObserver from 'fontfaceobserver';
+import 'react-select/dist/react-select.css';
 import 'sanitize.css/sanitize.css';
 
 // Import root app
@@ -39,7 +40,7 @@ import configureStore from './store';
 // Import i18n messages
 import { translationMessages } from './i18n';
 
-// Import CSS reset and Global Styles
+// Import CSS and Global Styles
 import './global-styles';
 
 // Import root routes

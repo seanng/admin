@@ -1,9 +1,13 @@
 import React from 'react';
+import camelize from 'utils/camelize';
+import { FormattedMessage } from 'react-intl';
+import messages from './messages';
 import ActionButton from './ActionButton';
 import TD from './TD';
 
 function RoomEntryRow({ room, index, handleActionClick }) {
-  const { roomNumber, status, customerName } = room;
+  const { status, roomNumber, customerName } = room;
+  const camelizedStatus = camelize(status);
   return (
     <tr>
       <TD>
@@ -16,7 +20,7 @@ function RoomEntryRow({ room, index, handleActionClick }) {
         {customerName}
       </TD>
       <TD>
-        {status}
+        <FormattedMessage {...messages[camelizedStatus]} />
       </TD>
       <TD>
         <ActionButton

@@ -14,11 +14,13 @@ import {
   DELETE_ROOM_SUCCESS,
   CHECK_IN_SUCCESS,
   CHECK_IN_ERROR,
+  SET_FILTER,
 } from './constants';
 
 const initialState = fromJS({
   rooms: [],
   hasLoaded: false,
+  activeFilter: 'All',
 });
 
 function frontDeskReducer(state = initialState, action) {
@@ -36,7 +38,7 @@ function frontDeskReducer(state = initialState, action) {
           roomNumber: action.roomNumber,
           employeeId: 123,
           status: 'Available',
-          guestName: '( empty )',
+          guestName: ' - ',
         })
       );
     case DELETE_ROOM_ERROR:
@@ -56,6 +58,9 @@ function frontDeskReducer(state = initialState, action) {
         )
       );
     }
+
+    case SET_FILTER:
+      return state.set('activeFilter', action.filter);
 
     default:
       return state;

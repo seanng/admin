@@ -13,13 +13,13 @@ function ActionButton({ status, handleClick, roomNumber, index }) {
           <FormattedMessage {...messages.remove} />
         </Button>
       );
-    case 'Checked Out':
+    case 'Not Ready':
       return (
         <Button bgColor={colors.bsSuccess} width={6.5} onClick={onClick}>
-          <FormattedMessage {...messages.makeAvailable} />
+          <FormattedMessage {...messages.ready} />
         </Button>
       );
-    case 'Inbound':
+    case 'Reserved':
       return (
         <Button bgColor={colors.bsInfo} width={6.5} onClick={onClick}>
           <FormattedMessage {...messages.checkin} />

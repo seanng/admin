@@ -15,14 +15,22 @@ import Thead from './Thead';
 import RoomEntryRow from './RoomEntryRow';
 import messages from './messages';
 
-function ActionPanel({ rooms, handleActionClick }) {
+function ActionPanel({
+  rooms,
+  handleActionClick,
+  handleFilterChange,
+  activeFilter,
+}) {
   return (
     <Card>
       <Header>
         <H5>
           <FormattedMessage {...messages.header} />
         </H5>
-        <FilterDropdown />
+        <FilterDropdown
+          onChange={handleFilterChange}
+          activeFilter={activeFilter}
+        />
       </Header>
       <Table>
         <Thead />

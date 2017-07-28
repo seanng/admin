@@ -30,12 +30,32 @@ export default defineMessages({
     id: 'app.components.ActionPanel.remove',
     defaultMessage: 'Remove',
   },
-  makeAvailable: {
-    id: 'app.components.ActionPanel.makeAvailable',
+  ready: {
+    id: 'app.components.ActionPanel.ready',
     defaultMessage: 'Ready',
   },
   checkin: {
     id: 'app.components.ActionPanel.checkin',
     defaultMessage: 'Check In',
+  },
+  available: {
+    id: 'app.components.ActionPanel.available',
+    defaultMessage: 'Available',
+  },
+  reserved: {
+    id: 'app.components.ActionPanel.reserved',
+    defaultMessage: 'Reserved',
+  },
+  occupied: {
+    id: 'app.components.ActionPanel.occupied',
+    defaultMessage: 'Occupied',
+  },
+  all: {
+    id: 'app.components.ActionPanel.all',
+    defaultMessage: 'All',
+  },
+  notReady: {
+    id: 'app.components.ActionPanel.notReady',
+    defaultMessage: 'Not Ready',
   },
 });

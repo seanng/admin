@@ -9,6 +9,7 @@ import {
   MAKE_AVAILABLE,
   DELETE_ROOM,
   CHECK_IN,
+  SET_FILTER,
 } from './constants';
 
 export function fetchRooms() {
@@ -36,5 +37,12 @@ export function checkIn(roomNumber) {
   return {
     type: CHECK_IN,
     roomNumber,
+  };
+}
+
+export function setFilter(filter) {
+  return {
+    type: SET_FILTER,
+    filter,
   };
 }

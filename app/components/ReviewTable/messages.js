@@ -46,4 +46,8 @@ export default defineMessages({
     id: 'app.components.ReviewTable.totalAmount',
     defaultMessage: 'Total Amount',
   },
+  addCharges: {
+    id: 'app.components.ReviewTable.addCharges',
+    defaultMessage: 'View / Add',
+  },
 });

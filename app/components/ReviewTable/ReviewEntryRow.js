@@ -1,9 +1,13 @@
 import React from 'react';
 import format from 'date-fns/format';
 import { getFormattedDate, getFormattedDuration } from 'utils/helpers';
+import { FormattedMessage } from 'react-intl';
+import messages from './messages';
+import Button from '../Button';
 import TD from './TD';
 
-function ReviewEntryRow({ stay }) {
+function ReviewEntryRow({ stay, handleOpenSurcharges }) {
+  const { id, customerName, roomNumber, roomCharge, totalCharge } = stay;
   const [checkInTime, checkOutTime] = [
     new Date(stay.checkInTime),
     new Date(stay.checkOutTime),
@@ -14,10 +18,10 @@ function ReviewEntryRow({ stay }) {
         {getFormattedDate(checkInTime, checkOutTime)}
       </TD>
       <TD>
-        {stay.customerName}
+        {customerName}
       </TD>
       <TD>
-        {stay.roomNumber}
+        {roomNumber}
       </TD>
       <TD>
         {format(checkInTime, 'h:mm a')}
@@ -29,12 +33,16 @@ function ReviewEntryRow({ stay }) {
         {getFormattedDuration(checkInTime, checkOutTime)}
       </TD>
       <TD>
-        $ {stay.roomCharge}
+        $ {roomCharge}
       </TD>
       <TD>
-        $ {stay.totalCharge}
+        $ {totalCharge}
       </TD>
-      <TD>handle surcharge button.</TD>
+      <TD>
+        <Button onClick={() => handleOpenSurcharges(id)}>
+          <FormattedMessage {...messages.addCharges} />
+        </Button>
+      </TD>
     </tr>
   );
 }

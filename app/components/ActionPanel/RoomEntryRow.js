@@ -1,5 +1,5 @@
 import React from 'react';
-import camelize from 'utils/camelize';
+import { camelize } from 'utils/helpers';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import ActionButton from './ActionButton';

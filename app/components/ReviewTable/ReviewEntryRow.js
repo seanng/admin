@@ -1,12 +1,17 @@
 import React from 'react';
+import format from 'date-fns/format';
+import { getFormattedDate, getFormattedDuration } from 'utils/helpers';
 import TD from './TD';
 
 function ReviewEntryRow({ stay }) {
-  console.log('whats in the stay?', stay);
+  const [checkInTime, checkOutTime] = [
+    new Date(stay.checkInTime),
+    new Date(stay.checkOutTime),
+  ];
   return (
     <tr>
       <TD>
-        {stay.bookingTime}
+        {getFormattedDate(checkInTime, checkOutTime)}
       </TD>
       <TD>
         {stay.customerName}
@@ -15,19 +20,21 @@ function ReviewEntryRow({ stay }) {
         {stay.roomNumber}
       </TD>
       <TD>
-        {stay.checkInTime}
+        {format(checkInTime, 'h:mm a')}
       </TD>
       <TD>
-        {stay.checkOutTime}
+        {format(checkOutTime, 'h:mm a')}
       </TD>
-      <TD>duration (todo)</TD>
       <TD>
-        {stay.roomCharge}
+        {getFormattedDuration(checkInTime, checkOutTime)}
+      </TD>
+      <TD>
+        $ {stay.roomCharge}
+      </TD>
+      <TD>
+        $ {stay.totalCharge}
       </TD>
       <TD>handle surcharge button.</TD>
-      <TD>
-        {stay.totalCharge}
-      </TD>
     </tr>
   );
 }

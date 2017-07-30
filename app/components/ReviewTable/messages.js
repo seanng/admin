@@ -36,7 +36,7 @@ export default defineMessages({
   },
   roomCharge: {
     id: 'app.components.ReviewTable.roomCharge',
-    defaultMessage: 'Duration',
+    defaultMessage: 'Room Charge',
   },
   surcharges: {
     id: 'app.components.ReviewTable.surcharges',

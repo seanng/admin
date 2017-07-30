@@ -29,10 +29,10 @@ function Thead() {
           <FormattedMessage {...messages.roomCharge} />
         </TH>
         <TH>
-          <FormattedMessage {...messages.surcharges} />
+          <FormattedMessage {...messages.totalAmount} />
         </TH>
         <TH>
-          <FormattedMessage {...messages.totalAmount} />
+          <FormattedMessage {...messages.surcharges} />
         </TH>
       </tr>
     </thead>

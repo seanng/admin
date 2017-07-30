@@ -20,6 +20,7 @@ function ActionPanel({
   handleActionClick,
   handleFilterChange,
   activeFilter,
+  filterOptions,
 }) {
   return (
     <Card>
@@ -30,6 +31,7 @@ function ActionPanel({
         <FilterDropdown
           onChange={handleFilterChange}
           activeFilter={activeFilter}
+          options={filterOptions}
         />
       </Header>
       <Table>

@@ -2,28 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import Select from 'react-select';
 
-function FilterDropdown({ onChange, activeFilter }) {
-  const displayedFilter = {
-    value: activeFilter,
-    label: activeFilter,
-  };
-  const options = [
-    { label: 'All' },
-    { label: 'Available' },
-    { label: 'Reserved' },
-    { label: 'Not Ready' },
-    { label: 'Occupied' },
-  ];
-
+function FilterDropdown({ onChange, activeFilter, options }) {
   return (
     <StyledSelect
+      simpleValue
       name="filterInput"
       searchable={false}
       onChange={onChange}
       options={options}
-      value={displayedFilter}
+      value={activeFilter}
       clearable={false}
-      autofocus
     />
   );
 }

@@ -26,6 +26,14 @@ export class FrontDesk extends React.PureComponent {
     this.props.fetchRooms();
   }
 
+  filterOptions = [
+    { label: 'All', value: 'All' },
+    { label: 'Available', value: 'Available' },
+    { label: 'Reserved', value: 'Reserved' },
+    { label: 'Not Ready', value: 'Not Ready' },
+    { label: 'Occupied', value: 'Occupied' },
+  ];
+
   handleActionClick = (roomNumber, status, index) => {
     switch (status) {
       case 'Available':
@@ -39,9 +47,7 @@ export class FrontDesk extends React.PureComponent {
     }
   };
 
-  handleFilterChange = val => {
-    this.props.setFilter(val.label);
-  };
+  handleFilterChange = val => this.props.setFilter(val);
 
   render() {
     if (!this.props.hasLoaded) {
@@ -59,6 +65,7 @@ export class FrontDesk extends React.PureComponent {
             handleActionClick={this.handleActionClick}
             activeFilter={this.props.activeFilter}
             handleFilterChange={this.handleFilterChange}
+            filterOptions={this.filterOptions}
           />
         </SideWrapper>
       </ContainerWrapper>

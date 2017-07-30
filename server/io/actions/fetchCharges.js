@@ -16,12 +16,12 @@ module.exports = (client, action) =>
     if (err) {
       console.log('error finding charges.', err);
       return reply(client, {
-        type: 'FETCH_CHARGES_ERROR',
+        type: 'app/PastStays/FETCH_CHARGES_ERROR',
         err,
       });
     }
     return reply(client, {
-      type: 'FETCH_CHARGES_SUCCESS',
+      type: 'app/PastStays/FETCH_CHARGES_SUCCESS',
       charges,
     });
   });

@@ -7,9 +7,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import ChargesModal from 'components/ChargesModal';
 import ReviewTable from 'components/ReviewTable';
-import { fetchStays } from './actions';
-import { selectHasLoaded, selectStays } from './selectors';
+import { fetchStays, fetchCharges, closeModal } from './actions';
+import { selectHasLoaded, selectStays, selectIsModalOpen } from './selectors';
 import ContainerWrapper from './ContainerWrapper';
 import ComponentWrapper from './ComponentWrapper';
 
@@ -19,16 +20,22 @@ export class PastStays extends React.PureComponent {
     this.props.fetchStays();
   }
 
+  onModalClose = () => {
+    // perform validation check prior to closing?
+    this.props.closeModal();
+  };
+
   render() {
-    const { hasLoaded, stays } = this.props;
+    const { hasLoaded, stays, isModalOpen, getCharges } = this.props;
     if (!hasLoaded) {
       return <ContainerWrapper />;
     }
     return (
       <ContainerWrapper>
         <ComponentWrapper>
-          <ReviewTable stays={stays.toJS()} />
+          <ReviewTable stays={stays.toJS()} handleOpenSurcharges={getCharges} />
         </ComponentWrapper>
+        <ChargesModal isOpen={isModalOpen} onClose={this.onModalClose} />
       </ContainerWrapper>
     );
   }
@@ -36,6 +43,7 @@ export class PastStays extends React.PureComponent {
 
 const mapStateToProps = createStructuredSelector({
   hasLoaded: selectHasLoaded(),
+  isModalOpen: selectIsModalOpen(),
   stays: selectStays(),
 });
 
@@ -43,6 +51,8 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     fetchStays: () => dispatch(fetchStays()),
+    getCharges: stayId => dispatch(fetchCharges(stayId)),
+    closeModal: () => dispatch(closeModal()),
   };
 }
 

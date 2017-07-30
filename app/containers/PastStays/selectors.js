@@ -17,6 +17,11 @@ export const selectHasLoaded = () =>
 export const selectStays = () =>
   createSelector(selectPastStaysDomain(), substate => substate.get('stays'));
 
+export const selectIsModalOpen = () =>
+  createSelector(selectPastStaysDomain(), substate =>
+    substate.get('isModalOpen')
+  );
+
 /**
  * Default selector used by PastStays
  */

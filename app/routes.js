@@ -56,6 +56,25 @@ export default function createRoutes(store) {
       },
     },
     {
+      path: 'paststays',
+      name: 'pastStays',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/PastStays/reducer'),
+          import('containers/PastStays'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('pastStays', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

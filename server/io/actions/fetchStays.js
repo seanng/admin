@@ -37,11 +37,11 @@ module.exports = client =>
     if (err) {
       console.log('error!', err);
       return reply(client, {
-        type: 'FETCH_STAYS_ERROR',
+        type: 'app/PastStays/FETCH_STAYS_ERROR',
       });
     }
     return reply(client, {
-      type: 'FETCH_STAYS_SUCCESS',
+      type: 'app/PastStays/FETCH_STAYS_SUCCESS',
       stays,
     });
   });

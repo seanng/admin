@@ -15,8 +15,8 @@ const mapViewToItems = {
       path: '/',
     },
     {
-      name: 'Previous Stays',
-      path: '/previousstays',
+      name: 'Past Stays',
+      path: '/paststays',
     },
   ],
   account: [

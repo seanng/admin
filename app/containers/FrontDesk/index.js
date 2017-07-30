@@ -50,20 +50,27 @@ export class FrontDesk extends React.PureComponent {
   handleFilterChange = val => this.props.setFilter(val);
 
   render() {
-    if (!this.props.hasLoaded) {
+    const { hasLoaded, rooms, activeFilter } = this.props;
+    if (!hasLoaded) {
       return <ContainerWrapper />;
     }
-    const rooms = this.props.rooms.toJS();
+    // massage rooms list to component requirements
+    const roomsArr = rooms.toJS();
+    const filteredRooms =
+      activeFilter === 'All'
+        ? roomsArr
+        : roomsArr.filter(room => room.status === activeFilter);
+    // rendered display
     return (
       <ContainerWrapper>
         <SideWrapper flex={3}>
-          <SummaryPanel rooms={rooms} />
+          <SummaryPanel rooms={roomsArr} />
         </SideWrapper>
         <SideWrapper flex={4} right>
           <ActionPanel
-            rooms={rooms}
+            rooms={filteredRooms}
             handleActionClick={this.handleActionClick}
-            activeFilter={this.props.activeFilter}
+            activeFilter={activeFilter}
             handleFilterChange={this.handleFilterChange}
             filterOptions={this.filterOptions}
           />

@@ -20,13 +20,14 @@ export class PastStays extends React.PureComponent {
   }
 
   render() {
-    if (!this.props.hasLoaded) {
+    const { hasLoaded, stays } = this.props;
+    if (!hasLoaded) {
       return <ContainerWrapper />;
     }
     return (
       <ContainerWrapper>
         <ComponentWrapper>
-          <ReviewTable />
+          <ReviewTable stays={stays.toJS()} />
         </ComponentWrapper>
       </ContainerWrapper>
     );

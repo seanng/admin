@@ -7,14 +7,26 @@
 import React from 'react';
 // import styled from 'styled-components';
 
-import { FormattedMessage } from 'react-intl';
 import Card from '../Card';
-import messages from './messages';
+import Table from './Table';
+import Thead from './Thead';
+import ReviewEntryRow from './ReviewEntryRow';
 
-function ReviewTable() {
+function ReviewTable({ stays, handleOpenSurcharges }) {
   return (
     <Card>
-      <FormattedMessage {...messages.header} />
+      <Table>
+        <Thead />
+        <tbody>
+          {stays.map(stay =>
+            <ReviewEntryRow
+              key={stay.id}
+              stay={stay}
+              handleOpenSurcharges={handleOpenSurcharges}
+            />
+          )}
+        </tbody>
+      </Table>
     </Card>
   );
 }

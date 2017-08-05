@@ -4,13 +4,14 @@
  *
  */
 
-import { fromJS } from 'immutable';
+import { fromJS, Map } from 'immutable';
 import {
   FETCH_CHARGES,
   FETCH_STAYS_SUCCESS,
   FETCH_CHARGES_SUCCESS,
   CLOSE_MODAL,
-  HANDLE_INPUT_CHANGE,
+  CHANGE_INPUT,
+  ADD_CHARGE,
 } from './constants';
 
 const initialState = fromJS({
@@ -53,9 +54,13 @@ function pastStaysReducer(state = initialState, action) {
     case CLOSE_MODAL:
       return state.set('isModalOpen', false);
 
-    case HANDLE_INPUT_CHANGE:
-      console.log('action.key', action.key, action.value);
+    case CHANGE_INPUT:
       return state.set(action.key, action.value);
+
+    case ADD_CHARGE:
+      return state.update('charges', charges =>
+        charges.set(charges.size, Map(action.charge))
+      );
 
     default:
       return state;

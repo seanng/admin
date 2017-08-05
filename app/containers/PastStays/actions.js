@@ -8,7 +8,8 @@ import {
   FETCH_STAYS,
   FETCH_CHARGES,
   CLOSE_MODAL,
-  HANDLE_INPUT_CHANGE,
+  CHANGE_INPUT,
+  ADD_CHARGE,
 } from './constants';
 
 export function fetchStays() {
@@ -30,10 +31,17 @@ export function closeModal() {
   };
 }
 
-export function handleInputChange(key, value) {
+export function changeInput(key, value) {
   return {
-    type: HANDLE_INPUT_CHANGE,
+    type: CHANGE_INPUT,
     key,
     value,
+  };
+}
+
+export function addCharge(charge) {
+  return {
+    type: ADD_CHARGE,
+    charge,
   };
 }

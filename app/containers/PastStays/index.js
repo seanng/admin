@@ -13,7 +13,8 @@ import {
   fetchStays,
   fetchCharges,
   closeModal,
-  handleInputChange,
+  changeInput,
+  addCharge,
 } from './actions';
 import {
   selectHasLoaded,
@@ -44,6 +45,26 @@ export class PastStays extends React.PureComponent {
     this.props.handleInputChange(key, value);
   };
 
+  addCharge = () => {
+    const {
+      stay,
+      serviceInput,
+      priceInput,
+      addNewCharge,
+      handleInputChange,
+    } = this.props;
+    const charge = {
+      stayId: stay.get('id'),
+      service: serviceInput,
+      charge: (priceInput * 1).toFixed(2),
+      status: 'Unsettled',
+      updated: false,
+    };
+    addNewCharge(charge);
+    handleInputChange('serviceInput', '');
+    handleInputChange('priceInput', '');
+  };
+
   render() {
     const {
       hasLoaded,
@@ -71,6 +92,7 @@ export class PastStays extends React.PureComponent {
           stay={stay.toJS()}
           serviceInput={serviceInput}
           priceInput={priceInput}
+          addCharge={this.addCharge}
         />
       </ContainerWrapper>
     );
@@ -93,7 +115,8 @@ function mapDispatchToProps(dispatch) {
     fetchStays: () => dispatch(fetchStays()),
     getCharges: stayId => dispatch(fetchCharges(stayId)),
     closeModal: () => dispatch(closeModal()),
-    handleInputChange: (key, value) => dispatch(handleInputChange(key, value)),
+    addNewCharge: charge => dispatch(addCharge(charge)),
+    handleInputChange: (key, value) => dispatch(changeInput(key, value)),
   };
 }
 

@@ -32,6 +32,7 @@ function ChargesModal({
   charges,
   serviceInput,
   priceInput,
+  addCharge,
 }) {
   const date = getFormattedDate(stay.checkInTime, stay.checkOutTime);
   return (
@@ -72,7 +73,11 @@ function ChargesModal({
             onChange={handleInputChange}
           />
         </InputWrapper>
-        <Button bgColor={colors.bsSuccess} textColor={colors.white}>
+        <Button
+          bgColor={colors.bsSuccess}
+          textColor={colors.white}
+          onClick={addCharge}
+        >
           <FormattedMessage {...messages.addCharge} />
         </Button>
       </UpperBody>
@@ -80,9 +85,7 @@ function ChargesModal({
         <Table>
           <Thead currency={stay.currency} />
           <tbody>
-            {charges.map(charge =>
-              <ChargeRow key={charge.id} charge={charge} />
-            )}
+            {charges.map((charge, i) => <ChargeRow key={i} charge={charge} />)}
             <BottomRow charges={charges} />
           </tbody>
         </Table>

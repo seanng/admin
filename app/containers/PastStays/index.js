@@ -9,12 +9,20 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import ChargesModal from 'components/ChargesModal';
 import ReviewTable from 'components/ReviewTable';
-import { fetchStays, fetchCharges, closeModal } from './actions';
+import {
+  fetchStays,
+  fetchCharges,
+  closeModal,
+  handleInputChange,
+} from './actions';
 import {
   selectHasLoaded,
   selectStays,
+  selectStay,
   selectIsModalOpen,
   selectCharges,
+  selectServiceInput,
+  selectPriceInput,
 } from './selectors';
 import ContainerWrapper from './ContainerWrapper';
 import ComponentWrapper from './ComponentWrapper';
@@ -26,12 +34,27 @@ export class PastStays extends React.PureComponent {
   }
 
   onModalClose = () => {
-    // perform validation check prior to closing?
+    // perform some kind of check prior to closing?
     this.props.closeModal();
   };
 
+  handleInputChange = event => {
+    const key = event.target.name;
+    const value = event.target.value;
+    this.props.handleInputChange(key, value);
+  };
+
   render() {
-    const { hasLoaded, stays, isModalOpen, getCharges, charges } = this.props;
+    const {
+      hasLoaded,
+      stays,
+      stay,
+      isModalOpen,
+      getCharges,
+      charges,
+      serviceInput,
+      priceInput,
+    } = this.props;
     if (!hasLoaded) {
       return <ContainerWrapper />;
     }
@@ -42,8 +65,12 @@ export class PastStays extends React.PureComponent {
         </ComponentWrapper>
         <ChargesModal
           isOpen={isModalOpen}
+          handleInputChange={this.handleInputChange}
           onClose={this.onModalClose}
           charges={charges}
+          stay={stay.toJS()}
+          serviceInput={serviceInput}
+          priceInput={priceInput}
         />
       </ContainerWrapper>
     );
@@ -53,8 +80,11 @@ export class PastStays extends React.PureComponent {
 const mapStateToProps = createStructuredSelector({
   hasLoaded: selectHasLoaded(),
   isModalOpen: selectIsModalOpen(),
+  stay: selectStay(),
   stays: selectStays(),
   charges: selectCharges(),
+  serviceInput: selectServiceInput(),
+  priceInput: selectPriceInput(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -63,6 +93,7 @@ function mapDispatchToProps(dispatch) {
     fetchStays: () => dispatch(fetchStays()),
     getCharges: stayId => dispatch(fetchCharges(stayId)),
     closeModal: () => dispatch(closeModal()),
+    handleInputChange: (key, value) => dispatch(handleInputChange(key, value)),
   };
 }
 

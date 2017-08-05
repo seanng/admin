@@ -17,6 +17,19 @@ export const selectHasLoaded = () =>
 export const selectStays = () =>
   createSelector(selectPastStaysDomain(), substate => substate.get('stays'));
 
+export const selectStay = () =>
+  createSelector(selectPastStaysDomain(), substate => substate.get('stay'));
+
+export const selectServiceInput = () =>
+  createSelector(selectPastStaysDomain(), substate =>
+    substate.get('serviceInput')
+  );
+
+export const selectPriceInput = () =>
+  createSelector(selectPastStaysDomain(), substate =>
+    substate.get('priceInput')
+  );
+
 export const selectCharges = () =>
   createSelector(selectPastStaysDomain(), substate => substate.get('charges'));
 

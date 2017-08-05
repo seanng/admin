@@ -17,7 +17,7 @@ const inputStyle = {
   padding: '0.65rem 0.8rem',
 };
 
-function Input({ type, value, onChange, name }) {
+function Input({ type, value, onChange, name, placeholder }) {
   return (
     <input
       type={type}
@@ -25,6 +25,7 @@ function Input({ type, value, onChange, name }) {
       value={value}
       onChange={onChange}
       name={name}
+      placeholder={placeholder}
     />
   );
 }

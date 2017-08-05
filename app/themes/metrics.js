@@ -1,3 +1,4 @@
+// http://tachyons.io/#style
 const defaultTheme = {
   fontSize: {
     d1: '6rem',

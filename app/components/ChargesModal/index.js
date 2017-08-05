@@ -16,6 +16,11 @@ import InputWrapper from './InputWrapper';
 import modalStyle from './modalStyle';
 import Header from './Header';
 import UpperBody from './UpperBody';
+import LowerBody from './LowerBody';
+import Table from './Table';
+import Thead from './Thead';
+import ChargeRow from './ChargeRow';
+import BottomRow from './BottomRow';
 import Footer from './Footer';
 import messages from './messages';
 
@@ -24,6 +29,7 @@ function ChargesModal({
   onClose,
   stay,
   handleInputChange,
+  charges,
   serviceInput,
   priceInput,
 }) {
@@ -70,6 +76,17 @@ function ChargesModal({
           <FormattedMessage {...messages.addCharge} />
         </Button>
       </UpperBody>
+      <LowerBody>
+        <Table>
+          <Thead currency={stay.currency} />
+          <tbody>
+            {charges.map(charge =>
+              <ChargeRow key={charge.id} charge={charge} />
+            )}
+            <BottomRow charges={charges} />
+          </tbody>
+        </Table>
+      </LowerBody>
       <Footer />
     </Modal>
   );

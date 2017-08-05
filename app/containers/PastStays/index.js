@@ -67,7 +67,7 @@ export class PastStays extends React.PureComponent {
           isOpen={isModalOpen}
           handleInputChange={this.handleInputChange}
           onClose={this.onModalClose}
-          charges={charges}
+          charges={charges.toJS()}
           stay={stay.toJS()}
           serviceInput={serviceInput}
           priceInput={priceInput}

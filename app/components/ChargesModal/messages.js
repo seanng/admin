@@ -14,4 +14,32 @@ export default defineMessages({
     id: 'app.components.ChargesModal.addCharge',
     defaultMessage: 'Add Charge',
   },
+  service: {
+    id: 'app.components.ChargesModal.service',
+    defaultMessage: 'Service',
+  },
+  hasItBeenUpdated: {
+    id: 'app.components.ChargesModal.hasItBeenUpdated',
+    defaultMessage: 'Updated?',
+  },
+  hasItBeenSettled: {
+    id: 'app.components.ChargesModal.hasItBeenSettled',
+    defaultMessage: 'Settled?',
+  },
+  price: {
+    id: 'app.components.ChargesModal.price',
+    defaultMessage: 'Price ({currency})',
+  },
+  yes: {
+    id: 'app.components.ChargesModal.yes',
+    defaultMessage: 'Yes',
+  },
+  no: {
+    id: 'app.components.ChargesModal.no',
+    defaultMessage: 'No',
+  },
+  total: {
+    id: 'app.components.ChargesModal.total',
+    defaultMessage: 'Total',
+  },
 });

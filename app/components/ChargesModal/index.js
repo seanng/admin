@@ -11,7 +11,8 @@ import Modal from 'react-modal';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
-function ChargesModal({ isOpen, onClose }) {
+function ChargesModal({ isOpen, onClose, charges }) {
+  console.log('the charges: ', charges);
   return (
     <Modal
       contentLabel="chargesModal"

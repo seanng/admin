@@ -10,7 +10,12 @@ import { createStructuredSelector } from 'reselect';
 import ChargesModal from 'components/ChargesModal';
 import ReviewTable from 'components/ReviewTable';
 import { fetchStays, fetchCharges, closeModal } from './actions';
-import { selectHasLoaded, selectStays, selectIsModalOpen } from './selectors';
+import {
+  selectHasLoaded,
+  selectStays,
+  selectIsModalOpen,
+  selectCharges,
+} from './selectors';
 import ContainerWrapper from './ContainerWrapper';
 import ComponentWrapper from './ComponentWrapper';
 
@@ -26,7 +31,7 @@ export class PastStays extends React.PureComponent {
   };
 
   render() {
-    const { hasLoaded, stays, isModalOpen, getCharges } = this.props;
+    const { hasLoaded, stays, isModalOpen, getCharges, charges } = this.props;
     if (!hasLoaded) {
       return <ContainerWrapper />;
     }
@@ -35,7 +40,11 @@ export class PastStays extends React.PureComponent {
         <ComponentWrapper>
           <ReviewTable stays={stays.toJS()} handleOpenSurcharges={getCharges} />
         </ComponentWrapper>
-        <ChargesModal isOpen={isModalOpen} onClose={this.onModalClose} />
+        <ChargesModal
+          isOpen={isModalOpen}
+          onClose={this.onModalClose}
+          charges={charges}
+        />
       </ContainerWrapper>
     );
   }
@@ -45,6 +54,7 @@ const mapStateToProps = createStructuredSelector({
   hasLoaded: selectHasLoaded(),
   isModalOpen: selectIsModalOpen(),
   stays: selectStays(),
+  charges: selectCharges(),
 });
 
 function mapDispatchToProps(dispatch) {

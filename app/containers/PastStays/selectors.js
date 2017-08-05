@@ -17,6 +17,9 @@ export const selectHasLoaded = () =>
 export const selectStays = () =>
   createSelector(selectPastStaysDomain(), substate => substate.get('stays'));
 
+export const selectCharges = () =>
+  createSelector(selectPastStaysDomain(), substate => substate.get('charges'));
+
 export const selectIsModalOpen = () =>
   createSelector(selectPastStaysDomain(), substate =>
     substate.get('isModalOpen')

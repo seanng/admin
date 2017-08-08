@@ -42,4 +42,12 @@ export default defineMessages({
     id: 'app.components.ChargesModal.total',
     defaultMessage: 'Total',
   },
+  updateCharges: {
+    id: 'app.components.ChargesModal.updateCharges',
+    defaultMessage: 'Update Charges',
+  },
+  cancel: {
+    id: 'app.components.ChargesModal.cancel',
+    defaultMessage: 'Cancel',
+  },
 });

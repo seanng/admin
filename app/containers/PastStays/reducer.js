@@ -12,6 +12,7 @@ import {
   CLOSE_MODAL,
   CHANGE_INPUT,
   ADD_CHARGE,
+  SAVE_CHARGES_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({
@@ -61,6 +62,17 @@ function pastStaysReducer(state = initialState, action) {
       return state.update('charges', charges =>
         charges.set(charges.size, Map(action.charge))
       );
+
+    case SAVE_CHARGES_SUCCESS: {
+      const charges = action.updatedCharges.map(charge => {
+        charge.updated = true;
+        return charge;
+      });
+      const stays = state.get('stays').toJS();
+      const idx = stays.findIndex(stay => stay.id === action.stayId);
+      stays[idx].totalCharge = action.newTotal;
+      return state.merge({ charges, stays, isModalOpen: false });
+    }
 
     default:
       return state;

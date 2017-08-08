@@ -15,6 +15,7 @@ import {
   closeModal,
   changeInput,
   addCharge,
+  saveCharges,
 } from './actions';
 import {
   selectHasLoaded,
@@ -45,7 +46,7 @@ export class PastStays extends React.PureComponent {
     this.props.handleInputChange(key, value);
   };
 
-  addCharge = () => {
+  handleAddCharge = () => {
     const {
       stay,
       serviceInput,
@@ -63,6 +64,18 @@ export class PastStays extends React.PureComponent {
     addNewCharge(charge);
     handleInputChange('serviceInput', '');
     handleInputChange('priceInput', '');
+  };
+
+  handleUpdateCharges = () => {
+    const newCharges = this.props.charges
+      .toJS()
+      .filter(charge => charge.updated === false);
+    const newTotal = newCharges.reduce(
+      (prev, current) => (prev * 1 + current.charge * 1).toFixed(2),
+      this.props.stay.get('totalCharge') * 1
+    );
+    const stayId = this.props.stay.get('id');
+    this.props.updateCharges(newCharges, newTotal, stayId);
   };
 
   render() {
@@ -87,12 +100,13 @@ export class PastStays extends React.PureComponent {
         <ChargesModal
           isOpen={isModalOpen}
           handleInputChange={this.handleInputChange}
-          onClose={this.onModalClose}
+          closeModal={this.onModalClose}
           charges={charges.toJS()}
           stay={stay.toJS()}
           serviceInput={serviceInput}
           priceInput={priceInput}
-          addCharge={this.addCharge}
+          updateCharges={this.handleUpdateCharges}
+          addCharge={this.handleAddCharge}
         />
       </ContainerWrapper>
     );
@@ -116,6 +130,8 @@ function mapDispatchToProps(dispatch) {
     getCharges: stayId => dispatch(fetchCharges(stayId)),
     closeModal: () => dispatch(closeModal()),
     addNewCharge: charge => dispatch(addCharge(charge)),
+    updateCharges: (newCharges, newTotal, stayId) =>
+      dispatch(saveCharges(newCharges, newTotal, stayId)),
     handleInputChange: (key, value) => dispatch(changeInput(key, value)),
   };
 }

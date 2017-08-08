@@ -7,7 +7,6 @@ const UpperBody = styled.div`
   justify-content: space-between;
   padding-top: ${metrics.paddingVertical};
   padding-bottom: ${metrics.paddingVertical};
-  border-bottom: 1px dotted silver;
 `;
 
 export default UpperBody;

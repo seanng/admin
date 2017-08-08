@@ -10,6 +10,7 @@ import {
   CLOSE_MODAL,
   CHANGE_INPUT,
   ADD_CHARGE,
+  SAVE_CHARGES,
 } from './constants';
 
 export function fetchStays() {
@@ -43,5 +44,14 @@ export function addCharge(charge) {
   return {
     type: ADD_CHARGE,
     charge,
+  };
+}
+
+export function saveCharges(charges, newTotal, stayId) {
+  return {
+    type: SAVE_CHARGES,
+    charges,
+    newTotal,
+    stayId,
   };
 }

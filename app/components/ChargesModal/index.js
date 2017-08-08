@@ -1,9 +1,3 @@
-/**
-*
-* ChargesModal
-*
-*/
-
 import React from 'react';
 import Modal from 'react-modal';
 import { FormattedMessage } from 'react-intl';
@@ -19,6 +13,7 @@ import UpperBody from './UpperBody';
 import LowerBody from './LowerBody';
 import Table from './Table';
 import Thead from './Thead';
+import Tbody from './Tbody';
 import ChargeRow from './ChargeRow';
 import BottomRow from './BottomRow';
 import Footer from './Footer';
@@ -26,11 +21,12 @@ import messages from './messages';
 
 function ChargesModal({
   isOpen,
-  onClose,
+  closeModal,
   stay,
   handleInputChange,
   charges,
   serviceInput,
+  updateCharges,
   priceInput,
   addCharge,
 }) {
@@ -39,9 +35,9 @@ function ChargesModal({
     <Modal
       contentLabel="chargesModal"
       isOpen={isOpen}
-      onRequestClose={onClose}
+      onRequestClose={closeModal}
       style={modalStyle}
-      shouldCloseOnOverlayClick
+      shouldCloseOnOverlayClick={false}
     >
       <Header>
         <H2>
@@ -84,13 +80,31 @@ function ChargesModal({
       <LowerBody>
         <Table>
           <Thead currency={stay.currency} />
-          <tbody>
+          <Tbody>
             {charges.map((charge, i) => <ChargeRow key={i} charge={charge} />)}
-            <BottomRow charges={charges} />
-          </tbody>
+          </Tbody>
+          <BottomRow charges={charges} />
         </Table>
       </LowerBody>
-      <Footer />
+      <Footer>
+        <Button
+          bgColor={colors.bsDanger}
+          textColor={colors.white}
+          mr={1}
+          ph={2}
+          onClick={closeModal}
+        >
+          <FormattedMessage {...messages.cancel} />
+        </Button>
+        <Button
+          bgColor={colors.bsInfo}
+          textColor={colors.white}
+          onClick={updateCharges}
+          ph={2}
+        >
+          <FormattedMessage {...messages.updateCharges} />
+        </Button>
+      </Footer>
     </Modal>
   );
 }

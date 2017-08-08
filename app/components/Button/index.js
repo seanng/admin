@@ -20,6 +20,8 @@ const Button = styled.div`
   background-color: ${props =>
     props.bgColor ? props.bgColor : colors.bsPrimary};
   color: ${props => (props.textColor ? props.textColor : colors.white)};
+  padding-right: ${props => props.ph && `${props.ph}rem`};
+  padding-left: ${props => props.ph && `${props.ph}rem`};
   margin-bottom: ${props => (props.mb ? `${props.mb}rem` : '0')};
   margin-right: ${props => (props.mr ? `${props.mr}rem` : '0')};
   margin-left: ${props => (props.ml ? `${props.ml}rem` : '0')};

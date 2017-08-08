@@ -13,3 +13,5 @@ export const ADD_CHARGE = 'app/PastStays/ADD_CHARGE';
 
 export const FETCH_CHARGES = 'server/FETCH_CHARGES';
 export const FETCH_CHARGES_SUCCESS = 'app/PastStays/FETCH_CHARGES_SUCCESS';
+export const SAVE_CHARGES = 'server/SAVE_CHARGES';
+export const SAVE_CHARGES_SUCCESS = 'app/PastStays/SAVE_CHARGES_SUCCESS';

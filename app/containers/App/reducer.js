@@ -53,7 +53,10 @@ function appReducer(state = initialState, action) {
 
     case SUCCESS:
       window.localStorage.accessToken = action.token;
-      return state.set('hasLoaded', true).set('user', action.user);
+      return state.merge({
+        hasLoaded: true,
+        user: action.user,
+      });
 
     case LOGOUT:
       delete window.localStorage.accessToken;

@@ -17,6 +17,8 @@ export const makeSelectLocationState = () => {
   };
 };
 
+const selectGlobalDomain = () => state => state.get('global');
+
 export const selectUser = () =>
   createSelector(selectGlobalDomain(), substate => substate.get('user'));
 
@@ -28,7 +30,8 @@ export const selectBottomNavItems = () =>
 export const selectHasLoaded = () =>
   createSelector(selectGlobalDomain(), substate => substate.get('hasLoaded'));
 
-const selectGlobalDomain = () => state => state.get('global');
+export const selectHotelId = () =>
+  createSelector(selectUser(), user => user.get('hotelId'));
 
 const makeSelectGlobal = () =>
   createSelector(selectGlobalDomain(), substate => substate.toJS());

@@ -16,7 +16,7 @@ module.exports = (client, action) =>
       });
     }
     return reply(client, {
-      type: 'app/HotelProfile/GOT_HOTEL_INFO',
+      type: 'app/HotelProfile/GET_HOTEL_INFO_SUCCESS',
       info,
     });
   });

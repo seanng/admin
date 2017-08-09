@@ -17,7 +17,7 @@ import {
   setFilter,
 } from './actions';
 import { selectRooms, selectHasLoaded, selectActiveFilter } from './selectors';
-import ContainerWrapper from './ContainerWrapper';
+import Container from './Container';
 import SideWrapper from './SideWrapper';
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -52,7 +52,7 @@ export class FrontDesk extends React.PureComponent {
   render() {
     const { hasLoaded, rooms, activeFilter } = this.props;
     if (!hasLoaded) {
-      return <ContainerWrapper />;
+      return <Container />;
     }
     // massage rooms list to component requirements
     const roomsArr = rooms.toJS();
@@ -62,7 +62,7 @@ export class FrontDesk extends React.PureComponent {
         : roomsArr.filter(room => room.status === activeFilter);
     // rendered display
     return (
-      <ContainerWrapper>
+      <Container>
         <SideWrapper flex={3}>
           <SummaryPanel rooms={roomsArr} />
         </SideWrapper>
@@ -75,7 +75,7 @@ export class FrontDesk extends React.PureComponent {
             filterOptions={this.filterOptions}
           />
         </SideWrapper>
-      </ContainerWrapper>
+      </Container>
     );
   }
 }

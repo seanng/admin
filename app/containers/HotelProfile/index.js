@@ -11,7 +11,7 @@ import { selectHotelId } from 'containers/App/selectors';
 import HotelPhotos from 'components/HotelPhotos';
 import HotelDescription from 'components/HotelDescription';
 import { getHotelInfo } from './actions';
-import { selectHotelInfo } from './selectors';
+import { selectHotelInfo, selectHasLoaded } from './selectors';
 import Container from './Container';
 import SideWrapper from './SideWrapper';
 
@@ -23,7 +23,10 @@ export class HotelProfile extends React.PureComponent {
   }
 
   render() {
-    const { hotel } = this.props;
+    const { hotel, hasLoaded } = this.props;
+    if (!hasLoaded) {
+      return <div>loading...</div>;
+    }
     return (
       <Container>
         <SideWrapper flex={5}>
@@ -42,6 +45,7 @@ export class HotelProfile extends React.PureComponent {
 const mapStateToProps = createStructuredSelector({
   hotel: selectHotelInfo(),
   hotelId: selectHotelId(),
+  hasLoaded: selectHasLoaded(),
 });
 
 function mapDispatchToProps(dispatch) {

@@ -18,6 +18,11 @@ export const selectHotelInfo = () =>
     substate.get('hotelInfo')
   );
 
+export const selectHasLoaded = () =>
+  createSelector(selectHotelProfileDomain(), substate =>
+    substate.get('hasLoaded')
+  );
+
 const makeSelectHotelProfile = () =>
   createSelector(selectHotelProfileDomain(), substate => substate.toJS());
 

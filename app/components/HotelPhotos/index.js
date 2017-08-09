@@ -15,6 +15,7 @@ import messages from './messages';
 // eslint-disable-next-line react/prefer-stateless-function
 class HotelPhotos extends React.PureComponent {
   render() {
+    // const photos = this.props.photos.toJS();
     return (
       <Card>
         <H5>

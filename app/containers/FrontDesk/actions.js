@@ -10,6 +10,9 @@ import {
   DELETE_ROOM,
   CHECK_IN,
   SET_FILTER,
+  DISPLAY_ADD_ROOM_MODAL,
+  HANDLE_INPUT_CHANGE,
+  CREATE_ROOM,
 } from './constants';
 
 export function fetchRooms() {
@@ -44,5 +47,27 @@ export function setFilter(filter) {
   return {
     type: SET_FILTER,
     filter,
+  };
+}
+
+export function displayAddRoomModal(bool) {
+  return {
+    type: DISPLAY_ADD_ROOM_MODAL,
+    bool,
+  };
+}
+
+export function createRoom(roomNumber) {
+  return {
+    type: CREATE_ROOM,
+    roomNumber,
+  };
+}
+
+export function handleInputChange(key, value) {
+  return {
+    type: HANDLE_INPUT_CHANGE,
+    key,
+    value,
   };
 }

@@ -58,4 +58,8 @@ export default defineMessages({
     id: 'app.components.ActionPanel.notReady',
     defaultMessage: 'Not Ready',
   },
+  addRoom: {
+    id: 'app.components.ActionPanel.addRoom',
+    defaultMessage: 'Add Room',
+  },
 });

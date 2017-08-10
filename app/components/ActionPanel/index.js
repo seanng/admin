@@ -6,7 +6,9 @@
 
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import colors from 'themes/colors';
 import Card from '../Card';
+import Button from '../Button';
 import H5 from '../fonts/H5';
 import Header from './Header';
 import Table from './Table';
@@ -21,6 +23,7 @@ function ActionPanel({
   handleFilterChange,
   activeFilter,
   filterOptions,
+  openAddRoomModal,
 }) {
   return (
     <Card>
@@ -47,6 +50,9 @@ function ActionPanel({
           )}
         </tbody>
       </Table>
+      <Button onClick={openAddRoomModal} bgColor={colors.bsSuccess}>
+        <FormattedMessage {...messages.addRoom} />
+      </Button>
     </Card>
   );
 }

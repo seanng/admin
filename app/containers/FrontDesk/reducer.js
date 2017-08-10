@@ -15,12 +15,17 @@ import {
   CHECK_IN_SUCCESS,
   CHECK_IN_ERROR,
   SET_FILTER,
+  DISPLAY_ADD_ROOM_MODAL,
+  HANDLE_INPUT_CHANGE,
+  CREATE_ROOM_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({
   rooms: [],
   hasLoaded: false,
   activeFilter: 'All',
+  addRoomInput: '',
+  shouldDisplayAddRoomModal: false,
 });
 
 function frontDeskReducer(state = initialState, action) {
@@ -61,6 +66,22 @@ function frontDeskReducer(state = initialState, action) {
 
     case SET_FILTER:
       return state.set('activeFilter', action.filter);
+
+    case DISPLAY_ADD_ROOM_MODAL:
+      return state.set('shouldDisplayAddRoomModal', action.bool);
+
+    case HANDLE_INPUT_CHANGE:
+      return state.set(action.key, action.value);
+
+    case CREATE_ROOM_SUCCESS: {
+      const rooms = state.get('rooms').toJS();
+      rooms.push(action.room);
+      return state.merge({
+        addRoomInput: '',
+        shouldDisplayAddRoomModal: false,
+        rooms,
+      });
+    }
 
     default:
       return state;

@@ -9,14 +9,24 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import SummaryPanel from 'components/SummaryPanel';
 import ActionPanel from 'components/ActionPanel';
+import AddRoomModal from 'components/AddRoomModal';
 import {
   fetchRooms,
   deleteRoom,
   checkIn,
   makeAvailable,
   setFilter,
+  displayAddRoomModal,
+  handleInputChange,
+  createRoom,
 } from './actions';
-import { selectRooms, selectHasLoaded, selectActiveFilter } from './selectors';
+import {
+  selectRooms,
+  selectHasLoaded,
+  selectActiveFilter,
+  selectShouldDisplayAddRoomModal,
+  selectAddRoomInput,
+} from './selectors';
 import Container from './Container';
 import SideWrapper from './SideWrapper';
 
@@ -49,8 +59,32 @@ export class FrontDesk extends React.PureComponent {
 
   handleFilterChange = val => this.props.setFilter(val);
 
+  handleModalClose = () => {
+    // clear fields
+    this.props.handleInputChange('addRoomInput', '');
+    this.props.closeAddRoomModal();
+  };
+
+  handleInputChange = event => {
+    const inputKey = event.target.name;
+    const value = event.target.value;
+    this.props.handleInputChange(inputKey, value);
+  };
+
+  handleAddRoom = () => {
+    const { addRoom, addRoomInput } = this.props;
+    addRoom(addRoomInput);
+  };
+
   render() {
-    const { hasLoaded, rooms, activeFilter } = this.props;
+    const {
+      hasLoaded,
+      rooms,
+      activeFilter,
+      openAddRoomModal,
+      shouldDisplayAddRoomModal,
+      addRoomInput,
+    } = this.props;
     if (!hasLoaded) {
       return <Container />;
     }
@@ -68,6 +102,7 @@ export class FrontDesk extends React.PureComponent {
         </SideWrapper>
         <SideWrapper flex={4} right>
           <ActionPanel
+            openAddRoomModal={openAddRoomModal}
             rooms={filteredRooms}
             handleActionClick={this.handleActionClick}
             activeFilter={activeFilter}
@@ -75,6 +110,13 @@ export class FrontDesk extends React.PureComponent {
             filterOptions={this.filterOptions}
           />
         </SideWrapper>
+        <AddRoomModal
+          isOpen={shouldDisplayAddRoomModal}
+          closeModal={this.handleModalClose}
+          handleInputChange={this.handleInputChange}
+          addRoom={this.handleAddRoom}
+          addRoomInput={addRoomInput}
+        />
       </Container>
     );
   }
@@ -84,6 +126,8 @@ const mapStateToProps = createStructuredSelector({
   rooms: selectRooms(),
   hasLoaded: selectHasLoaded(),
   activeFilter: selectActiveFilter(),
+  shouldDisplayAddRoomModal: selectShouldDisplayAddRoomModal(),
+  addRoomInput: selectAddRoomInput(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -95,6 +139,10 @@ function mapDispatchToProps(dispatch) {
     deleteRoom: roomNumber => dispatch(deleteRoom(roomNumber)),
     checkIn: roomNumber => dispatch(checkIn(roomNumber)),
     setFilter: filter => dispatch(setFilter(filter)),
+    openAddRoomModal: () => dispatch(displayAddRoomModal(true)),
+    closeAddRoomModal: () => dispatch(displayAddRoomModal(false)),
+    addRoom: room => dispatch(createRoom(room)),
+    handleInputChange: (key, value) => dispatch(handleInputChange(key, value)),
   };
 }
 

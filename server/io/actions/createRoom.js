@@ -59,7 +59,7 @@ module.exports = (client, action) =>
       });
     }
     return reply(client, {
-      type: 'CREATE_ROOM_SUCCESS',
+      type: 'app/FrontDesk/CREATE_ROOM_SUCCESS',
       room,
     });
   });

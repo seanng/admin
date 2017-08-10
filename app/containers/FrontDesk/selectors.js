@@ -22,6 +22,16 @@ export const selectActiveFilter = () =>
     substate.get('activeFilter')
   );
 
+export const selectAddRoomInput = () =>
+  createSelector(selectFrontDeskDomain(), substate =>
+    substate.get('addRoomInput')
+  );
+
+export const selectShouldDisplayAddRoomModal = () =>
+  createSelector(selectFrontDeskDomain(), substate =>
+    substate.get('shouldDisplayAddRoomModal')
+  );
+
 /**
  * Default selector used by FrontDesk
  */

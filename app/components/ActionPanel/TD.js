@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 const TD = styled.td`
-  border-top: 1px solid #eeeeee;
+  font-size: 1rem;
+  color: rgb(62, 67, 72);
   padding: 0.8rem;
-  text-align: center;
   vertical-align: middle;
 `;
 

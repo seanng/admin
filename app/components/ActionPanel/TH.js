@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 
 const TH = styled.th`
-  border-bottom: 2px solid #eeeeee;
-  border-top: 1px solid #eeeeee;
+  font-size: 1rem;
   padding: 0.8rem;
-  text-align: center;
+  text-align: left;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 `;
 
 export default TH;

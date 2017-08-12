@@ -21,10 +21,6 @@ const mapViewToItems = {
   ],
   account: [
     {
-      name: 'Settings',
-      path: '/settings',
-    },
-    {
       name: 'Hotel Profile',
       path: '/hotelprofile',
     },

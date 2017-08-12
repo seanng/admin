@@ -8,7 +8,7 @@ import NavItem from './NavItem';
 const Wrapper = styled(NavItem)`
   align-items: center;
   padding: 1em 0;
-  border-bottom: ${props => props.selected && `2px solid ${colors.bsPrimary}`}
+  border-bottom: ${props => props.selected && `2px solid ${colors.accent}`}
 `;
 
 const StyledLink = styled(Link)`

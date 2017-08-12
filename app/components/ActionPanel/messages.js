@@ -16,15 +16,27 @@ export default defineMessages({
   },
   guest: {
     id: 'app.components.ActionPanel.guest',
-    defaultMessage: 'Guest Name',
+    defaultMessage: 'Guest',
   },
   status: {
     id: 'app.components.ActionPanel.status',
     defaultMessage: 'Status',
   },
+  bookingTime: {
+    id: 'app.components.ActionPanel.bookingTime',
+    defaultMessage: 'Booking Time',
+  },
+  checkInTime: {
+    id: 'app.components.ActionPanel.checkInTime',
+    defaultMessage: 'Check In Time',
+  },
+  checkOutTime: {
+    id: 'app.components.ActionPanel.checkOutTime',
+    defaultMessage: 'Check Out Time',
+  },
   action: {
     id: 'app.components.ActionPanel.action',
-    defaultMessage: 'Action',
+    defaultMessage: ' ',
   },
   remove: {
     id: 'app.components.ActionPanel.remove',

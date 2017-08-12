@@ -6,6 +6,7 @@ const NavItem = styled.div`
   justify-content: center;
   margin-left: ${props => (props.first ? 0 : '3rem')};
   cursor: pointer;
+  color: white;
 `;
 
 export default NavItem;

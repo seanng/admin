@@ -18,7 +18,7 @@ const Button = styled.div`
   cursor: pointer;
   box-shadow: '0 1px 1px rgba(0, 0, 0, 0.09), 0 1px 2px rgba(0, 0, 0, 0.05)';
   background-color: ${props =>
-    props.bgColor ? props.bgColor : colors.bsPrimary};
+    props.bgColor ? props.bgColor : colors.primary};
   color: ${props => (props.textColor ? props.textColor : colors.white)};
   padding-right: ${props => props.ph && `${props.ph}rem`};
   padding-left: ${props => props.ph && `${props.ph}rem`};

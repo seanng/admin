@@ -7,7 +7,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import SummaryPanel from 'components/SummaryPanel';
 import ActionPanel from 'components/ActionPanel';
 import AddRoomModal from 'components/AddRoomModal';
 import {
@@ -28,7 +27,6 @@ import {
   selectAddRoomInput,
 } from './selectors';
 import Container from './Container';
-import SideWrapper from './SideWrapper';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class FrontDesk extends React.PureComponent {
@@ -97,19 +95,14 @@ export class FrontDesk extends React.PureComponent {
     // rendered display
     return (
       <Container>
-        <SideWrapper flex={3}>
-          <SummaryPanel rooms={roomsArr} />
-        </SideWrapper>
-        <SideWrapper flex={4} right>
-          <ActionPanel
-            openAddRoomModal={openAddRoomModal}
-            rooms={filteredRooms}
-            handleActionClick={this.handleActionClick}
-            activeFilter={activeFilter}
-            handleFilterChange={this.handleFilterChange}
-            filterOptions={this.filterOptions}
-          />
-        </SideWrapper>
+        <ActionPanel
+          openAddRoomModal={openAddRoomModal}
+          rooms={filteredRooms}
+          handleActionClick={this.handleActionClick}
+          activeFilter={activeFilter}
+          handleFilterChange={this.handleFilterChange}
+          filterOptions={this.filterOptions}
+        />
         <AddRoomModal
           isOpen={shouldDisplayAddRoomModal}
           closeModal={this.handleModalClose}

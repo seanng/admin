@@ -1,12 +1,20 @@
 import React from 'react';
 import { camelize } from 'utils/helpers';
+import format from 'date-fns/format';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import ActionButton from './ActionButton';
 import TD from './TD';
 
 function RoomEntryRow({ room, index, handleActionClick }) {
-  const { status, roomNumber, customerName } = room;
+  const {
+    status,
+    roomNumber,
+    customerName,
+    bookingTime,
+    checkInTime,
+    checkOutTime,
+  } = room;
   const camelizedStatus = camelize(status);
   return (
     <tr>
@@ -17,10 +25,20 @@ function RoomEntryRow({ room, index, handleActionClick }) {
         {roomNumber}
       </TD>
       <TD>
+        <FormattedMessage {...messages[camelizedStatus]} />
+      </TD>
+      <TD>
         {customerName}
       </TD>
       <TD>
-        <FormattedMessage {...messages[camelizedStatus]} />
+        {(bookingTime && format(new Date(bookingTime * 1), 'h:mm a')) || '---'}
+      </TD>
+      <TD>
+        {(checkInTime && format(new Date(checkInTime * 1), 'h:mm a')) || '---'}
+      </TD>
+      <TD>
+        {(checkOutTime && format(new Date(checkOutTime * 1), 'h:mm a')) ||
+          '---'}
       </TD>
       <TD>
         <ActionButton

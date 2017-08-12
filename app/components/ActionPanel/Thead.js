@@ -12,10 +12,19 @@ function Thead() {
           <FormattedMessage {...messages.room} />
         </TH>
         <TH>
+          <FormattedMessage {...messages.status} />
+        </TH>
+        <TH>
           <FormattedMessage {...messages.guest} />
         </TH>
         <TH>
-          <FormattedMessage {...messages.status} />
+          <FormattedMessage {...messages.bookingTime} />
+        </TH>
+        <TH>
+          <FormattedMessage {...messages.checkInTime} />
+        </TH>
+        <TH>
+          <FormattedMessage {...messages.checkOutTime} />
         </TH>
         <TH>
           <FormattedMessage {...messages.action} />

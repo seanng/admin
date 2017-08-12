@@ -70,7 +70,7 @@ function ChargesModal({
           />
         </InputWrapper>
         <Button
-          bgColor={colors.bsSuccess}
+          bgColor={colors.primary}
           textColor={colors.white}
           onClick={addCharge}
         >
@@ -88,7 +88,7 @@ function ChargesModal({
       </LowerBody>
       <Footer>
         <Button
-          bgColor={colors.bsDanger}
+          bgColor={colors.danger}
           textColor={colors.white}
           mr={1}
           ph={2}
@@ -97,7 +97,7 @@ function ChargesModal({
           <FormattedMessage {...messages.cancel} />
         </Button>
         <Button
-          bgColor={colors.bsInfo}
+          bgColor={colors.primary}
           textColor={colors.white}
           onClick={updateCharges}
           ph={2}

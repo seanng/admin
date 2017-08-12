@@ -42,7 +42,7 @@ class App extends React.PureComponent {
   };
 
   viewAccount = () => {
-    this.props.router.push('/settings');
+    this.props.router.push('/hotelprofile');
     this.props.setBottomNavItems('account');
   };
 

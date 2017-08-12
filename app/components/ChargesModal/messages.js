@@ -44,7 +44,7 @@ export default defineMessages({
   },
   updateCharges: {
     id: 'app.components.ChargesModal.updateCharges',
-    defaultMessage: 'Update Charges',
+    defaultMessage: 'Save Charges',
   },
   cancel: {
     id: 'app.components.ChargesModal.cancel',

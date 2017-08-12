@@ -16,7 +16,7 @@ const Card = styled.div`
   border-radius: 0.15rem;
   overflow: hidden;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
+  padding: ${props => (props.noPadding ? '0' : '1.5rem')};
   flex: 1 1 auto;
   max-width: ${props => (props.maxWidth ? props.maxWidth : '100%')};
 `;

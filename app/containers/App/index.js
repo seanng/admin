@@ -17,6 +17,7 @@ import { createStructuredSelector } from 'reselect';
 import LoginPage from 'containers/LoginPage';
 import LoadingPage from 'components/LoadingPage';
 import Navigation from 'components/Navigation';
+import SubNavigation from 'components/SubNavigation';
 import Container from 'components/Container';
 import {
   checkAuth,
@@ -30,6 +31,7 @@ import { selectUser, selectBottomNavItems, selectHasLoaded } from './selectors';
 class App extends React.PureComponent {
   componentDidMount() {
     const token = window.localStorage.accessToken || null;
+    this.props.setBottomNavItems(this.props.location.pathname);
     if (token) {
       return this.props.checkAuth(token);
     }
@@ -37,13 +39,15 @@ class App extends React.PureComponent {
   }
 
   viewDashboard = () => {
-    this.props.router.push('/');
-    this.props.setBottomNavItems('dashboard');
+    const path = '/';
+    this.props.router.push(path);
+    this.props.setBottomNavItems(path);
   };
 
   viewAccount = () => {
-    this.props.router.push('/hotelprofile');
-    this.props.setBottomNavItems('account');
+    const path = '/hotelprofile';
+    this.props.router.push(path);
+    this.props.setBottomNavItems(path);
   };
 
   renderApplication() {
@@ -53,11 +57,14 @@ class App extends React.PureComponent {
           location={this.props.locationState}
           viewDashboard={this.viewDashboard}
           viewAccount={this.viewAccount}
-          bottomNavItems={this.props.bottomNavItems}
           pathname={this.props.location.pathname}
           logout={this.props.logout}
         />
         <Container>
+          <SubNavigation
+            pathname={this.props.location.pathname}
+            items={this.props.bottomNavItems}
+          />
           {React.Children.toArray(this.props.children)}
         </Container>
       </div>

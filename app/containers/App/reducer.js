@@ -8,7 +8,14 @@ import { fromJS } from 'immutable';
 import { INVALIDATE_TOKEN, SET_BOTTOM_NAV_ITEMS, LOGOUT } from './constants';
 import { SUCCESS } from '../LoginPage/constants';
 
-const mapViewToItems = {
+const mapPathToSection = {
+  '/': 'dashboard',
+  '/paststays': 'dashboard',
+  '/hotelprofile': 'account',
+  '/teammanagement': 'account',
+};
+
+const mapSectionToItems = {
   dashboard: [
     {
       name: 'Front Desk',
@@ -34,13 +41,14 @@ const mapViewToItems = {
 const initialState = fromJS({
   hasLoaded: false,
   user: null,
-  bottomNavItems: mapViewToItems.dashboard,
+  bottomNavItems: mapSectionToItems.dashboard,
 });
 
 function appReducer(state = initialState, action) {
   switch (action.type) {
     case SET_BOTTOM_NAV_ITEMS: {
-      const bottomNavItems = mapViewToItems[action.view];
+      const sectionKey = mapPathToSection[action.view];
+      const bottomNavItems = mapSectionToItems[sectionKey];
       return state.merge({ bottomNavItems });
     }
 

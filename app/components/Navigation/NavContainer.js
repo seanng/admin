@@ -5,16 +5,18 @@ import Container from 'components/Container';
 
 const FullWidthBar = styled.div`
   width: 100%;
-  background-color: ${colors.white};
+  background-color: ${colors.dark};
 `;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.1em 0;
 `;
 
-function BottomNavWrapper({ children }) {
+export default function NavContainer({ children }) {
   return (
     <FullWidthBar>
       <Container>
@@ -25,5 +27,3 @@ function BottomNavWrapper({ children }) {
     </FullWidthBar>
   );
 }
-
-export default BottomNavWrapper;

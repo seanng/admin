@@ -26,6 +26,7 @@ import {
   setBottomNavItems,
 } from './actions';
 import { selectUser, selectBottomNavItems, selectHasLoaded } from './selectors';
+import AppWrapper from './AppWrapper';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends React.PureComponent {
@@ -52,7 +53,7 @@ class App extends React.PureComponent {
 
   renderApplication() {
     return (
-      <div>
+      <AppWrapper>
         <Navigation
           location={this.props.locationState}
           viewDashboard={this.viewDashboard}
@@ -67,7 +68,7 @@ class App extends React.PureComponent {
           />
           {React.Children.toArray(this.props.children)}
         </Container>
-      </div>
+      </AppWrapper>
     );
   }
 

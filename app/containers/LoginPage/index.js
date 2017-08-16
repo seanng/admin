@@ -49,16 +49,12 @@ export class LoginPage extends React.PureComponent {
             onInputChange={this.handleInputChange}
           />
           <ButtonRow>
-            <Button
-              bgColor={colors.complementary}
-              textColor={colors.white}
-              mr={1}
-            >
+            <Button bgColor={colors.red4} textColor={colors.pearl3} mr={1}>
               Register
             </Button>
             <Button
-              bgColor={colors.primary}
-              textColor={colors.white}
+              bgColor={colors.blue3}
+              textColor={colors.pearl3}
               onClick={this.handleLogin}
             >
               Sign In

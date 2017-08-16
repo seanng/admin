@@ -13,7 +13,7 @@ import ButtonWrapper from './ButtonWrapper';
 import messages from './messages';
 import getIconButton from '../IconButton';
 
-const Placeholder = styled.div`width: 3rem;`;
+const Placeholder = styled.div`width: 5%;`;
 
 const mapColToWidth = {
   '#': '7%',

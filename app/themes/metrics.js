@@ -13,6 +13,7 @@ const defaultTheme = {
     h6: '1rem',
   },
   paddingVertical: '1.5rem',
+  padding: '1rem',
 };
 
 export default defaultTheme;

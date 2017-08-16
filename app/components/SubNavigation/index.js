@@ -6,7 +6,7 @@
 
 import React from 'react';
 // import styled from 'styled-components';
-
+import colors from 'themes/colors';
 import H5 from '../fonts/H5';
 import Row from './Row';
 import Button from './Button';
@@ -21,7 +21,7 @@ function SubNavigation({ items, pathname }) {
           onClick={() => this.props.router.push(path)}
           mr={2}
         >
-          <H5 mb="0">
+          <H5 mb="0" color={colors.pearl3}>
             {name}
           </H5>
         </Button>

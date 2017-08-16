@@ -70,8 +70,8 @@ function ChargesModal({
           />
         </InputWrapper>
         <Button
-          bgColor={colors.primary}
-          textColor={colors.white}
+          bgColor={colors.blue3}
+          textColor={colors.pearl3}
           onClick={addCharge}
         >
           <FormattedMessage {...messages.addCharge} />
@@ -88,8 +88,8 @@ function ChargesModal({
       </LowerBody>
       <Footer>
         <Button
-          bgColor={colors.danger}
-          textColor={colors.white}
+          bgColor={colors.red3}
+          textColor={colors.pearl3}
           mr={1}
           ph={2}
           onClick={closeModal}
@@ -97,8 +97,8 @@ function ChargesModal({
           <FormattedMessage {...messages.cancel} />
         </Button>
         <Button
-          bgColor={colors.primary}
-          textColor={colors.white}
+          bgColor={colors.blue3}
+          textColor={colors.pearl3}
           onClick={updateCharges}
           ph={2}
         >

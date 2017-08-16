@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-const Col = styled.div`
+const BodyCol = styled.div`
   display: flex;
   align-items: center;
-  justify-content: ${props => (props.alignLeft ? 'flex-start' : 'center')};
   width: ${props => props.width && props.width};
+  justify-content: ${props => (props.justify ? props.justify : 'center')};
 `;
 
-export default Col;
+export default BodyCol;

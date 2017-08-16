@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-const Table = styled.div`
+const Frame = styled.div`
   margin-bottom: 1rem;
   width: 100%;
 `;
 
-export default Table;
+export default Frame;

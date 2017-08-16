@@ -1,17 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-
 import { FormattedMessage } from 'react-intl';
 import { camelize } from 'utils/helpers';
 import format from 'date-fns/format';
-import Table from './Table';
-import RowTop from './RowTop';
-import Row from './Row';
-import Col from './Col';
-import ContentWrapper from './ContentWrapper';
-import ContentWrapperTop from './ContentWrapperTop';
+import TableFrame from '../Table/Frame';
+import HeaderRow from '../Table/HeaderRow';
+import HeaderCol from '../Table/HeaderCol';
+import BodyRow from '../Table/BodyRow';
+import BodyCol from '../Table/BodyCol';
+import BodyRowLayer from '../Table/BodyRowLayer';
 import ButtonWrapper from './ButtonWrapper';
-import ColTop from './ColTop';
 import messages from './messages';
 import getIconButton from '../IconButton';
 
@@ -29,31 +27,31 @@ const mapColToWidth = {
 
 function FrontDeskTable({ handleActionClick, rooms }) {
   return (
-    <Table>
-      <RowTop>
-        <ContentWrapperTop>
-          <ColTop width={mapColToWidth['#']}>#</ColTop>
-          <ColTop width={mapColToWidth.room}>
+    <TableFrame>
+      <HeaderRow mb={1}>
+        <HeaderRow>
+          <HeaderCol width={mapColToWidth['#']}>#</HeaderCol>
+          <HeaderCol width={mapColToWidth.room}>
             <FormattedMessage {...messages.room} />
-          </ColTop>
-          <ColTop width={mapColToWidth.status}>
+          </HeaderCol>
+          <HeaderCol width={mapColToWidth.status}>
             <FormattedMessage {...messages.status} />
-          </ColTop>
-          <ColTop alignLeft width={mapColToWidth.guest}>
+          </HeaderCol>
+          <HeaderCol alignLeft width={mapColToWidth.guest}>
             <FormattedMessage {...messages.guest} />
-          </ColTop>
-          <ColTop width={mapColToWidth.bookingTime}>
+          </HeaderCol>
+          <HeaderCol width={mapColToWidth.bookingTime}>
             <FormattedMessage {...messages.bookingTime} />
-          </ColTop>
-          <ColTop width={mapColToWidth.checkInTime}>
+          </HeaderCol>
+          <HeaderCol width={mapColToWidth.checkInTime}>
             <FormattedMessage {...messages.checkInTime} />
-          </ColTop>
-          <ColTop width={mapColToWidth.checkOutTime}>
+          </HeaderCol>
+          <HeaderCol width={mapColToWidth.checkOutTime}>
             <FormattedMessage {...messages.checkOutTime} />
-          </ColTop>
-        </ContentWrapperTop>
+          </HeaderCol>
+        </HeaderRow>
         <Placeholder />
-      </RowTop>
+      </HeaderRow>
       {rooms.map(
         (
           {
@@ -66,42 +64,42 @@ function FrontDeskTable({ handleActionClick, rooms }) {
           },
           index
         ) =>
-          <Row key={index}>
-            <ContentWrapper>
-              <Col width={mapColToWidth['#']}>
+          <BodyRow key={index}>
+            <BodyRowLayer>
+              <BodyCol width={mapColToWidth['#']}>
                 {index + 1}
-              </Col>
-              <Col width={mapColToWidth.room}>
+              </BodyCol>
+              <BodyCol width={mapColToWidth.room}>
                 {roomNumber}
-              </Col>
-              <Col width={mapColToWidth.status}>
+              </BodyCol>
+              <BodyCol width={mapColToWidth.status}>
                 <FormattedMessage {...messages[camelize(status)]} />
-              </Col>
-              <Col alignLeft width={mapColToWidth.guest}>
+              </BodyCol>
+              <BodyCol alignLeft width={mapColToWidth.guest}>
                 {customerName}
-              </Col>
-              <Col width={mapColToWidth.bookingTime}>
+              </BodyCol>
+              <BodyCol width={mapColToWidth.bookingTime}>
                 {(bookingTime && format(new Date(bookingTime * 1), 'h:mm a')) ||
                   '---'}
-              </Col>
-              <Col width={mapColToWidth.checkInTime}>
+              </BodyCol>
+              <BodyCol width={mapColToWidth.checkInTime}>
                 {(checkInTime && format(new Date(checkInTime * 1), 'h:mm a')) ||
                   '---'}
-              </Col>
-              <Col width={mapColToWidth.checkOutTime}>
+              </BodyCol>
+              <BodyCol width={mapColToWidth.checkOutTime}>
                 {(checkOutTime &&
                   format(new Date(checkOutTime * 1), 'h:mm a')) ||
                   '---'}
-              </Col>
-            </ContentWrapper>
+              </BodyCol>
+            </BodyRowLayer>
             <ButtonWrapper>
               {getIconButton(camelize(status), () =>
                 handleActionClick(roomNumber, status, index)
               )}
             </ButtonWrapper>
-          </Row>
+          </BodyRow>
       )}
-    </Table>
+    </TableFrame>
   );
 }
 

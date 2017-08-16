@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-const ColTop = styled.div`
+const HeaderCol = styled.div`
   display: flex;
   align-items: center;
   width: ${props => props.width && props.width};
-  justify-content: ${props => (props.alignLeft ? 'flex-start' : 'center')};
+  justify-content: ${props => (props.justify ? props.justify : 'center')};
 `;
 
-export default ColTop;
+export default HeaderCol;

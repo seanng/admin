@@ -9,7 +9,7 @@ const BodyRowLayer = styled.div`
   display: flex;
 
   &:hover {
-    background-color: ${colors.blue1};
+    background-color: ${colors.pearl4};
   }
 `;
 

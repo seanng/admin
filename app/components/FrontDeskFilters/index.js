@@ -21,7 +21,8 @@ function FrontDeskFilters({ filterOptions, activeFilter, handleFilterChange }) {
           key={option}
           selected={option === activeFilter}
           onClick={() => handleFilterChange(option)}
-          mr={2}
+          mr={1.5}
+          width={10}
         >
           <H5 mb={0} color="white">
             {option}

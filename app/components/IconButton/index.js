@@ -31,7 +31,7 @@ export default function getIconButton(status, onClick, key) {
       </ButtonWrapper>
     ),
     addRoom: (
-      <ButtonWrapper onClick={onClick} bgColor={colors.gold4} mr="0.8rem">
+      <ButtonWrapper onClick={onClick} bgColor={colors.gold4}>
         <AddIcon color={colors.pearl3} size={size} />
       </ButtonWrapper>
     ),

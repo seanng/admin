@@ -14,7 +14,7 @@ const Button = styled.div`
   border: 1px solid transparent;
   padding: 0.5rem 1rem;
   font-size: 1rem;
-  border-radius: 0.15rem;
+  border-radius: 0.8rem;
   cursor: pointer;
   box-shadow: '0 1px 1px rgba(0, 0, 0, 0.09), 0 1px 2px rgba(0, 0, 0, 0.05)';
   background-color: ${props => (props.bgColor ? props.bgColor : colors.blue3)};

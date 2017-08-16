@@ -10,7 +10,7 @@ import { createStructuredSelector } from 'reselect';
 import Filters from 'components/FrontDeskFilters';
 import Table from 'components/FrontDeskTable';
 import AddRoomModal from 'components/AddRoomModal';
-// import getIconButton from 'components/IconButton';
+import getIconButton from 'components/IconButton';
 import {
   fetchRooms,
   deleteRoom,
@@ -77,7 +77,7 @@ export class FrontDesk extends React.PureComponent {
       hasLoaded,
       rooms,
       activeFilter,
-      // openAddRoomModal,
+      openAddRoomModal,
       shouldDisplayAddRoomModal,
       addRoomInput,
     } = this.props;
@@ -99,6 +99,7 @@ export class FrontDesk extends React.PureComponent {
             filterOptions={this.filterOptions}
             activeFilter={activeFilter}
           />
+          {getIconButton('addRoom', openAddRoomModal)}
         </Header>
         <Body>
           <Table

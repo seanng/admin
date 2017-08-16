@@ -63,6 +63,7 @@ class App extends React.PureComponent {
         />
         <Container>
           <SubNavigation
+            router={this.props.router}
             pathname={this.props.location.pathname}
             items={this.props.bottomNavItems}
           />

@@ -7,8 +7,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import ActionPanel from 'components/ActionPanel';
+import Filters from 'components/FrontDeskFilters';
+import Table from 'components/FrontDeskTable';
 import AddRoomModal from 'components/AddRoomModal';
+// import getIconButton from 'components/IconButton';
 import {
   fetchRooms,
   deleteRoom,
@@ -27,6 +29,8 @@ import {
   selectAddRoomInput,
 } from './selectors';
 import Container from './Container';
+import Header from './Header';
+import Body from './Body';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class FrontDesk extends React.PureComponent {
@@ -34,13 +38,7 @@ export class FrontDesk extends React.PureComponent {
     this.props.fetchRooms();
   }
 
-  filterOptions = [
-    { label: 'All', value: 'All' },
-    { label: 'Available', value: 'Available' },
-    { label: 'Reserved', value: 'Reserved' },
-    { label: 'Not Ready', value: 'Not Ready' },
-    { label: 'Occupied', value: 'Occupied' },
-  ];
+  filterOptions = ['All', 'Available', 'Reserved', 'Not Ready', 'Occupied'];
 
   handleActionClick = (roomNumber, status, index) => {
     switch (status) {
@@ -79,7 +77,7 @@ export class FrontDesk extends React.PureComponent {
       hasLoaded,
       rooms,
       activeFilter,
-      openAddRoomModal,
+      // openAddRoomModal,
       shouldDisplayAddRoomModal,
       addRoomInput,
     } = this.props;
@@ -95,14 +93,19 @@ export class FrontDesk extends React.PureComponent {
     // rendered display
     return (
       <Container>
-        <ActionPanel
-          openAddRoomModal={openAddRoomModal}
-          rooms={filteredRooms}
-          handleActionClick={this.handleActionClick}
-          activeFilter={activeFilter}
-          handleFilterChange={this.handleFilterChange}
-          filterOptions={this.filterOptions}
-        />
+        <Header>
+          <Filters
+            handleFilterChange={this.handleFilterChange}
+            filterOptions={this.filterOptions}
+            activeFilter={activeFilter}
+          />
+        </Header>
+        <Body>
+          <Table
+            handleActionClick={this.handleActionClick}
+            rooms={filteredRooms}
+          />
+        </Body>
         <AddRoomModal
           isOpen={shouldDisplayAddRoomModal}
           closeModal={this.handleModalClose}

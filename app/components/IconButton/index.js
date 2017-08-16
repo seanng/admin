@@ -7,26 +7,26 @@ import AddIcon from 'react-icons/lib/go/plus';
 import colors from 'themes/colors';
 import ButtonWrapper from './ButtonWrapper';
 
-export default function getIconButton(status, onClick) {
+export default function getIconButton(status, onClick, key) {
   const size = 24;
   const map = {
     available: (
-      <ButtonWrapper onClick={onClick} bgColor={colors.danger}>
+      <ButtonWrapper onClick={onClick} bgColor={colors.danger} key={key}>
         <TrashIcon color="white" size={size} />
       </ButtonWrapper>
     ),
     notReady: (
-      <ButtonWrapper onClick={onClick}>
+      <ButtonWrapper onClick={onClick} key={key}>
         <TickIcon color="white" size={size} />
       </ButtonWrapper>
     ),
     occupied: (
-      <ButtonWrapper onClick={onClick} bgColor={colors.danger}>
+      <ButtonWrapper onClick={onClick} bgColor={colors.danger} key={key}>
         <CheckOutIcon color="white" size={size} />
       </ButtonWrapper>
     ),
     reserved: (
-      <ButtonWrapper onClick={onClick}>
+      <ButtonWrapper onClick={onClick} key={key}>
         <CheckInIcon color="white" size={size} />
       </ButtonWrapper>
     ),

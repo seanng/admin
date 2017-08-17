@@ -6,48 +6,40 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  header: {
-    id: 'app.components.ReviewTable.header',
-    defaultMessage: 'This is the ReviewTable component !',
-  },
   date: {
     id: 'app.components.ReviewTable.date',
-    defaultMessage: 'Date(s)',
+    defaultMessage: 'DATE(S)',
   },
   guest: {
     id: 'app.components.ReviewTable.guest',
-    defaultMessage: 'Guest Name',
+    defaultMessage: 'GUEST',
   },
   roomNumber: {
     id: 'app.components.ReviewTable.roomNumber',
-    defaultMessage: 'Room',
+    defaultMessage: 'ROOM',
   },
   checkIn: {
     id: 'app.components.ReviewTable.checkIn',
-    defaultMessage: 'Check In',
+    defaultMessage: 'CHECK IN',
   },
   checkOut: {
     id: 'app.components.ReviewTable.checkOut',
-    defaultMessage: 'Check Out',
+    defaultMessage: 'CHECK OUT',
   },
   duration: {
     id: 'app.components.ReviewTable.duration',
-    defaultMessage: 'Duration',
+    defaultMessage: 'DURATION',
   },
-  roomCharge: {
-    id: 'app.components.ReviewTable.roomCharge',
-    defaultMessage: 'Room Charge',
+  roomRate: {
+    id: 'app.components.ReviewTable.roomRate',
+    defaultMessage: 'RATE',
   },
   surcharges: {
     id: 'app.components.ReviewTable.surcharges',
-    defaultMessage: 'Surcharges',
+    defaultMessage: 'CHARGES',
   },
   totalAmount: {
     id: 'app.components.ReviewTable.totalAmount',
-    defaultMessage: 'Total Amount',
-  },
-  addCharges: {
-    id: 'app.components.ReviewTable.addCharges',
-    defaultMessage: 'View / Add',
+    defaultMessage: 'TOTAL',
   },
 });

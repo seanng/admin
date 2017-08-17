@@ -1,49 +1,52 @@
 import React from 'react';
 import format from 'date-fns/format';
 import { getFormattedDate, getFormattedDuration } from 'utils/helpers';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
-import Button from '../Button';
-import TD from './TD';
+import BodyRow from '../Table/BodyRow';
+import BodyRowLayer from '../Table/BodyRowLayer';
+import BodyCol from '../Table/BodyCol';
+import Link from './Link';
 
-function ReviewEntryRow({ stay, handleOpenSurcharges }) {
+function ReviewEntryRow({ stay, handleOpenSurcharges, mapColToWidth }) {
   const { id, customerName, roomNumber, roomCharge, totalCharge } = stay;
   const [checkInTime, checkOutTime] = [
     new Date(stay.checkInTime),
     new Date(stay.checkOutTime),
   ];
+
   return (
-    <tr>
-      <TD>
-        {getFormattedDate(checkInTime, checkOutTime)}
-      </TD>
-      <TD>
-        {customerName}
-      </TD>
-      <TD>
-        {roomNumber}
-      </TD>
-      <TD>
-        {format(checkInTime, 'h:mm a')}
-      </TD>
-      <TD>
-        {format(checkOutTime, 'h:mm a')}
-      </TD>
-      <TD>
-        {getFormattedDuration(checkInTime, checkOutTime)}
-      </TD>
-      <TD>
-        $ {roomCharge}
-      </TD>
-      <TD>
-        $ {totalCharge}
-      </TD>
-      <TD>
-        <Button onClick={() => handleOpenSurcharges(id)}>
-          <FormattedMessage {...messages.addCharges} />
-        </Button>
-      </TD>
-    </tr>
+    <BodyRow key={id}>
+      <BodyRowLayer>
+        <BodyCol width={mapColToWidth.date}>
+          {getFormattedDate(checkInTime, checkOutTime)}
+        </BodyCol>
+        <BodyCol width={mapColToWidth.guest}>
+          {customerName}
+        </BodyCol>
+        <BodyCol width={mapColToWidth.roomNumber}>
+          {roomNumber}
+        </BodyCol>
+        <BodyCol width={mapColToWidth.checkIn}>
+          {format(checkInTime, 'h:mm a')}
+        </BodyCol>
+        <BodyCol width={mapColToWidth.checkOut}>
+          {format(checkOutTime, 'h:mm a')}
+        </BodyCol>
+        <BodyCol width={mapColToWidth.duration}>
+          {getFormattedDuration(checkInTime, checkOutTime)}
+        </BodyCol>
+        <BodyCol width={mapColToWidth.roomRate}>
+          $ {roomCharge}
+        </BodyCol>
+        <BodyCol width={mapColToWidth.surcharges}>
+          <Link onClick={() => handleOpenSurcharges(id)}>
+            $ {(totalCharge * 1 - roomCharge * 1).toFixed(2)}
+          </Link>
+        </BodyCol>
+        <BodyCol width={mapColToWidth.totalAmount}>
+          $ {totalCharge}
+        </BodyCol>
+      </BodyRowLayer>
+    </BodyRow>
   );
 }
 

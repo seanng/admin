@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 5%;
+  margin-left: 1rem;
   align-items: flex-end;
 `;
 

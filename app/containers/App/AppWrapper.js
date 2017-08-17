@@ -2,7 +2,9 @@ import styled from 'styled-components';
 import colors from 'themes/colors';
 
 const AppWrapper = styled.div`
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
+  max-width: 100vw;
   background-color: ${colors.pearl3};
 `;
 

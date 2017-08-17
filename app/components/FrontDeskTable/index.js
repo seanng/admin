@@ -13,7 +13,7 @@ import ButtonWrapper from './ButtonWrapper';
 import messages from './messages';
 import getIconButton from '../IconButton';
 
-const Placeholder = styled.div`width: 5%;`;
+const Placeholder = styled.div`width: 4rem;`;
 
 const mapColToWidth = {
   '#': '7%',
@@ -27,7 +27,7 @@ const mapColToWidth = {
 
 function FrontDeskTable({ handleActionClick, rooms }) {
   return (
-    <TableFrame>
+    <TableFrame mt={1.5}>
       <HeaderRow mb={1}>
         <HeaderRow>
           <HeaderCol width={mapColToWidth['#']}>#</HeaderCol>

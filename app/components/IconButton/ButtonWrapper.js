@@ -3,7 +3,7 @@ import colors from 'themes/colors';
 
 const ButtonWrapper = styled.div`
   display: flex;
-  background-color: ${props => (props.bgColor ? props.bgColor : colors.base)};
+  background-color: ${props => (props.bgColor ? props.bgColor : colors.accent)};
   justify-content: center;
   align-items: center;
   height: 3rem;

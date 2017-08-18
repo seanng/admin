@@ -9,8 +9,8 @@ import colors from 'themes/colors';
 
 const inputStyle = {
   fontSize: '1rem',
-  color: colors.gray2,
-  backgroundColor: colors.pearl3,
+  color: colors.inputDark,
+  backgroundColor: colors.white,
   borderRadius: '0.15rem',
   width: '100%',
   border: '1px solid rgba(0, 0, 0, 0.15)',

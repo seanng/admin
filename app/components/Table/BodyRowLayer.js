@@ -4,12 +4,12 @@ import colors from 'themes/colors';
 const BodyRowLayer = styled.div`
   width: 100%;
   border-radius: 0.8rem;
-  background-color: ${colors.pearl1};
+  background-color: ${colors.white};
   flex-direction: row;
   display: flex;
 
   &:hover {
-    background-color: ${colors.pearl4};
+    background-color: ${colors.support};
   }
 `;
 

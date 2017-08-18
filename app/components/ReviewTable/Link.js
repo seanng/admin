@@ -3,7 +3,7 @@ import colors from 'themes/colors';
 
 const Link = styled.span`
   cursor: pointer;
-  color: ${colors.blue2};
+  color: ${colors.accent};
 `;
 
 export default Link;

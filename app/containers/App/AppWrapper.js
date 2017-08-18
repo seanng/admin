@@ -5,7 +5,7 @@ const AppWrapper = styled.div`
   height: 100vh;
   width: 100vw;
   max-width: 100vw;
-  background-color: ${colors.pearl3};
+  background-color: ${colors.lightGray};
 `;
 
 export default AppWrapper;

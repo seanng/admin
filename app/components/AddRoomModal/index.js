@@ -50,8 +50,8 @@ function AddRoomModal({
       </Body>
       <Footer>
         <Button
-          bgColor={colors.red3}
-          textColor={colors.pearl3}
+          bgColor={colors.base}
+          textColor={colors.lightGray}
           mr={2}
           ph={2}
           onClick={closeModal}
@@ -59,8 +59,8 @@ function AddRoomModal({
           <FormattedMessage {...messages.cancel} />
         </Button>
         <Button
-          bgColor={colors.blue3}
-          textColor={colors.pearl3}
+          bgColor={colors.support}
+          textColor={colors.lightGray}
           onClick={addRoom}
           ph={2}
         >

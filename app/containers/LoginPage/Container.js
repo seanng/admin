@@ -6,7 +6,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${colors.pearl3};
+  background: ${colors.lightGray};
 `;
 
 export default Container;

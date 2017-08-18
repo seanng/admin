@@ -11,13 +11,22 @@ import modalStyle from './modalStyle';
 import Header from './Header';
 import UpperBody from './UpperBody';
 import LowerBody from './LowerBody';
-import Table from './Table';
-import Thead from './Thead';
-import Tbody from './Tbody';
-import ChargeRow from './ChargeRow';
-import BottomRow from './BottomRow';
+
+import TableFrame from '../Table/Frame';
+import HeaderRow from '../Table/HeaderRow';
+import HeaderCol from '../Table/HeaderCol';
+import BodyRow from '../Table/BodyRow';
+import BodyRowLayer from '../Table/BodyRowLayer';
+import BodyCol from '../Table/BodyCol';
 import Footer from './Footer';
 import messages from './messages';
+
+const mapColToWidth = {
+  service: '40%',
+  hasItBeenUpdated: '20%',
+  hasItBeenSettled: '20%',
+  price: '20%',
+};
 
 function ChargesModal({
   isOpen,
@@ -70,26 +79,73 @@ function ChargesModal({
           />
         </InputWrapper>
         <Button
-          bgColor={colors.blue3}
-          textColor={colors.pearl3}
+          bgColor={colors.support}
+          textColor={colors.lightGray}
           onClick={addCharge}
         >
           <FormattedMessage {...messages.addCharge} />
         </Button>
       </UpperBody>
       <LowerBody>
-        <Table>
-          <Thead currency={stay.currency} />
-          <Tbody>
-            {charges.map((charge, i) => <ChargeRow key={i} charge={charge} />)}
-          </Tbody>
-          <BottomRow charges={charges} />
-        </Table>
+        <TableFrame>
+          <HeaderRow mb={1}>
+            <HeaderCol width={mapColToWidth.service}>
+              <FormattedMessage {...messages.service} />
+            </HeaderCol>
+            <HeaderCol width={mapColToWidth.hasItBeenUpdated}>
+              <FormattedMessage {...messages.hasItBeenUpdated} />
+            </HeaderCol>
+            <HeaderCol width={mapColToWidth.hasItBeenSettled}>
+              <FormattedMessage {...messages.hasItBeenSettled} />
+            </HeaderCol>
+            <HeaderCol width={mapColToWidth.price}>
+              <FormattedMessage
+                {...messages.price}
+                values={{ currency: stay.currency }}
+              />
+            </HeaderCol>
+          </HeaderRow>
+          {charges.map(({ service, updated, status, charge }, i) =>
+            <BodyRow key={i}>
+              <BodyRowLayer>
+                <BodyCol width={mapColToWidth.service}>
+                  {service}
+                </BodyCol>
+                <BodyCol width={mapColToWidth.hasItBeenUpdated}>
+                  {updated
+                    ? <FormattedMessage {...messages.yes} />
+                    : <FormattedMessage {...messages.no} />}
+                </BodyCol>
+                <BodyCol width={mapColToWidth.hasItBeenSettled}>
+                  {status === 'Settled'
+                    ? <FormattedMessage {...messages.yes} />
+                    : <FormattedMessage {...messages.no} />}
+                </BodyCol>
+                <BodyCol width={mapColToWidth.price}>
+                  {charge}
+                </BodyCol>
+              </BodyRowLayer>
+            </BodyRow>
+          )}
+          <HeaderRow>
+            <HeaderCol width={mapColToWidth.service}>
+              <FormattedMessage {...messages.total} />
+            </HeaderCol>
+            <HeaderCol width={mapColToWidth.hasItBeenUpdated} />
+            <HeaderCol width={mapColToWidth.hasItBeenSettled} />
+            <HeaderCol width={mapColToWidth.price}>
+              {charges.reduce(
+                (prev, current) => (prev * 1 + current.charge * 1).toFixed(2),
+                0
+              )}
+            </HeaderCol>
+          </HeaderRow>
+        </TableFrame>
       </LowerBody>
       <Footer>
         <Button
-          bgColor={colors.red3}
-          textColor={colors.pearl3}
+          bgColor={colors.base}
+          textColor={colors.lightGray}
           mr={1}
           ph={2}
           onClick={closeModal}
@@ -97,8 +153,8 @@ function ChargesModal({
           <FormattedMessage {...messages.cancel} />
         </Button>
         <Button
-          bgColor={colors.blue3}
-          textColor={colors.pearl3}
+          bgColor={colors.support}
+          textColor={colors.lightGray}
           onClick={updateCharges}
           ph={2}
         >

@@ -11,28 +11,28 @@ export default function getIconButton(status, onClick, key) {
   const size = 24;
   const map = {
     available: (
-      <ButtonWrapper onClick={onClick} bgColor={colors.red3} key={key}>
-        <TrashIcon color={colors.pearl3} size={size} />
+      <ButtonWrapper onClick={onClick} bgColor={colors.danger} key={key}>
+        <TrashIcon color={colors.lightGray} size={size} />
       </ButtonWrapper>
     ),
     notReady: (
       <ButtonWrapper onClick={onClick} key={key}>
-        <TickIcon color={colors.pearl3} size={size} />
+        <TickIcon color={colors.lightGray} size={size} />
       </ButtonWrapper>
     ),
     occupied: (
-      <ButtonWrapper onClick={onClick} bgColor={colors.red3} key={key}>
-        <CheckOutIcon color={colors.pearl3} size={size} />
+      <ButtonWrapper onClick={onClick} bgColor={colors.danger} key={key}>
+        <CheckOutIcon color={colors.lightGray} size={size} />
       </ButtonWrapper>
     ),
     reserved: (
       <ButtonWrapper onClick={onClick} key={key}>
-        <CheckInIcon color={colors.pearl3} size={size} />
+        <CheckInIcon color={colors.lightGray} size={size} />
       </ButtonWrapper>
     ),
     addRoom: (
-      <ButtonWrapper onClick={onClick} bgColor={colors.gold4}>
-        <AddIcon color={colors.pearl3} size={size} />
+      <ButtonWrapper onClick={onClick} bgColor={colors.accent}>
+        <AddIcon color={colors.lightGray} size={size} />
       </ButtonWrapper>
     ),
   };

@@ -3,10 +3,10 @@ import colors from 'themes/colors';
 import Button from '../Button';
 
 const FilterButton = styled(Button)`
-  background-color: ${props => (props.selected ? colors.gold3 : colors.gray0)};
+  background-color: ${props => (props.selected ? colors.support : colors.base)};
 
   &:hover {
-    background-color: ${props => !props.selected && colors.gold3};
+    background-color: ${props => !props.selected && colors.support};
   }
 
 `;

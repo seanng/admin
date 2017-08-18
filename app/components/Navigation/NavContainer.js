@@ -5,7 +5,7 @@ import Container from 'components/Container';
 
 const FullWidthBar = styled.div`
   width: 100%;
-  background-color: ${colors.gray3};
+  background-color: ${colors.base};
 `;
 
 const Wrapper = styled.div`

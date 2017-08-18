@@ -17,8 +17,8 @@ const Button = styled.div`
   border-radius: 0.8rem;
   cursor: pointer;
   box-shadow: '0 1px 1px rgba(0, 0, 0, 0.09), 0 1px 2px rgba(0, 0, 0, 0.05)';
-  background-color: ${props => (props.bgColor ? props.bgColor : colors.blue3)};
-  color: ${props => (props.textColor ? props.textColor : colors.pearl3)};
+  background-color: ${props => (props.bgColor ? props.bgColor : colors.base)};
+  color: ${props => (props.textColor ? props.textColor : colors.lightGray)};
   padding-right: ${props => props.ph && `${props.ph}rem`};
   padding-left: ${props => props.ph && `${props.ph}rem`};
   margin-bottom: ${props => (props.mb ? `${props.mb}rem` : '0')};

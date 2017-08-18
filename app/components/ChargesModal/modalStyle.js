@@ -1,4 +1,5 @@
 // modalStyle - guide: https://github.com/reactjs/react-modal#styles
+import colors from 'themes/colors';
 export default {
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
@@ -8,5 +9,6 @@ export default {
     bottom: '50px',
     right: '50px',
     left: '50px',
+    backgroundColor: colors.lightGray,
   },
 };

@@ -22,7 +22,7 @@ function SubNavigation({ items, pathname, router }) {
           mr={2}
           width={12}
         >
-          <H5 mb="0" color={colors.pearl3}>
+          <H5 mb="0" color={colors.lightGray}>
             {name}
           </H5>
         </Button>

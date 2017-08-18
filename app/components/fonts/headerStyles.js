@@ -8,7 +8,7 @@ const headerStyles = styled.span`
   font-family: inherit;
   font-weight: 700;
   line-height: 1.1;
-  color: ${props => (props.color ? props.color : colors.gray3)};
+  color: ${props => (props.color ? props.color : colors.inputDark)};
 `;
 
 export default headerStyles;

@@ -4,6 +4,7 @@ import DefaultButton from 'components/Button';
 
 const Button = styled(DefaultButton)`
   background-color: ${props => (props.selected ? colors.support : colors.base)};
+  min-width: 12rem;
 
   &:hover {
     background-color: ${props => !props.selected && colors.support};

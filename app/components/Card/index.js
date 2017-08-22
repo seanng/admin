@@ -13,7 +13,7 @@ const Card = styled.div`
   flex-direction: column;
   border: 1px solid #eceff1;
   background-color: ${props => (props.color ? props.color : colors.white)};
-  border-radius: 0.15rem;
+  border-radius: 0.8rem;
   overflow: hidden;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   padding: ${props => (props.noPadding ? '0' : '1.5rem')};

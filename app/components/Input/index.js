@@ -5,23 +5,27 @@
 */
 
 import React from 'react';
+import styled from 'styled-components';
 import colors from 'themes/colors';
 
-const inputStyle = {
-  fontSize: '1rem',
-  color: colors.inputDark,
-  backgroundColor: colors.white,
-  borderRadius: '0.15rem',
-  width: '100%',
-  border: '1px solid rgba(0, 0, 0, 0.15)',
-  padding: '0.65rem 0.8rem',
-};
+const StyledInput = styled.input`
+  font-size: 1rem;
+  color: ${colors.inputDark};
+  background-color: ${colors.white};
+  border-radius: 0.8rem;
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  padding: 0.65rem 0.8rem;
+
+  &:focus {
+    outline: none;
+  }
+`;
 
 function Input({ type, value, onChange, name, placeholder }) {
   return (
-    <input
+    <StyledInput
       type={type}
-      style={inputStyle}
       value={value}
       onChange={onChange}
       name={name}

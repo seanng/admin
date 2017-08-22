@@ -13,7 +13,7 @@ import HotelDescription from 'components/HotelDescription';
 import { getHotelInfo } from './actions';
 import { selectHotelInfo, selectHasLoaded } from './selectors';
 import Container from './Container';
-import SideWrapper from './SideWrapper';
+import SideContainer from './SideContainer';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class HotelProfile extends React.PureComponent {
@@ -29,14 +29,14 @@ export class HotelProfile extends React.PureComponent {
     }
     return (
       <Container>
-        <SideWrapper flex={5}>
+        <SideContainer flex={5}>
           <HotelPhotos
             hotelName={hotel.get('name')}
             photos={hotel.get('photos')}
           />
           <HotelDescription />
-        </SideWrapper>
-        <SideWrapper flex={3} right />
+        </SideContainer>
+        <SideContainer flex={3} right />
       </Container>
     );
   }

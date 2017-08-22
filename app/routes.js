@@ -37,7 +37,7 @@ export default function createRoutes(store) {
       },
     },
     {
-      path: 'paststays',
+      path: '/paststays',
       name: 'pastStays',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
@@ -56,7 +56,7 @@ export default function createRoutes(store) {
       },
     },
     {
-      path: 'hotelprofile',
+      path: '/hotelprofile',
       name: 'hotelProfile',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
@@ -68,6 +68,25 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, component]) => {
           injectReducer('hotelProfile', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
+      path: '/teammanagement',
+      name: 'teamManagement',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/TeamManagement/reducer'),
+          import('containers/TeamManagement'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('teamManagement', reducer.default);
           renderRoute(component);
         });
 

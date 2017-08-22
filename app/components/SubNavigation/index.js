@@ -20,7 +20,7 @@ function SubNavigation({ items, pathname, router }) {
           selected={pathname === path}
           onClick={() => router.push(path)}
           mr={2}
-          width={12}
+          ph={2}
         >
           <H5 mb="0" color={colors.lightGray}>
             {name}

@@ -13,7 +13,7 @@ const Customer = sequelize.define('customer', {
   firstName: Sequelize.STRING,
   lastName: Sequelize.STRING,
   email: { type: Sequelize.STRING, unique: true },
-  phoneNo: Sequelize.STRING,
+  phoneNumber: Sequelize.STRING,
   avatarUrl: Sequelize.STRING,
   accountStatus: Sequelize.INTEGER,
   paymentAuthStatus: Sequelize.INTEGER,
@@ -28,8 +28,9 @@ const Employee = sequelize.define('employee', {
   firstName: Sequelize.STRING,
   lastName: Sequelize.STRING,
   email: { type: Sequelize.STRING, unique: true },
-  phoneNo: Sequelize.STRING,
-  admin: Sequelize.INTEGER, // level 1: staff, level 2: admin, level 3: super-user? (i.e. customer service)
+  phoneNumber: Sequelize.STRING,
+  photoUrl: Sequelize.STRING,
+  adminLevel: Sequelize.INTEGER, // level 1: staff, level 2: admin, level 3: super-user? (i.e. customer service)
 });
 
 const Hotel = sequelize.define('hotel', {

@@ -14,7 +14,7 @@ const fakeData = {
       lastName: 'Ng',
       password: 'abc',
       email: 'shonum@gmail.com',
-      phoneNo: '96968828',
+      phoneNumber: '96968828',
       rating: 1,
     },
     {
@@ -22,28 +22,28 @@ const fakeData = {
       lastName: 'Miller',
       password: 'abc',
       email: 'shonum2@gmail.com',
-      phoneNo: '91910404',
+      phoneNumber: '91910404',
     },
     {
       firstName: 'Michael',
       lastName: 'Wong',
       password: 'abc',
       email: 'michaelwong@gmail.com',
-      phoneNo: '91280102',
+      phoneNumber: '91280102',
     },
     {
       firstName: 'Gigi',
       lastName: 'Wings',
       password: 'abc',
       email: 'chickenwings@gmail.com',
-      phoneNo: '99830203',
+      phoneNumber: '99830203',
     },
     {
       firstName: 'Fucking',
       lastName: 'Legend',
       password: 'abc',
       email: 'afuckinglegend@gmail.com',
-      phoneNo: '12345678',
+      phoneNumber: '12345678',
     },
   ],
   hotels: [
@@ -164,20 +164,86 @@ Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian 
       firstName: 'BigFat',
       lastName: 'Loser',
       email: 'tester@testhotel.com',
+      phoneNumber: '(852) 9193-4810',
       password: 'asdfasdf',
+      photoUrl:
+        'https://upload.wikimedia.org/wikipedia/en/5/5e/Avatar%28Neytiri%29.jpg',
+      adminLevel: 2,
     },
     {
       hotelId: 1,
-      firstName: 'BigFat',
-      lastName: 'Winner',
+      firstName: 'Andrew',
+      lastName: 'Stevenson',
       email: 'tester2@testhotel.com',
+      phoneNumber: '(852) 9193-4810',
       password: 'asdfasdf',
+      photoUrl:
+        'https://upload.wikimedia.org/wikipedia/en/5/5e/Avatar%28Neytiri%29.jpg',
+      adminLevel: 1,
+    },
+    {
+      hotelId: 1,
+      firstName: 'Thierry',
+      lastName: 'Henry',
+      email: 'tester3@testhotel.com',
+      phoneNumber: '(852) 9193-4810',
+      password: 'asdfasdf',
+      photoUrl:
+        'https://upload.wikimedia.org/wikipedia/en/5/5e/Avatar%28Neytiri%29.jpg',
+      adminLevel: 1,
+    },
+    {
+      hotelId: 1,
+      firstName: 'Danny',
+      lastName: 'Welbeck',
+      email: 'tester4@testhotel.com',
+      phoneNumber: '(852) 9193-4810',
+      password: 'asdfasdf',
+      photoUrl:
+        'https://upload.wikimedia.org/wikipedia/en/5/5e/Avatar%28Neytiri%29.jpg',
+      adminLevel: 1,
+    },
+    {
+      hotelId: 1,
+      firstName: 'Sherlock',
+      lastName: 'Holmes',
+      email: 'tester5@testhotel.com',
+      phoneNumber: '(852) 9193-4810',
+      password: 'asdfasdf',
+      photoUrl:
+        'https://upload.wikimedia.org/wikipedia/en/5/5e/Avatar%28Neytiri%29.jpg',
+      adminLevel: 1,
+    },
+    {
+      hotelId: 1,
+      firstName: 'Dikembe',
+      lastName: 'Wjinaldum',
+      email: 'tester6@testhotel.com',
+      phoneNumber: '(852) 9193-4810',
+      password: 'asdfasdf',
+      photoUrl:
+        'https://upload.wikimedia.org/wikipedia/en/5/5e/Avatar%28Neytiri%29.jpg',
+      adminLevel: 2,
+    },
+    {
+      hotelId: 1,
+      firstName: 'Shaquille',
+      lastName: "O'Neal",
+      email: 'tester7@testhotel.com',
+      phoneNumber: '(852) 9193-4810',
+      password: 'asdfasdf',
+      photoUrl:
+        'https://upload.wikimedia.org/wikipedia/en/5/5e/Avatar%28Neytiri%29.jpg',
+      adminLevel: 2,
     },
     {
       hotelId: 2,
       firstName: 'Meow',
       lastName: 'Wolfcat',
       email: 'test@sheraton.com',
+      phoneNumber: '(852) 9193-4810',
+      photoUrl:
+        'https://upload.wikimedia.org/wikipedia/en/5/5e/Avatar%28Neytiri%29.jpg',
       password: 'asdfasdf',
     },
   ],
@@ -260,100 +326,39 @@ Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian 
 };
 
 module.exports = () =>
-  sequelize.sync({ force: true }).then(() =>
-    fakeData.customers
-      .reduce((promiseChain, customer) => {
-        const { firstName, lastName, email, phoneNo, password } = customer;
-        return Customer.create({
-          firstName,
-          lastName,
-          email,
-          phoneNo,
-          password,
-        });
-      }, Promise.resolve())
-      .then(() =>
-        fakeData.hotels
-          .reduce((promiseChain, hotel) => {
-            const {
-              name,
-              rate,
-              currency,
-              policies,
-              photos,
-              amenities,
-              lat,
-              lng,
-              address,
-            } = hotel;
-            return Hotel.create({
-              name,
-              rate,
-              currency,
-              policies,
-              photos,
-              amenities,
-              lat,
-              lng,
-              address,
-            });
-          }, Promise.resolve())
-          .then(() =>
-            fakeData.stays
-              .reduce((promiseChain, stay) => {
-                const {
-                  hotelId,
-                  customerId,
-                  status,
-                  roomNumber,
-                  bookingTime,
-                  checkInTime,
-                  checkOutTime,
-                  totalCharge,
-                  roomCharge,
-                } = stay;
-                return Stay.create({
-                  hotelId,
-                  customerId,
-                  status,
-                  roomNumber,
-                  bookingTime,
-                  checkInTime,
-                  checkOutTime,
-                  totalCharge,
-                  roomCharge,
-                });
-              }, Promise.resolve())
-              .then(() =>
-                fakeData.surcharges
-                  .reduce((promiseChain, surcharge) => {
-                    const { stayId, service, status, charge } = surcharge;
-                    return Surcharge.create({
-                      stayId,
-                      service,
-                      status,
-                      charge,
-                    });
-                  }, Promise.resolve())
-                  .then(() =>
-                    fakeData.employees.reduce((promiseChain, employee) => {
-                      const {
-                        hotelId,
-                        email,
-                        firstName,
-                        lastName,
-                        password,
-                      } = employee;
-                      return Employee.create({
-                        hotelId,
-                        email,
-                        firstName,
-                        lastName,
-                        password,
-                      });
-                    }, Promise.resolve())
-                  )
-              )
-          )
-      )
-  );
+  sequelize
+    .sync({ force: true })
+    .then(() =>
+      fakeData.customers
+        .reduce(
+          (promiseChain, customer) => Customer.create(customer),
+          Promise.resolve()
+        )
+        .then(() =>
+          fakeData.hotels
+            .reduce(
+              (promiseChain, hotel) => Hotel.create(hotel),
+              Promise.resolve()
+            )
+            .then(() =>
+              fakeData.stays
+                .reduce(
+                  (promiseChain, stay) => Stay.create(stay),
+                  Promise.resolve()
+                )
+                .then(() =>
+                  fakeData.surcharges
+                    .reduce(
+                      (promiseChain, surcharge) => Surcharge.create(surcharge),
+                      Promise.resolve()
+                    )
+                    .then(() =>
+                      fakeData.employees.reduce(
+                        (promiseChain, employee) => Employee.create(employee),
+                        Promise.resolve()
+                      )
+                    )
+                )
+            )
+        )
+    );

@@ -19,6 +19,11 @@ export const selectMembersList = () =>
     substate.get('membersList')
   );
 
+export const selectPreviewedMember = () =>
+  createSelector(selectTeamManagementDomain(), substate =>
+    substate.get('previewedMember')
+  );
+
 /**
  * Default selector used by TeamManagement
  */

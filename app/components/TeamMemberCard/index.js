@@ -5,9 +5,8 @@
 */
 
 import React from 'react';
-// import styled from 'styled-components';
-
 import { FormattedMessage } from 'react-intl';
+import messages from 'containers/TeamManagement/messages';
 import colors from 'themes/colors';
 import { getUserType } from 'utils/helpers';
 import Card from '../Card';
@@ -16,10 +15,9 @@ import CardPhoto from './CardPhoto';
 import TextWrapper from './TextWrapper';
 import CardPhotoContainer from './CardPhotoContainer';
 import ProxyContainer from './ProxyContainer';
-import messages from './messages';
 
 function TeamMemberCard({ member, index, previewedMember, setPreviewMember }) {
-  const isHighlighted = previewedMember.id === member.id;
+  const isHighlighted = previewedMember && previewedMember.id === member.id;
   return (
     <ItemWrapper>
       <Card

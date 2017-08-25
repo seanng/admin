@@ -22,7 +22,7 @@ function FrontDeskFilters({ filterOptions, activeFilter, handleFilterChange }) {
           selected={option === activeFilter}
           onClick={() => handleFilterChange(option)}
           mr={1.5}
-          width={10}
+          width="10rem"
         >
           <H5 mb={0} color="white">
             {option}

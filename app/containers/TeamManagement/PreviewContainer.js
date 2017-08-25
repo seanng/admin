@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const PreviewContainer = styled.div`
-  flex: 1;
+  flex: 2;
   height: 10rem;
 `;
 

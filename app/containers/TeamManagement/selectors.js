@@ -24,6 +24,11 @@ export const selectPreviewedMember = () =>
     substate.get('previewedMember')
   );
 
+export const selectConfirmationModalOptions = () =>
+  createSelector(selectTeamManagementDomain(), substate =>
+    substate.get('confirmationModalOptions')
+  );
+
 /**
  * Default selector used by TeamManagement
  */

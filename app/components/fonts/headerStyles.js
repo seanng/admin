@@ -9,6 +9,7 @@ const headerStyles = styled.span`
   font-weight: 700;
   line-height: 1.1;
   color: ${props => (props.color ? props.color : colors.inputDark)};
+  text-align: ${props => props.center && 'center'};
 `;
 
 export default headerStyles;

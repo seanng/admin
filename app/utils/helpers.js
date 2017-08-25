@@ -22,3 +22,12 @@ export function getFormattedDuration(start, end) {
   const minutes = totalMinutes % 60;
   return minutes < 10 ? `${hours} h 0${minutes} m` : `${hours} h ${minutes} m`;
 }
+
+export function getUserType(index) {
+  const dictionary = {
+    1: 'member',
+    2: 'admin',
+    3: 'superUser',
+  };
+  return dictionary[index];
+}

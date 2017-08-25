@@ -8,7 +8,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectHotelId } from 'containers/App/selectors';
-import Card from 'components/Card';
+// import Card from 'components/Card';
+import TeamMemberCard from 'components/TeamMemberCard';
 import { getEmployees, setMemberToPreview } from './actions';
 import {
   selectHasLoaded,
@@ -18,9 +19,6 @@ import {
 import Container from './Container';
 import ItemsContainer from './ItemsContainer';
 import PreviewContainer from './PreviewContainer';
-import ItemWrapper from './ItemWrapper';
-import NameWrapper from './NameWrapper';
-import CardPhoto from './CardPhoto';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class TeamManagement extends React.PureComponent {
@@ -29,36 +27,32 @@ export class TeamManagement extends React.PureComponent {
     fetchEmployees(hotelId);
   }
 
-  renderItem(member, index) {
-    return (
-      <ItemWrapper key={member.id}>
-        <Card
-          key={member.id}
-          onClick={() => this.props.setMemberToPreview(index)}
-        >
-          <CardPhoto src={member.photoUrl} />
-          <NameWrapper>
-            {member.firstName}&nbsp; {member.lastName}
-          </NameWrapper>
-        </Card>
-      </ItemWrapper>
-    );
-  }
-
   render() {
-    const { hasLoaded, membersList } = this.props;
+    const {
+      hasLoaded,
+      membersList,
+      previewedMember,
+      setPreviewMember,
+    } = this.props;
     const members = membersList.toJS();
+    const previewedMemberJS = previewedMember.toJS();
     if (!hasLoaded) {
       return <div>loading...</div>;
     }
     return (
       <Container>
         <ItemsContainer>
-          {members.map((member, index) => this.renderItem(member, index))}
+          {members.map((member, index) =>
+            <TeamMemberCard
+              member={member}
+              index={index}
+              previewedMember={previewedMemberJS}
+              setPreviewMember={setPreviewMember}
+              key={member.id}
+            />
+          )}
         </ItemsContainer>
-        <PreviewContainer>
-          {this.props.previewedMember}
-        </PreviewContainer>
+        <PreviewContainer />
       </Container>
     );
   }
@@ -73,7 +67,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   fetchEmployees: hotelId => dispatch(getEmployees(hotelId)),
-  setMemberToPreview: memberIndex => dispatch(setMemberToPreview(memberIndex)),
+  setPreviewMember: memberIndex => dispatch(setMemberToPreview(memberIndex)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamManagement);

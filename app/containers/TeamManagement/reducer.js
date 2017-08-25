@@ -30,7 +30,7 @@ function teamManagementReducer(state = initialState, action) {
         membersList: action.employees,
       });
     case SET_MEMBER_TO_PREVIEW: {
-      const selectedMember = state.getIn('membersList', action.index);
+      const selectedMember = state.getIn(['membersList', action.index]);
       return state.set('previewedMember', selectedMember);
     }
 

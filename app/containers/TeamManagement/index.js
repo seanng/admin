@@ -23,6 +23,7 @@ import {
   setMemberToPreview,
   setAdmin,
   setConfirmationOptions,
+  deleteEmployee,
 } from './actions';
 import {
   selectHasLoaded,
@@ -74,6 +75,18 @@ export class TeamManagement extends React.PureComponent {
   upgradeToAdmin = () => {
     const { upgradeToAdmin, previewedMember } = this.props;
     upgradeToAdmin(previewedMember.get('id'));
+  };
+
+  promptDeleteAccount = () => {
+    this.props.setConfirmationOptions({
+      shouldDisplay: true,
+      modalPromptId: 'deleteAccount',
+    });
+  };
+
+  deleteAccount = () => {
+    const { deleteAccount, previewedMember } = this.props;
+    deleteAccount(previewedMember.get('id'));
   };
 
   render() {
@@ -138,7 +151,13 @@ export class TeamManagement extends React.PureComponent {
                       <FormattedMessage {...messages.upgradeToAdmin} />
                     </H5>
                   </Button>
-                  <Button width="100%" pv="1" sharp bgColor={colors.danger}>
+                  <Button
+                    width="100%"
+                    pv="1"
+                    sharp
+                    bgColor={colors.danger}
+                    onClick={this.promptDeleteAccount}
+                  >
                     <H5 center color={colors.white} mb={0}>
                       <FormattedMessage {...messages.remove} />
                     </H5>
@@ -187,6 +206,7 @@ const mapDispatchToProps = dispatch => ({
   setPreviewMember: memberIndex => dispatch(setMemberToPreview(memberIndex)),
   setConfirmationOptions: options => dispatch(setConfirmationOptions(options)),
   upgradeToAdmin: memberId => dispatch(setAdmin(memberId)),
+  deleteAccount: memberId => dispatch(deleteEmployee(memberId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamManagement);

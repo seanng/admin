@@ -12,6 +12,7 @@ import {
   SET_MEMBER_TO_PREVIEW,
   SET_ADMIN_SUCCESS,
   SET_CONFIRMATION_OPTIONS,
+  DELETE_EMPLOYEE_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({
@@ -50,6 +51,22 @@ function teamManagementReducer(state = initialState, action) {
         member => member.id * 1 === action.employeeId
       );
       membersList[memberIdx].adminLevel = 2;
+      return state.merge({
+        membersList,
+        confirmationModalOptions: {
+          shouldDisplay: false,
+          modalPromptId: '',
+        },
+        previewedMember: membersList[memberIdx],
+      });
+    }
+
+    case DELETE_EMPLOYEE_SUCCESS: {
+      const membersList = state.get('membersList').toJS();
+      const memberIdx = membersList.findIndex(
+        member => member.id * 1 === action.employeeId
+      );
+      membersList.splice(memberIdx, 1);
       return state.merge({
         membersList,
         confirmationModalOptions: {

@@ -42,4 +42,12 @@ export default defineMessages({
     id: 'app.components.TeamManagement.upgradeToAdminConfirm',
     defaultMessage: 'Confirm',
   },
+  deleteAccountPrompt: {
+    id: 'app.components.TeamManagement.deleteAccountPrompt',
+    defaultMessage: "Delete {name}'s account permanently?",
+  },
+  deleteAccountConfirm: {
+    id: 'app.components.TeamManagement.deleteAccountConfirm',
+    defaultMessage: 'Confirm',
+  },
 });

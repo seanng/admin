@@ -9,6 +9,7 @@ import {
   SET_MEMBER_TO_PREVIEW,
   SET_ADMIN,
   SET_CONFIRMATION_OPTIONS,
+  DELETE_EMPLOYEE,
 } from './constants';
 
 export function getEmployees(hotelId) {
@@ -28,6 +29,13 @@ export function setMemberToPreview(index) {
 export function setAdmin(employeeId) {
   return {
     type: SET_ADMIN,
+    employeeId,
+  };
+}
+
+export function deleteEmployee(employeeId) {
+  return {
+    type: DELETE_EMPLOYEE,
     employeeId,
   };
 }

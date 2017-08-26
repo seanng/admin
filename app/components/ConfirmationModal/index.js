@@ -33,7 +33,7 @@ function ConfirmationModal({
       <ButtonsContainer>
         <Button
           onClick={closeModal}
-          bgColor={colors.danger}
+          bgColor={colors.primary}
           flex="1"
           sharp
           pv="1"

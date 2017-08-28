@@ -9,6 +9,7 @@ import {
   SET_MEMBER_TO_PREVIEW,
   SET_ADMIN,
   SET_CONFIRMATION_OPTIONS,
+  SET_ADD_MEMBER_OPTIONS,
   DELETE_EMPLOYEE,
 } from './constants';
 
@@ -43,6 +44,13 @@ export function deleteEmployee(employeeId) {
 export function setConfirmationOptions(options) {
   return {
     type: SET_CONFIRMATION_OPTIONS,
+    options,
+  };
+}
+
+export function setAddMemberOptions(options) {
+  return {
+    type: SET_ADD_MEMBER_OPTIONS,
     options,
   };
 }

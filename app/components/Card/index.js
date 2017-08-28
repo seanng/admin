@@ -20,6 +20,10 @@ const Card = styled.div`
   padding: ${props => (props.noPadding ? '0' : metrics.paddingVertical)};
   flex: 1 1 auto;
   max-width: ${props => (props.maxWidth ? props.maxWidth : '100%')};
+
+  &:hover {
+    cursor: ${props => props.cursor && 'pointer'};
+  }
 `;
 
 export default Card;

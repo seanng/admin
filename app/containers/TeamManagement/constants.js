@@ -15,6 +15,9 @@ export const SET_MEMBER_TO_PREVIEW = 'app/TeamManagement/SET_MEMBER_TO_PREVIEW';
 export const SET_CONFIRMATION_OPTIONS =
   'app/TeamManagement/SET_CONFIRMATION_OPTIONS';
 
+export const SET_ADD_MEMBER_OPTIONS =
+  'app/TeamManagement/SET_ADD_MEMBER_OPTIONS';
+
 export const DELETE_EMPLOYEE = 'server/DELETE_EMPLOYEE';
 export const DELETE_EMPLOYEE_SUCCESS =
   'app/TeamManagement/DELETE_EMPLOYEE_SUCCESS';

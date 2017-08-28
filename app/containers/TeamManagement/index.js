@@ -17,12 +17,14 @@ import H3 from 'components/fonts/H3';
 import H5 from 'components/fonts/H5';
 import TeamMemberCard from 'components/TeamMemberCard';
 import ConfirmationModal from 'components/ConfirmationModal';
+import AddMemberModal from 'components/AddMemberModal';
 import ProxyContainer from './ProxyContainer';
 import {
   getEmployees,
   setMemberToPreview,
   setAdmin,
   setConfirmationOptions,
+  setAddMemberOptions,
   deleteEmployee,
 } from './actions';
 import {
@@ -30,6 +32,7 @@ import {
   selectMembersList,
   selectPreviewedMember,
   selectConfirmationModalOptions,
+  selectAddMemberModalOptions,
 } from './selectors';
 import messages from './messages';
 import Container from './Container';
@@ -58,10 +61,31 @@ export class TeamManagement extends React.PureComponent {
     deleteAccount: () => this.deleteAccount(),
   };
 
-  resetModalOptions = () => {
+  resetConfirmationModal = () => {
     this.props.setConfirmationOptions({
       shouldDisplay: false,
       modalPromptId: '',
+    });
+  };
+
+  handleModalInputChange = e => {
+    const inputKey = e.target.name;
+    const value = e.target.value;
+    console.log('inputKey, value:', inputKey, value);
+    // this.props.setAddMemberOptions({
+    // inputKey: value
+    // })
+  };
+
+  resetAddMemberModal = () => {
+    this.props.setAddMemberOptions({
+      shouldDisplay: false,
+    });
+  };
+
+  promptAddMemberModal = () => {
+    this.props.setAddMemberOptions({
+      shouldDisplay: true,
     });
   };
 
@@ -96,6 +120,7 @@ export class TeamManagement extends React.PureComponent {
       previewedMember,
       setPreviewMember,
       confirmationModalOptions,
+      addMemberModalOptions,
     } = this.props;
     const members = membersList.toJS();
     const previewedMemberJS = previewedMember ? previewedMember.toJS() : null;
@@ -105,6 +130,7 @@ export class TeamManagement extends React.PureComponent {
     return (
       <Container>
         <ItemsContainer>
+          <TeamMemberCard promptAddMemberModal={this.promptAddMemberModal} />
           {members.map((member, index) =>
             <TeamMemberCard
               member={member}
@@ -168,7 +194,7 @@ export class TeamManagement extends React.PureComponent {
         {previewedMemberJS &&
           <ConfirmationModal
             isOpen={confirmationModalOptions.get('shouldDisplay')}
-            closeModal={this.resetModalOptions}
+            closeModal={this.resetConfirmationModal}
             promptText={
               <FormattedMessage
                 {...messages[
@@ -188,6 +214,11 @@ export class TeamManagement extends React.PureComponent {
             }
             onConfirmClick={this.onConfirmClick}
           />}
+        <AddMemberModal
+          isOpen={addMemberModalOptions.get('shouldDisplay')}
+          closeModal={this.resetAddMemberModal}
+          handleInputChange={this.handleModalInputChange}
+        />
       </Container>
     );
   }
@@ -199,12 +230,14 @@ const mapStateToProps = createStructuredSelector({
   membersList: selectMembersList(),
   previewedMember: selectPreviewedMember(),
   confirmationModalOptions: selectConfirmationModalOptions(),
+  addMemberModalOptions: selectAddMemberModalOptions(),
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchEmployees: hotelId => dispatch(getEmployees(hotelId)),
   setPreviewMember: memberIndex => dispatch(setMemberToPreview(memberIndex)),
   setConfirmationOptions: options => dispatch(setConfirmationOptions(options)),
+  setAddMemberOptions: options => dispatch(setAddMemberOptions(options)),
   upgradeToAdmin: memberId => dispatch(setAdmin(memberId)),
   deleteAccount: memberId => dispatch(deleteEmployee(memberId)),
 });

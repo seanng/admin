@@ -29,6 +29,11 @@ export const selectConfirmationModalOptions = () =>
     substate.get('confirmationModalOptions')
   );
 
+export const selectAddMemberModalOptions = () =>
+  createSelector(selectTeamManagementDomain(), substate =>
+    substate.get('addMemberModalOptions')
+  );
+
 /**
  * Default selector used by TeamManagement
  */

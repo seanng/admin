@@ -30,6 +30,9 @@ export const selectBottomNavItems = () =>
 export const selectHasLoaded = () =>
   createSelector(selectGlobalDomain(), substate => substate.get('hasLoaded'));
 
+export const selectUserId = () =>
+  createSelector(selectUser(), user => user.get('id'));
+
 export const selectHotelId = () =>
   createSelector(selectUser(), user => user.get('hotelId'));
 

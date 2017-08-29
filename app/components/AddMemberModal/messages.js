@@ -8,6 +8,6 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   header: {
     id: 'app.components.AddMemberModal.header',
-    defaultMessage: 'This is the AddMemberModal component !',
+    defaultMessage: 'Send an Invitation',
   },
 });

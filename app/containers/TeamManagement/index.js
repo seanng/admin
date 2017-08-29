@@ -8,9 +8,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
-import { getUserType } from 'utils/helpers';
+import { getUserType, camelize } from 'utils/helpers';
 import colors from 'themes/colors';
-import { selectHotelId } from 'containers/App/selectors';
+import { selectHotelId, selectUserId } from 'containers/App/selectors';
 import Card from 'components/Card';
 import Button from 'components/Button';
 import H3 from 'components/fonts/H3';
@@ -26,6 +26,7 @@ import {
   setConfirmationOptions,
   setAddMemberOptions,
   deleteEmployee,
+  addEmployee,
 } from './actions';
 import {
   selectHasLoaded,
@@ -69,12 +70,16 @@ export class TeamManagement extends React.PureComponent {
   };
 
   handleModalInputChange = e => {
-    const inputKey = e.target.name;
-    const value = e.target.value;
-    console.log('inputKey, value:', inputKey, value);
-    // this.props.setAddMemberOptions({
-    // inputKey: value
-    // })
+    const options = { ...this.props.addMemberModalOptions.toJS() };
+    options[camelize(e.target.name)] = e.target.value;
+    this.props.setAddMemberOptions(options);
+  };
+
+  handleAddMember = () => {
+    const { addMemberModalOptions, addMember, hotelId, userId } = this.props;
+    const { firstName, lastName, email } = addMemberModalOptions.toJS();
+    // check if all fields have been filled
+    addMember({ firstName, lastName, email }, hotelId, userId);
   };
 
   resetAddMemberModal = () => {
@@ -215,9 +220,10 @@ export class TeamManagement extends React.PureComponent {
             onConfirmClick={this.onConfirmClick}
           />}
         <AddMemberModal
-          isOpen={addMemberModalOptions.get('shouldDisplay')}
           closeModal={this.resetAddMemberModal}
           handleInputChange={this.handleModalInputChange}
+          modalConfig={addMemberModalOptions}
+          handleAddMember={this.handleAddMember}
         />
       </Container>
     );
@@ -226,6 +232,7 @@ export class TeamManagement extends React.PureComponent {
 
 const mapStateToProps = createStructuredSelector({
   hotelId: selectHotelId(),
+  userId: selectUserId(),
   hasLoaded: selectHasLoaded(),
   membersList: selectMembersList(),
   previewedMember: selectPreviewedMember(),
@@ -240,6 +247,8 @@ const mapDispatchToProps = dispatch => ({
   setAddMemberOptions: options => dispatch(setAddMemberOptions(options)),
   upgradeToAdmin: memberId => dispatch(setAdmin(memberId)),
   deleteAccount: memberId => dispatch(deleteEmployee(memberId)),
+  addMember: (memberDetails, hotelId, userId) =>
+    dispatch(addEmployee(memberDetails, hotelId, userId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamManagement);

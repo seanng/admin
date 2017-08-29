@@ -14,6 +14,7 @@ import {
   SET_CONFIRMATION_OPTIONS,
   SET_ADD_MEMBER_OPTIONS,
   DELETE_EMPLOYEE_SUCCESS,
+  ADD_EMPLOYEE_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({
@@ -27,6 +28,9 @@ const initialState = fromJS({
   },
   addMemberModalOptions: {
     shouldDisplay: false,
+    firstName: '',
+    lastName: '',
+    email: '',
   },
 });
 
@@ -91,6 +95,15 @@ function teamManagementReducer(state = initialState, action) {
           modalPromptId: '',
         },
         previewedMember: membersList[memberIdx],
+      });
+    }
+
+    case ADD_EMPLOYEE_SUCCESS: {
+      return state.merge({
+        addMemberModalOptions: {
+          shouldDisplay: false,
+        },
+        membersList: action.employees,
       });
     }
 

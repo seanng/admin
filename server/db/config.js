@@ -25,12 +25,23 @@ const Employee = sequelize.define('employee', {
   regDate: Sequelize.DATE,
   username: { type: Sequelize.STRING, unique: true },
   password: Sequelize.STRING,
+  verified: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
+  inviterId: Sequelize.INTEGER,
   firstName: Sequelize.STRING,
   lastName: Sequelize.STRING,
   email: { type: Sequelize.STRING, unique: true },
   phoneNumber: Sequelize.STRING,
-  photoUrl: Sequelize.STRING,
-  adminLevel: Sequelize.INTEGER, // level 1: staff, level 2: admin, level 3: super-user? (i.e. customer service)
+  photoUrl: {
+    type: Sequelize.STRING,
+    defaultValue: 'https://d30y9cdsu7xlg0.cloudfront.net/png/547789-200.png',
+  },
+  adminLevel: {
+    type: Sequelize.INTEGER,
+    defaultValue: 1,
+  }, // level 1: staff, level 2: admin, level 3: super-user? (i.e. customer service)
 });
 
 const Hotel = sequelize.define('hotel', {

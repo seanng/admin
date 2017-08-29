@@ -166,6 +166,7 @@ Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian 
       email: 'tester@testhotel.com',
       phoneNumber: '(852) 9193-4810',
       password: 'asdfasdf',
+      verified: true,
       photoUrl:
         'https://upload.wikimedia.org/wikipedia/en/5/5e/Avatar%28Neytiri%29.jpg',
       adminLevel: 2,
@@ -177,6 +178,8 @@ Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian 
       email: 'tester2@testhotel.com',
       phoneNumber: '(852) 9193-4810',
       password: 'asdfasdf',
+      verified: true,
+      inviterId: 1,
       photoUrl:
         'https://upload.wikimedia.org/wikipedia/en/5/5e/Avatar%28Neytiri%29.jpg',
       adminLevel: 1,
@@ -188,6 +191,8 @@ Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian 
       email: 'tester3@testhotel.com',
       phoneNumber: '(852) 9193-4810',
       password: 'asdfasdf',
+      verified: true,
+      inviterId: 1,
       photoUrl:
         'https://upload.wikimedia.org/wikipedia/en/5/5e/Avatar%28Neytiri%29.jpg',
       adminLevel: 1,
@@ -199,6 +204,7 @@ Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian 
       email: 'tester4@testhotel.com',
       phoneNumber: '(852) 9193-4810',
       password: 'asdfasdf',
+      inviterId: 1,
       photoUrl:
         'https://upload.wikimedia.org/wikipedia/en/5/5e/Avatar%28Neytiri%29.jpg',
       adminLevel: 1,
@@ -210,6 +216,8 @@ Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian 
       email: 'tester5@testhotel.com',
       phoneNumber: '(852) 9193-4810',
       password: 'asdfasdf',
+      inviterId: 1,
+      verified: true,
       photoUrl:
         'https://upload.wikimedia.org/wikipedia/en/5/5e/Avatar%28Neytiri%29.jpg',
       adminLevel: 1,
@@ -221,6 +229,8 @@ Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian 
       email: 'tester6@testhotel.com',
       phoneNumber: '(852) 9193-4810',
       password: 'asdfasdf',
+      verified: false,
+      inviterId: 1,
       photoUrl:
         'https://upload.wikimedia.org/wikipedia/en/5/5e/Avatar%28Neytiri%29.jpg',
       adminLevel: 2,
@@ -232,6 +242,8 @@ Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian 
       email: 'tester7@testhotel.com',
       phoneNumber: '(852) 9193-4810',
       password: 'asdfasdf',
+      verified: true,
+      inviterId: 2,
       photoUrl:
         'https://upload.wikimedia.org/wikipedia/en/5/5e/Avatar%28Neytiri%29.jpg',
       adminLevel: 2,
@@ -241,6 +253,7 @@ Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian 
       firstName: 'Meow',
       lastName: 'Wolfcat',
       email: 'test@sheraton.com',
+      verified: true,
       phoneNumber: '(852) 9193-4810',
       photoUrl:
         'https://upload.wikimedia.org/wikipedia/en/5/5e/Avatar%28Neytiri%29.jpg',

@@ -9,7 +9,6 @@ import colors from 'themes/colors';
 
 const Button = styled.div`
   display: inline-block;
-  line-height: 1.25;
   text-align: center;
   border: 1px solid transparent;
   padding: 0.5rem 1rem;

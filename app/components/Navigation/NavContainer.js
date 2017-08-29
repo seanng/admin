@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import metrics from 'themes/metrics';
 import colors from 'themes/colors';
 import Container from 'components/Container';
 
@@ -13,7 +14,7 @@ const Wrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 1.1em 0;
+  height: ${metrics.navBarHeight};
 `;
 
 export default function NavContainer({ children }) {

@@ -11,6 +11,7 @@ const Container = styled.div`
   padding-bottom: ${props => (props.pb && props.pb) || (props.pv && props.pv)};
   margin: 0 auto;
   width: 90%;
+  height: 100%;
 
   @media (max-width: 991px) {
     width: auto;

@@ -13,6 +13,8 @@ const defaultTheme = {
     h6: '1rem',
   },
   paddingVertical: '1.5rem',
+  navBarHeight: '4rem',
+  subNavHeight: '5rem',
   padding: '1rem',
 };
 

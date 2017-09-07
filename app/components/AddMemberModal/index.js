@@ -53,11 +53,19 @@ function AddMemberModal({
       />
       <ButtonRow>
         <Button
+          mr={1}
           bgColor={colors.support}
           textColor={colors.lightGray}
           onClick={handleAddMember}
         >
           Send Invite
+        </Button>
+        <Button
+          bgColor={colors.base}
+          textColor={colors.lightGray}
+          onClick={closeModal}
+        >
+          Cancel
         </Button>
       </ButtonRow>
     </Modal>

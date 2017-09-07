@@ -216,6 +216,7 @@
     "testRegex": "tests/.*\\.test\\.js$"
   },
   "dependencies": {
+    "@sendgrid/mail": "^6.1.2",
     "babel-polyfill": "6.20.0",
     "bcrypt-nodejs": "^0.0.3",
     "bluebird": "^3.5.0",

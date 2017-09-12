@@ -1,17 +1,16 @@
-const Customer = require('../../db/config').Customer;
 const bcrypt = require('bcrypt-nodejs');
 const Promise = require('bluebird');
-
+const { Employee } = require('../config');
 const cipher = Promise.promisify(bcrypt.hash);
 
-Customer.beforeCreate(user =>
+Employee.beforeCreate(user =>
   cipher(user.password, null, null).then(hashedPw => {
     // eslint-disable-next-line no-param-reassign
     user.password = hashedPw;
   })
 );
 
-Customer.Instance.prototype.comparePassword = function comparePassword(
+Employee.Instance.prototype.comparePassword = function comparePassword(
   candidatePassword,
   cb
 ) {
@@ -27,4 +26,4 @@ Customer.Instance.prototype.comparePassword = function comparePassword(
   );
 };
 
-module.exports = Customer;
+module.exports = Employee;

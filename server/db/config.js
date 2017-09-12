@@ -6,6 +6,7 @@ const sequelize = new Sequelize('haven', 'root', 'Ca$hmere1', {
   dialect: 'postgres',
 });
 
+/* Schema Definitions */
 const Customer = sequelize.define('customer', {
   regDate: Sequelize.DATE,
   username: { type: Sequelize.STRING, unique: true },
@@ -80,8 +81,8 @@ const Surcharge = sequelize.define('surcharge', {
   status: Sequelize.STRING,
   charge: Sequelize.DECIMAL(10, 2),
 });
-// many-to-many relationship between customers and hotels
 
+/* Relationships */
 Customer.belongsToMany(Hotel, { through: Stay });
 Hotel.belongsToMany(Customer, { through: Stay });
 
@@ -94,7 +95,6 @@ Stay.belongsTo(Hotel);
 Stay.hasMany(Surcharge);
 Surcharge.belongsTo(Stay);
 
-// one-to-many relationship
 Hotel.hasMany(Employee);
 Employee.belongsTo(Hotel);
 

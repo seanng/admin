@@ -1,4 +1,5 @@
-const { Surcharge, Stay } = require('../../db/config');
+// const { Surcharge, Stay } = require('../../db/config');
+const { Stay, Surcharge } = require('../../db/models');
 const { reply } = require('../helpers');
 
 const saveCharges = (charges, totalCharge, stayId, respond) =>

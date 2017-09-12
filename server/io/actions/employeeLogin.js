@@ -1,4 +1,5 @@
-const Employee = require('../../actions/employee/employee.model');
+// const Employee = require('../../actions/employee/employee.model');
+const { Employee } = require('../../db/models');
 const { signToken } = require('../../db/helpers');
 const { reply } = require('../helpers');
 

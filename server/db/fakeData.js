@@ -1,11 +1,5 @@
-const {
-  sequelize,
-  Surcharge,
-  Stay,
-  Hotel,
-  Customer,
-  Employee,
-} = require('./config');
+const { sequelize } = require('./config');
+const { Surcharge, Stay, Hotel, Customer, Employee } = require('./models');
 
 const fakeData = {
   customers: [

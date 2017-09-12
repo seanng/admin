@@ -1,4 +1,4 @@
-const Customer = require('./customer.model');
+const { Customer } = require('../../db/models');
 const { signToken } = require('../../db/helpers');
 const controller = {};
 

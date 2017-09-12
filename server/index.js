@@ -3,7 +3,7 @@
 const express = require('express');
 // eslint-disable-next-line import/no-unresolved
 const bodyParser = require('body-parser');
-const pretty = require('pretty-error')();
+// const pretty = require('pretty-error')();
 const logger = require('./logger');
 const argv = require('minimist')(process.argv.slice(2));
 const setup = require('./middlewares/frontendMiddleware');
@@ -15,8 +15,8 @@ const ngrok =
     : false;
 const resolve = require('path').resolve;
 const app = express();
-const actions = require('./actions');
-const mapUrl = require('./utils/url');
+// const actions = require('./actions');
+// const mapUrl = require('./utils/url');
 const preloadDbData = require('./db/fakeData');
 const preloadCacheData = require('./cache/fakeData');
 
@@ -24,33 +24,33 @@ const preloadCacheData = require('./cache/fakeData');
 // app.use('/api', myApi);
 app.use(bodyParser.json());
 
-app.use('/api', (req, res) => {
-  const splittedUrlPath = req.url.split('?')[0].split('/').slice(1);
-  const { action, params } = mapUrl(actions, splittedUrlPath);
+// app.use('/api', (req, res) => {
+//   const splittedUrlPath = req.url.split('?')[0].split('/').slice(1);
+//   const { action, params } = mapUrl(actions, splittedUrlPath);
 
-  console.log('req body:', req.body);
-  if (action) {
-    action(req, params).then(
-      result => {
-        if (result instanceof Function) {
-          result(res);
-        } else {
-          res.json(result);
-        }
-      },
-      reason => {
-        if (reason && reason.redirect) {
-          res.redirect(reason.redirect);
-        } else {
-          console.error('API ERROR:', pretty.render(reason));
-          res.status(reason.status || 500).json(reason);
-        }
-      }
-    );
-  } else {
-    res.status(404).end('NOT FOUND');
-  }
-});
+//   console.log('req body:', req.body);
+//   if (action) {
+//     action(req, params).then(
+//       result => {
+//         if (result instanceof Function) {
+//           result(res);
+//         } else {
+//           res.json(result);
+//         }
+//       },
+//       reason => {
+//         if (reason && reason.redirect) {
+//           res.redirect(reason.redirect);
+//         } else {
+//           console.error('API ERROR:', pretty.render(reason));
+//           res.status(reason.status || 500).json(reason);
+//         }
+//       }
+//     );
+//   } else {
+//     res.status(404).end('NOT FOUND');
+//   }
+// });
 
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {

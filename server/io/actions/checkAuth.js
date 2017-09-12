@@ -1,6 +1,7 @@
 const { validateToken } = require('../../db/helpers');
 const { reply } = require('../helpers');
-const Employee = require('../../actions/employee/employee.model');
+// const Employee = require('../../actions/employee/employee.model');
+const { Employee } = require('../../db/models');
 
 const checkAuth = (token, respond) => {
   validateToken(token, (err, decoded) => {

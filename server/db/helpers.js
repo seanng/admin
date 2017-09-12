@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { Stay, Customer } = require('./config');
 const secret = '19ajsadijmvz';
 
-const retrieveStays = (hotelId, respond) => {
+function retrieveStays(hotelId, respond) {
   Stay.findAll({
     where: { hotelId },
     include: [Customer],
@@ -19,15 +19,15 @@ const retrieveStays = (hotelId, respond) => {
       respond(null, newStays);
     })
     .catch(err => respond(err));
-};
+}
 
-const signToken = function signToken(id) {
+function signToken(id) {
   return jwt.sign({ userId: id }, secret, { expiresIn: 36000 });
-};
+}
 
-const validateToken = function validateToken(token, cb) {
+function validateToken(token, cb) {
   return jwt.verify(token, secret, cb);
-};
+}
 
 module.exports = {
   retrieveStays,

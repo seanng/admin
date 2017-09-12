@@ -26,14 +26,6 @@ export default defineMessages({
     id: 'app.components.TeamManagement.remove',
     defaultMessage: 'Remove',
   },
-  Prompt: {
-    id: 'app.components.TeamManagement.Prompt',
-    defaultMessage: '',
-  },
-  Confirm: {
-    id: 'app.components.TeamManagement.Confirm',
-    defaultMessage: '',
-  },
   upgradeToAdminPrompt: {
     id: 'app.components.TeamManagement.upgradeToAdminPrompt',
     defaultMessage: 'Upgrade {name} to Admin?',
@@ -45,6 +37,10 @@ export default defineMessages({
   deleteAccountPrompt: {
     id: 'app.components.TeamManagement.deleteAccountPrompt',
     defaultMessage: "Delete {name}'s account permanently?",
+  },
+  deleteAccountConfirm: {
+    id: 'app.components.TeamManagement.deleteAccountConfirm',
+    defaultMessage: 'Confirm',
   },
   addMember: {
     id: 'app.components.TeamManagement.addMember',

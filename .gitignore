@@ -10,4 +10,4 @@ dump.rdb
 .DS_Store
 npm-debug.log
 .idea
-sendgrid.env
+.env

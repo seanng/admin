@@ -20,6 +20,13 @@ const app = express();
 const preloadDbData = require('./db/fakeData');
 const preloadCacheData = require('./cache/fakeData');
 
+// load .env file
+const dotenv = require('dotenv');
+
+if (isDev) {
+  dotenv.config();
+}
+
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
 // app.use('/api', myApi);
 app.use(bodyParser.json());

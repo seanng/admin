@@ -11,8 +11,10 @@ import {
   CHECK_IN,
   SET_FILTER,
   DISPLAY_ADD_ROOM_MODAL,
+  DISPLAY_ROOM_OPTIONS_MODAL,
   HANDLE_INPUT_CHANGE,
   CREATE_ROOM,
+  OPEN_ROOM_OPTIONS_MODAL,
 } from './constants';
 
 export function fetchRooms() {
@@ -57,6 +59,13 @@ export function displayAddRoomModal(bool) {
   };
 }
 
+export function displayRoomOptionsModal(bool) {
+  return {
+    type: DISPLAY_ROOM_OPTIONS_MODAL,
+    bool,
+  };
+}
+
 export function createRoom(roomNumber) {
   return {
     type: CREATE_ROOM,
@@ -69,5 +78,14 @@ export function handleInputChange(key, value) {
     type: HANDLE_INPUT_CHANGE,
     key,
     value,
+  };
+}
+
+export function openRoomOptionsModal(status, room, guest) {
+  return {
+    type: OPEN_ROOM_OPTIONS_MODAL,
+    status,
+    room,
+    guest,
   };
 }

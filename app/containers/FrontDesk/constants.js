@@ -21,4 +21,7 @@ export const CHECK_IN_ERROR = 'app/FrontDesk/CHECK_IN_ERROR';
 export const SET_FILTER = 'app/FrontDesk/SET_FILTER';
 export const HANDLE_INPUT_CHANGE = 'app/FrontDesk/HANDLE_INPUT_CHANGE';
 export const DISPLAY_ADD_ROOM_MODAL = 'app/FrontDesk/DISPLAY_ADD_ROOM_MODAL';
+export const DISPLAY_ROOM_OPTIONS_MODAL =
+  'app/FrontDesk/DISPLAY_ROOM_OPTIONS_MODAL';
 export const CREATE_ROOM_SUCCESS = 'app/FrontDesk/CREATE_ROOM_SUCCESS';
+export const OPEN_ROOM_OPTIONS_MODAL = 'app/FrontDesk/OPEN_ROOM_OPTIONS_MODAL';

@@ -10,6 +10,7 @@ import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
 import format from 'date-fns/format';
 import AddRoomModal from 'components/AddRoomModal';
+import RoomOptionsModal from 'components/RoomOptionsModal';
 import colors from 'themes/colors';
 import TableContainer from 'components/Table/Container';
 import TableHeaderRow from 'components/Table/HeaderRow';
@@ -23,14 +24,20 @@ import {
   makeAvailable,
   setFilter,
   displayAddRoomModal,
+  displayRoomOptionsModal,
   handleInputChange,
   createRoom,
+  openRoomOptionsModal,
 } from './actions';
 import {
   selectRooms,
   selectHasLoaded,
   selectActiveFilter,
   selectShouldDisplayAddRoomModal,
+  selectShouldDisplayRoomOptionsModal,
+  selectActiveRoomStatus,
+  selectActiveRoomNumber,
+  selectActiveRoomGuest,
   selectAddRoomInput,
 } from './selectors';
 import messages from './messages';
@@ -51,7 +58,7 @@ export class FrontDesk extends React.PureComponent {
 
   handleFilterChange = val => this.props.setFilter(val);
 
-  handleModalClose = () => {
+  handleAddRoomModalClose = () => {
     // clear fields
     this.props.handleInputChange('addRoomInput', '');
     this.props.closeAddRoomModal();
@@ -75,7 +82,13 @@ export class FrontDesk extends React.PureComponent {
       activeFilter,
       openAddRoomModal,
       shouldDisplayAddRoomModal,
+      shouldDisplayRoomOptionsModal,
       addRoomInput,
+      closeRoomOptionsModal,
+      activeRoomStatus,
+      activeRoomNumber,
+      activeRoomGuest,
+      viewRoomOptions,
     } = this.props;
     if (!hasLoaded) {
       return <Container />;
@@ -96,8 +109,6 @@ export class FrontDesk extends React.PureComponent {
                 key={option}
                 selected={option === activeFilter}
                 onClick={() => this.handleFilterChange(option)}
-                mr={1.5}
-                width="10rem"
               >
                 <FormattedMessage {...messages[option]} />
               </FilterButton>
@@ -140,7 +151,11 @@ export class FrontDesk extends React.PureComponent {
                 },
                 index
               ) =>
-                <TableBodyRow key={index}>
+                <TableBodyRow
+                  key={index}
+                  onClick={() =>
+                    viewRoomOptions(status, roomNumber, customerName)}
+                >
                   <TableBodyCol width="60px">
                     {index + 1}
                   </TableBodyCol>
@@ -174,10 +189,17 @@ export class FrontDesk extends React.PureComponent {
         </Body>
         <AddRoomModal
           isOpen={shouldDisplayAddRoomModal}
-          closeModal={this.handleModalClose}
+          closeModal={this.handleAddRoomModalClose}
           handleInputChange={this.handleInputChange}
           addRoom={this.handleAddRoom}
           addRoomInput={addRoomInput}
+        />
+        <RoomOptionsModal
+          roomStatus={activeRoomStatus}
+          roomNumber={activeRoomNumber}
+          guestName={activeRoomGuest}
+          isOpen={shouldDisplayRoomOptionsModal}
+          closeModal={closeRoomOptionsModal}
         />
       </Container>
     );
@@ -189,7 +211,11 @@ const mapStateToProps = createStructuredSelector({
   hasLoaded: selectHasLoaded(),
   activeFilter: selectActiveFilter(),
   shouldDisplayAddRoomModal: selectShouldDisplayAddRoomModal(),
+  shouldDisplayRoomOptionsModal: selectShouldDisplayRoomOptionsModal(),
   addRoomInput: selectAddRoomInput(),
+  activeRoomStatus: selectActiveRoomStatus(),
+  activeRoomNumber: selectActiveRoomNumber(),
+  activeRoomGuest: selectActiveRoomGuest(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -203,8 +229,11 @@ function mapDispatchToProps(dispatch) {
     setFilter: filter => dispatch(setFilter(filter)),
     openAddRoomModal: () => dispatch(displayAddRoomModal(true)),
     closeAddRoomModal: () => dispatch(displayAddRoomModal(false)),
+    closeRoomOptionsModal: () => dispatch(displayRoomOptionsModal(false)),
     addRoom: room => dispatch(createRoom(room)),
     handleInputChange: (key, value) => dispatch(handleInputChange(key, value)),
+    viewRoomOptions: (status, room, guest) =>
+      dispatch(openRoomOptionsModal(status, room, guest)),
   };
 }
 

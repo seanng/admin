@@ -32,6 +32,26 @@ export const selectShouldDisplayAddRoomModal = () =>
     substate.get('shouldDisplayAddRoomModal')
   );
 
+export const selectShouldDisplayRoomOptionsModal = () =>
+  createSelector(selectFrontDeskDomain(), substate =>
+    substate.get('shouldDisplayRoomOptionsModal')
+  );
+
+export const selectActiveRoomStatus = () =>
+  createSelector(selectFrontDeskDomain(), substate =>
+    substate.get('activeRoomStatus')
+  );
+
+export const selectActiveRoomNumber = () =>
+  createSelector(selectFrontDeskDomain(), substate =>
+    substate.get('activeRoomNumber')
+  );
+
+export const selectActiveRoomGuest = () =>
+  createSelector(selectFrontDeskDomain(), substate =>
+    substate.get('activeRoomGuest')
+  );
+
 /**
  * Default selector used by FrontDesk
  */

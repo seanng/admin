@@ -16,8 +16,10 @@ import {
   CHECK_IN_ERROR,
   SET_FILTER,
   DISPLAY_ADD_ROOM_MODAL,
+  DISPLAY_ROOM_OPTIONS_MODAL,
   HANDLE_INPUT_CHANGE,
   CREATE_ROOM_SUCCESS,
+  OPEN_ROOM_OPTIONS_MODAL,
 } from './constants';
 
 const initialState = fromJS({
@@ -26,6 +28,10 @@ const initialState = fromJS({
   activeFilter: 'all',
   addRoomInput: '',
   shouldDisplayAddRoomModal: false,
+  shouldDisplayRoomOptionsModal: false,
+  activeRoomStatus: '',
+  activeRoomGuest: '',
+  activeRoomNumber: '',
 });
 
 function frontDeskReducer(state = initialState, action) {
@@ -69,6 +75,17 @@ function frontDeskReducer(state = initialState, action) {
 
     case DISPLAY_ADD_ROOM_MODAL:
       return state.set('shouldDisplayAddRoomModal', action.bool);
+
+    case DISPLAY_ROOM_OPTIONS_MODAL:
+      return state.set('shouldDisplayRoomOptionsModal', action.bool);
+
+    case OPEN_ROOM_OPTIONS_MODAL:
+      return state.merge({
+        activeRoomStatus: action.status,
+        activeRoomGuest: action.guest,
+        activeRoomNumber: action.room,
+        shouldDisplayRoomOptionsModal: true,
+      });
 
     case HANDLE_INPUT_CHANGE:
       return state.set(action.key, action.value);

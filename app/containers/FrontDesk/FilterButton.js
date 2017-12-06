@@ -10,6 +10,7 @@ const FilterButton = styled(Button)`
   font-size: 14px;
   font-weight: 600;
   line-height: 19px;
+  margin-right: 10px;
   color: ${props => (props.selected ? colors.white : colors.base)};
 `;
 

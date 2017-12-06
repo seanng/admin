@@ -3,18 +3,19 @@
 * Button
 *
 */
-
+import React from 'react';
 import styled from 'styled-components';
 import colors from 'themes/colors';
 
-const Button = styled.div`
+const StyledButton = styled.div`
   display: inline-block;
   text-align: center;
   border: 1px solid transparent;
   padding: 0.5rem 1rem;
   font-size: 1rem;
   border-radius: ${props => !props.sharp && '0.8rem'};
-  cursor: pointer;
+  cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
+  opacity: ${props => props.disabled && '0.3'};
   box-shadow: '0 1px 1px rgba(0, 0, 0, 0.09), 0 1px 2px rgba(0, 0, 0, 0.05)';
   background-color: ${props => (props.bgColor ? props.bgColor : colors.base)};
   color: ${props => (props.textColor ? props.textColor : colors.lightGray)};
@@ -29,5 +30,13 @@ const Button = styled.div`
   width: ${props => props.width && props.width};
   flex: ${props => props.flex && props.flex};
 `;
+
+function Button({ onClick, disabled, children, ...rest }) {
+  return (
+    <StyledButton {...rest} onClick={() => !disabled && onClick()}>
+      {children}
+    </StyledButton>
+  );
+}
 
 export default Button;

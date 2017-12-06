@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { FormattedMessage } from 'react-intl';
-import { getFormattedDate } from 'utils/helpers';
+import { getFormattedDate, hasNewCharge } from 'utils/helpers';
 import colors from 'themes/colors';
 import Button from '../Button';
 import Input from '../Input';
@@ -40,6 +40,7 @@ function ChargesModal({
   addCharge,
 }) {
   const date = getFormattedDate(stay.checkInTime, stay.checkOutTime);
+  console.log('charges ? ', charges);
   return (
     <Modal
       contentLabel="chargesModal"
@@ -157,6 +158,7 @@ function ChargesModal({
           textColor={colors.lightGray}
           onClick={updateCharges}
           ph={2}
+          disabled={hasNewCharge(charges)}
         >
           <FormattedMessage {...messages.updateCharges} />
         </Button>

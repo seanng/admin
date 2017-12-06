@@ -48,6 +48,6 @@ export default defineMessages({
   },
   cancel: {
     id: 'app.components.ChargesModal.cancel',
-    defaultMessage: 'Cancel',
+    defaultMessage: 'Close',
   },
 });

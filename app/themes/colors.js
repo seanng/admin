@@ -1,4 +1,7 @@
 const defaultTheme = {
+  primary: '#D9A55B',
+  secondary: '#475260',
+  wallpaper: '#F5F5F5',
   white: '#FFFFFF',
   lightGray: '#E2E3E2',
   inputDark: '#42453F',

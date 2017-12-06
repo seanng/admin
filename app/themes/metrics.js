@@ -13,7 +13,7 @@ const defaultTheme = {
     h6: '1rem',
   },
   paddingVertical: '1.5rem',
-  navBarHeight: '4rem',
+  navBarHeight: '80px',
   subNavHeight: '5rem',
   padding: '1rem',
 };

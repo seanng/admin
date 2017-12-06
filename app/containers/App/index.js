@@ -17,56 +17,33 @@ import { createStructuredSelector } from 'reselect';
 import LoginPage from 'containers/LoginPage';
 import LoadingPage from 'components/LoadingPage';
 import Navigation from 'components/Navigation';
-import SubNavigation from 'components/SubNavigation';
 import Container from 'components/Container';
-import {
-  checkAuth,
-  invalidateToken,
-  logout,
-  setBottomNavItems,
-} from './actions';
-import { selectUser, selectBottomNavItems, selectHasLoaded } from './selectors';
+import { checkAuth, invalidateToken, logout } from './actions';
+import { selectUser, selectHasLoaded } from './selectors';
 import AppWrapper from './AppWrapper';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends React.PureComponent {
   componentDidMount() {
     const token = window.localStorage.accessToken || null;
-    this.props.setBottomNavItems(this.props.location.pathname);
     if (token) {
       return this.props.checkAuth(token);
     }
     return this.props.invalidateToken();
   }
 
-  viewDashboard = () => {
-    const path = '/';
-    this.props.router.push(path);
-    this.props.setBottomNavItems(path);
-  };
-
-  viewAccount = () => {
-    const path = '/hotelprofile';
-    this.props.router.push(path);
-    this.props.setBottomNavItems(path);
-  };
+  navigate = path => this.props.router.push(path);
 
   renderApplication() {
     return (
       <AppWrapper>
         <Navigation
+          navigate={this.navigate}
           location={this.props.locationState}
-          viewDashboard={this.viewDashboard}
-          viewAccount={this.viewAccount}
           pathname={this.props.location.pathname}
           logout={this.props.logout}
         />
         <Container>
-          <SubNavigation
-            router={this.props.router}
-            pathname={this.props.location.pathname}
-            items={this.props.bottomNavItems}
-          />
           {React.Children.toArray(this.props.children)}
         </Container>
       </AppWrapper>
@@ -86,7 +63,6 @@ function mapDispatchToProps(dispatch) {
     dispatch,
     checkAuth: token => dispatch(checkAuth(token)),
     invalidateToken: () => dispatch(invalidateToken()),
-    setBottomNavItems: view => dispatch(setBottomNavItems(view)),
     logout: () => dispatch(logout()),
   };
 }
@@ -94,7 +70,6 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   hasLoaded: selectHasLoaded(),
   user: selectUser(),
-  bottomNavItems: selectBottomNavItems(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

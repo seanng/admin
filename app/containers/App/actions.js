@@ -1,9 +1,4 @@
-import {
-  CHECK_AUTH,
-  INVALIDATE_TOKEN,
-  SET_BOTTOM_NAV_ITEMS,
-  LOGOUT,
-} from './constants';
+import { CHECK_AUTH, INVALIDATE_TOKEN, LOGOUT } from './constants';
 
 export function checkAuth(token) {
   return {
@@ -15,13 +10,6 @@ export function checkAuth(token) {
 export function invalidateToken() {
   return {
     type: INVALIDATE_TOKEN,
-  };
-}
-
-export function setBottomNavItems(view) {
-  return {
-    type: SET_BOTTOM_NAV_ITEMS,
-    view,
   };
 }
 

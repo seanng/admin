@@ -37,3 +37,10 @@ export function hasNewCharge(charges) {
   console.log('res', res);
   return res;
 }
+
+export function getNavIconColor(currentPath, pathNames) {
+  if (pathNames.indexOf(currentPath) !== -1) {
+    return '#FFFFFF';
+  }
+  return 'rgba(255, 255, 255, 0.5)';
+}

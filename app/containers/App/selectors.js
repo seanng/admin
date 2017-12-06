@@ -22,11 +22,6 @@ const selectGlobalDomain = () => state => state.get('global');
 export const selectUser = () =>
   createSelector(selectGlobalDomain(), substate => substate.get('user'));
 
-export const selectBottomNavItems = () =>
-  createSelector(selectGlobalDomain(), substate =>
-    substate.get('bottomNavItems')
-  );
-
 export const selectHasLoaded = () =>
   createSelector(selectGlobalDomain(), substate => substate.get('hasLoaded'));
 

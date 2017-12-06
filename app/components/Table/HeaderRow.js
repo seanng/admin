@@ -7,7 +7,7 @@ const HeaderRow = styled.div`
   width: 100%;
   height: 60px;
   margin-bottom: ${props => props.mb && `${props.mb}rem`};
-  background-color: ${colors.secondary};
+  background-color: ${colors.base};
 `;
 
 export default HeaderRow;

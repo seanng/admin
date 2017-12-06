@@ -1,74 +1,52 @@
 import React from 'react';
 import Modal from 'react-modal';
-// import styled from 'styled-components';
-
 import { FormattedMessage } from 'react-intl';
-import colors from 'themes/colors';
 import modalStyle from './modalStyle';
 import Header from './Header';
-import Body from './Body';
-import Footer from './Footer';
-import Label from './Label';
 import InputWrapper from './InputWrapper';
-import Input from '../Input';
-import Button from '../Button';
-import H3 from '../fonts/H3';
+import Input from './Input';
+import Button from './Button';
 import messages from './messages';
 
-function AddRoomModal({
-  isOpen,
-  closeModal,
-  addRoomInput,
-  handleInputChange,
-  addRoom,
-}) {
-  return (
-    <Modal
-      contentLabel="addRoomModal"
-      isOpen={isOpen}
-      style={modalStyle}
-      onRequestClose={closeModal}
-      shouldCloseOnOverlayClick
-    >
-      <Header>
-        <H3>
+class AddRoomModal extends React.Component {
+  componentDidUpdate(prevProps) {
+    if (!prevProps.isOpen && this.props.isOpen) {
+      setTimeout(() => {
+        this.input.focus();
+      }, 0); // https://github.com/reactjs/react-modal/issues/51
+    }
+  }
+
+  render() {
+    return (
+      <Modal
+        contentLabel="addRoomModal"
+        isOpen={this.props.isOpen}
+        style={modalStyle}
+        onRequestClose={this.props.closeModal}
+        shouldCloseOnOverlayClick
+      >
+        <Header>
           <FormattedMessage {...messages.header} />
-        </H3>
-      </Header>
-      <Body>
-        <Label>
-          <FormattedMessage {...messages.roomNumber} />
-        </Label>
+        </Header>
         <InputWrapper>
           <Input
+            innerRef={x => (this.input = x)}
             name="addRoomInput"
             type="text"
-            value={addRoomInput}
-            onChange={handleInputChange}
+            value={this.props.addRoomInput}
+            onChange={this.props.handleInputChange}
           />
         </InputWrapper>
-      </Body>
-      <Footer>
-        <Button
-          bgColor={colors.base}
-          textColor={colors.lightGray}
-          mr={2}
-          ph={2}
-          onClick={closeModal}
-        >
-          <FormattedMessage {...messages.cancel} />
-        </Button>
-        <Button
-          bgColor={colors.support}
-          textColor={colors.lightGray}
-          onClick={addRoom}
-          ph={2}
-        >
+        <Button primary onClick={this.props.addRoom}>
           <FormattedMessage {...messages.addRoom} />
         </Button>
-      </Footer>
-    </Modal>
-  );
+        <Button onClick={this.props.closeModal}>
+          <FormattedMessage {...messages.cancel} />
+        </Button>
+      </Modal>
+    );
+  }
 }
 
 export default AddRoomModal;

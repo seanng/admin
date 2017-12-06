@@ -12,7 +12,7 @@ import Header from './Header';
 import UpperBody from './UpperBody';
 import LowerBody from './LowerBody';
 
-import TableFrame from '../Table/Frame';
+import TableContainer from '../Table/Container';
 import HeaderRow from '../Table/HeaderRow';
 import HeaderCol from '../Table/HeaderCol';
 import BodyRow from '../Table/BodyRow';
@@ -88,7 +88,7 @@ function ChargesModal({
         </Button>
       </UpperBody>
       <LowerBody>
-        <TableFrame>
+        <TableContainer>
           <HeaderRow mb={1}>
             <HeaderCol width={mapColToWidth.service}>
               <FormattedMessage {...messages.service} />
@@ -141,7 +141,7 @@ function ChargesModal({
               )}
             </HeaderCol>
           </HeaderRow>
-        </TableFrame>
+        </TableContainer>
       </LowerBody>
       <Footer>
         <Button

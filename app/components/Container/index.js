@@ -10,7 +10,7 @@ const Container = styled.div`
   padding-top: ${props => (props.pt && props.pt) || (props.pv && props.pv)};
   padding-bottom: ${props => (props.pb && props.pb) || (props.pv && props.pv)};
   margin: 0 auto;
-  width: 90%;
+  width: 1004px;
   height: 100%;
 
   @media (max-width: 991px) {

@@ -8,15 +8,11 @@ import styled from 'styled-components';
 import colors from 'themes/colors';
 
 const StyledButton = styled.div`
-  display: inline-block;
-  text-align: center;
-  border: 1px solid transparent;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  border-radius: ${props => !props.sharp && '0.8rem'};
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
   opacity: ${props => props.disabled && '0.3'};
-  box-shadow: '0 1px 1px rgba(0, 0, 0, 0.09), 0 1px 2px rgba(0, 0, 0, 0.05)';
   background-color: ${props => (props.bgColor ? props.bgColor : colors.base)};
   color: ${props => (props.textColor ? props.textColor : colors.lightGray)};
   padding-top: ${props => props.pv && `${props.pv}rem`};

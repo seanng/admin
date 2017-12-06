@@ -8,7 +8,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import ReviewEntryRow from './ReviewEntryRow';
 import messages from './messages';
-import TableFrame from '../Table/Frame';
+import TableContainer from '../Table/Container';
 import HeaderRow from '../Table/HeaderRow';
 import HeaderCol from '../Table/HeaderCol';
 
@@ -26,7 +26,7 @@ const mapColToWidth = {
 
 function ReviewTable({ stays, handleOpenSurcharges }) {
   return (
-    <TableFrame>
+    <TableContainer>
       <HeaderRow mb={1}>
         <HeaderCol width={mapColToWidth.date}>
           <FormattedMessage {...messages.date} />
@@ -63,7 +63,7 @@ function ReviewTable({ stays, handleOpenSurcharges }) {
           mapColToWidth={mapColToWidth}
         />
       )}
-    </TableFrame>
+    </TableContainer>
   );
 }
 

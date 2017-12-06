@@ -7,10 +7,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import Filters from 'components/FrontDeskFilters';
-import Table from 'components/FrontDeskTable';
+import { FormattedMessage } from 'react-intl';
+import format from 'date-fns/format';
 import AddRoomModal from 'components/AddRoomModal';
-import getIconButton from 'components/IconButton';
+import colors from 'themes/colors';
+import TableContainer from 'components/Table/Container';
+import TableHeaderRow from 'components/Table/HeaderRow';
+import TableHeaderCol from 'components/Table/HeaderCol';
+import TableBodyRow from 'components/Table/BodyRow';
+import TableBodyCol from 'components/Table/BodyCol';
 import {
   fetchRooms,
   deleteRoom,
@@ -28,9 +33,13 @@ import {
   selectShouldDisplayAddRoomModal,
   selectAddRoomInput,
 } from './selectors';
+import messages from './messages';
 import Container from './Container';
 import Header from './Header';
 import Body from './Body';
+import FiltersContainer from './FiltersContainer';
+import FilterButton from './FilterButton';
+import AddRoomButton from './AddRoomButton';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class FrontDesk extends React.PureComponent {
@@ -94,18 +103,87 @@ export class FrontDesk extends React.PureComponent {
     return (
       <Container>
         <Header>
-          <Filters
-            handleFilterChange={this.handleFilterChange}
-            filterOptions={this.filterOptions}
-            activeFilter={activeFilter}
-          />
-          {getIconButton('addRoom', openAddRoomModal)}
+          <FiltersContainer>
+            {this.filterOptions.map(option =>
+              <FilterButton
+                key={option}
+                selected={option === activeFilter}
+                onClick={() => this.handleFilterChange(option)}
+                mr={1.5}
+                width="10rem"
+              >
+                {option}
+              </FilterButton>
+            )}
+          </FiltersContainer>
+          <AddRoomButton onClick={openAddRoomModal}>ADD ROOM</AddRoomButton>
         </Header>
         <Body>
-          <Table
-            handleActionClick={this.handleActionClick}
-            rooms={filteredRooms}
-          />
+          <TableContainer>
+            <TableHeaderRow mb={1}>
+              <TableHeaderCol width="60px">#</TableHeaderCol>
+              <TableHeaderCol width="120px">
+                <FormattedMessage {...messages.room} />
+              </TableHeaderCol>
+              <TableHeaderCol width="120px">
+                <FormattedMessage {...messages.status} />
+              </TableHeaderCol>
+              <TableHeaderCol width="220px">
+                <FormattedMessage {...messages.guest} />
+              </TableHeaderCol>
+              <TableHeaderCol width="120px" mr="50px">
+                <FormattedMessage {...messages.guest} />
+              </TableHeaderCol>
+              <TableHeaderCol width="120px" mr="64px">
+                <FormattedMessage {...messages.checkedIn} />
+              </TableHeaderCol>
+              <TableHeaderCol width="120px">
+                <FormattedMessage {...messages.checkedOut} />
+              </TableHeaderCol>
+            </TableHeaderRow>
+            {filteredRooms.map(
+              (
+                {
+                  roomNumber,
+                  status,
+                  customerName,
+                  bookingTime,
+                  checkInTime,
+                  checkOutTime,
+                },
+                index
+              ) =>
+                <TableBodyRow key={index}>
+                  <TableBodyCol width="60px">
+                    {index + 1}
+                  </TableBodyCol>
+                  <TableBodyCol width="120px" color={colors.primary}>
+                    {roomNumber}
+                  </TableBodyCol>
+                  <TableBodyCol width="120px">
+                    {status}
+                  </TableBodyCol>
+                  <TableBodyCol width="220px">
+                    {customerName}
+                  </TableBodyCol>
+                  <TableBodyCol width="120px" mr="50px">
+                    {(bookingTime &&
+                      format(new Date(bookingTime * 1), 'h:mm a')) ||
+                      '-'}
+                  </TableBodyCol>
+                  <TableBodyCol width="120px" mr="64px">
+                    {(checkInTime &&
+                      format(new Date(checkInTime * 1), 'h:mm a')) ||
+                      '-'}
+                  </TableBodyCol>
+                  <TableBodyCol width="120px">
+                    {(checkOutTime &&
+                      format(new Date(checkInTime * 1), 'h:mm a')) ||
+                      '-'}
+                  </TableBodyCol>
+                </TableBodyRow>
+            )}
+          </TableContainer>
         </Body>
         <AddRoomModal
           isOpen={shouldDisplayAddRoomModal}

@@ -47,20 +47,7 @@ export class FrontDesk extends React.PureComponent {
     this.props.fetchRooms();
   }
 
-  filterOptions = ['All', 'Available', 'Reserved', 'Not Ready', 'Occupied'];
-
-  handleActionClick = (roomNumber, status, index) => {
-    switch (status) {
-      case 'Available':
-        return this.props.deleteRoom(roomNumber);
-      case 'Not Ready':
-        return this.props.makeAvailable(roomNumber, index);
-      case 'Reserved':
-        return this.props.checkIn(roomNumber);
-      default:
-        return null;
-    }
-  };
+  filterOptions = ['all', 'available', 'reserved', 'notReady', 'occupied'];
 
   handleFilterChange = val => this.props.setFilter(val);
 
@@ -96,7 +83,7 @@ export class FrontDesk extends React.PureComponent {
     // massage rooms list to component requirements
     const roomsArr = rooms.toJS();
     const filteredRooms =
-      activeFilter === 'All'
+      activeFilter === 'all'
         ? roomsArr
         : roomsArr.filter(room => room.status === activeFilter);
     // rendered display
@@ -112,7 +99,7 @@ export class FrontDesk extends React.PureComponent {
                 mr={1.5}
                 width="10rem"
               >
-                {option}
+                <FormattedMessage {...messages[option]} />
               </FilterButton>
             )}
           </FiltersContainer>
@@ -161,7 +148,7 @@ export class FrontDesk extends React.PureComponent {
                     {roomNumber}
                   </TableBodyCol>
                   <TableBodyCol width="120px">
-                    {status}
+                    <FormattedMessage {...messages[status]} />
                   </TableBodyCol>
                   <TableBodyCol width="220px">
                     {customerName}

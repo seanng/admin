@@ -4,7 +4,7 @@ const { reply } = require('../helpers');
 const makeAvailable = (hotelId, roomNumber, respond) => {
   const key = `${hotelId}:room:${roomNumber}`;
   cache
-    .hmset(key, 'status', 'Available')
+    .hmset(key, 'status', 'available')
     .then(() => respond(null))
     .catch(err => respond(err));
 };

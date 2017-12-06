@@ -33,13 +33,13 @@ const createRoom = (hotelId, roomNumber, respond) => {
     cache.sadd(`${hotelId}:available`, roomNumber);
     // Third, create new hash in Redis for the room
     return cache
-      .hmset(key, 'status', 'Available', 'employeeId', employeeId)
+      .hmset(key, 'status', 'available', 'employeeId', employeeId)
       .then(() =>
         respond(null, {
           roomNumber,
           employeeId,
           customerName: null,
-          status: 'Available',
+          status: 'available',
         })
       )
       .catch(error => {

@@ -23,7 +23,7 @@ import {
 const initialState = fromJS({
   rooms: [],
   hasLoaded: false,
-  activeFilter: 'All',
+  activeFilter: 'all',
   addRoomInput: '',
   shouldDisplayAddRoomModal: false,
 });
@@ -42,7 +42,7 @@ function frontDeskReducer(state = initialState, action) {
         Map({
           roomNumber: action.roomNumber,
           employeeId: 123,
-          status: 'Available',
+          status: 'available',
           guestName: ' - ',
         })
       );

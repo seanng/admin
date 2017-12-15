@@ -10,9 +10,6 @@ const fetchRooms = (hotelId, respond) => {
         (promiseChain, key) =>
           cache.hgetall(key).then(room => {
             const newRoom = Object.assign({}, room);
-            if (newRoom.status === 'available') {
-              newRoom.customerName = '( empty )';
-            }
             newRoom.roomNumber = key.split(':')[2];
             return rooms.push(newRoom);
           }),

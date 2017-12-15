@@ -10,7 +10,7 @@ const defaultTheme = {
   disabled: '#dddddd',
   support: '#426E86',
   accent: '#F9BA32',
-  danger: '#F96B32',
+  danger: '#F55753',
 };
 
 export default defaultTheme;

@@ -32,6 +32,7 @@ const initialState = fromJS({
   activeRoomStatus: '',
   activeRoomGuest: '',
   activeRoomNumber: '',
+  activeRoomIndex: '',
 });
 
 function frontDeskReducer(state = initialState, action) {
@@ -49,7 +50,6 @@ function frontDeskReducer(state = initialState, action) {
           roomNumber: action.roomNumber,
           employeeId: 123,
           status: 'available',
-          guestName: ' - ',
         })
       );
     case DELETE_ROOM_ERROR:
@@ -84,6 +84,7 @@ function frontDeskReducer(state = initialState, action) {
         activeRoomStatus: action.status,
         activeRoomGuest: action.guest,
         activeRoomNumber: action.room,
+        activeRoomIndex: action.index,
         shouldDisplayRoomOptionsModal: true,
       });
 

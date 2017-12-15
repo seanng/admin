@@ -38,6 +38,7 @@ import {
   selectActiveRoomStatus,
   selectActiveRoomNumber,
   selectActiveRoomGuest,
+  selectActiveRoomIndex,
   selectAddRoomInput,
 } from './selectors';
 import messages from './messages';
@@ -68,6 +69,23 @@ export class FrontDesk extends React.PureComponent {
     const inputKey = event.target.name;
     const value = event.target.value;
     this.props.handleInputChange(inputKey, value);
+  };
+
+  handleRemoveRoom = () => {
+    const { activeRoomNumber, closeRoomOptionsModal, removeRoom } = this.props;
+    removeRoom(activeRoomNumber);
+    closeRoomOptionsModal();
+  };
+
+  handleMakeAvailable = () => {
+    const {
+      makeRoomAvailable,
+      activeRoomIndex,
+      activeRoomNumber,
+      closeRoomOptionsModal,
+    } = this.props;
+    makeRoomAvailable(activeRoomNumber, activeRoomIndex);
+    closeRoomOptionsModal();
   };
 
   handleAddRoom = () => {
@@ -118,7 +136,7 @@ export class FrontDesk extends React.PureComponent {
         </Header>
         <Body>
           <TableContainer>
-            <TableHeaderRow mb={1}>
+            <TableHeaderRow mb="10px">
               <TableHeaderCol width="60px">#</TableHeaderCol>
               <TableHeaderCol width="120px">
                 <FormattedMessage {...messages.room} />
@@ -130,7 +148,7 @@ export class FrontDesk extends React.PureComponent {
                 <FormattedMessage {...messages.guest} />
               </TableHeaderCol>
               <TableHeaderCol width="120px" mr="50px">
-                <FormattedMessage {...messages.guest} />
+                <FormattedMessage {...messages.booked} />
               </TableHeaderCol>
               <TableHeaderCol width="120px" mr="64px">
                 <FormattedMessage {...messages.checkedIn} />
@@ -154,7 +172,7 @@ export class FrontDesk extends React.PureComponent {
                 <TableBodyRow
                   key={index}
                   onClick={() =>
-                    viewRoomOptions(status, roomNumber, customerName)}
+                    viewRoomOptions(status, roomNumber, customerName, index)}
                 >
                   <TableBodyCol width="60px">
                     {index + 1}
@@ -166,7 +184,7 @@ export class FrontDesk extends React.PureComponent {
                     <FormattedMessage {...messages[status]} />
                   </TableBodyCol>
                   <TableBodyCol width="220px">
-                    {customerName}
+                    {customerName || '-'}
                   </TableBodyCol>
                   <TableBodyCol width="120px" mr="50px">
                     {(bookingTime &&
@@ -200,6 +218,8 @@ export class FrontDesk extends React.PureComponent {
           guestName={activeRoomGuest}
           isOpen={shouldDisplayRoomOptionsModal}
           closeModal={closeRoomOptionsModal}
+          removeRoom={this.handleRemoveRoom}
+          makeAvailable={this.handleMakeAvailable}
         />
       </Container>
     );
@@ -216,15 +236,16 @@ const mapStateToProps = createStructuredSelector({
   activeRoomStatus: selectActiveRoomStatus(),
   activeRoomNumber: selectActiveRoomNumber(),
   activeRoomGuest: selectActiveRoomGuest(),
+  activeRoomIndex: selectActiveRoomIndex(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     fetchRooms: () => dispatch(fetchRooms()),
-    makeAvailable: (roomNumber, index) =>
+    makeRoomAvailable: (roomNumber, index) =>
       dispatch(makeAvailable(roomNumber, index)),
-    deleteRoom: roomNumber => dispatch(deleteRoom(roomNumber)),
+    removeRoom: roomNumber => dispatch(deleteRoom(roomNumber)),
     checkIn: roomNumber => dispatch(checkIn(roomNumber)),
     setFilter: filter => dispatch(setFilter(filter)),
     openAddRoomModal: () => dispatch(displayAddRoomModal(true)),
@@ -232,8 +253,8 @@ function mapDispatchToProps(dispatch) {
     closeRoomOptionsModal: () => dispatch(displayRoomOptionsModal(false)),
     addRoom: room => dispatch(createRoom(room)),
     handleInputChange: (key, value) => dispatch(handleInputChange(key, value)),
-    viewRoomOptions: (status, room, guest) =>
-      dispatch(openRoomOptionsModal(status, room, guest)),
+    viewRoomOptions: (status, room, guest, index) =>
+      dispatch(openRoomOptionsModal(status, room, guest, index)),
   };
 }
 

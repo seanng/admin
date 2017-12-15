@@ -6,7 +6,7 @@ const HeaderRow = styled.div`
   flex-direction: row;
   width: 100%;
   height: 60px;
-  margin-bottom: ${props => props.mb && `${props.mb}rem`};
+  margin-bottom: ${props => props.mb && props.mb};
   background-color: ${colors.base};
 `;
 

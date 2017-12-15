@@ -81,11 +81,12 @@ export function handleInputChange(key, value) {
   };
 }
 
-export function openRoomOptionsModal(status, room, guest) {
+export function openRoomOptionsModal(status, room, guest, index) {
   return {
     type: OPEN_ROOM_OPTIONS_MODAL,
     status,
     room,
     guest,
+    index,
   };
 }

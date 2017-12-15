@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-const ContainerWrapper = styled.div`
+const SearchContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
+  margin: 40px 0 10px 0;
 `;
 
-export default ContainerWrapper;
+export default SearchContainer;

@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import colors from 'themes/colors';
 
-const Header = styled.div`
+const RoomNumber = styled.div`
   display: flex;
+  flex: 1;
   justify-content: center;
-  margin: 40px auto;
   color: ${colors.base2};
-  font-size: 14px;
+  font-size: 28px;
 `;
 
-export default Header;
+export default RoomNumber;

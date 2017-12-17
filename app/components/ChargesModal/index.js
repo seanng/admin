@@ -5,12 +5,15 @@ import { getFormattedDate, hasNewCharge } from 'utils/helpers';
 import colors from 'themes/colors';
 import Button from '../Button';
 import Input from '../Input';
-import H2 from '../fonts/H2';
-import InputWrapper from './InputWrapper';
 import modalStyle from './modalStyle';
 import Header from './Header';
-import UpperBody from './UpperBody';
-import LowerBody from './LowerBody';
+import Details from './Details';
+import GuestName from './GuestName';
+import RoomNumber from './RoomNumber';
+import DateOfStay from './DateOfStay';
+import AddChargeRow from './AddChargeRow';
+import Currency from './Currency';
+import AddChargeButton from './AddChargeButton';
 
 import TableContainer from '../Table/Container';
 import HeaderRow from '../Table/HeaderRow';
@@ -40,7 +43,6 @@ function ChargesModal({
   addCharge,
 }) {
   const date = getFormattedDate(stay.checkInTime, stay.checkOutTime);
-  console.log('charges ? ', charges);
   return (
     <Modal
       contentLabel="chargesModal"
@@ -50,102 +52,100 @@ function ChargesModal({
       shouldCloseOnOverlayClick={false}
     >
       <Header>
-        <H2>
-          <FormattedMessage
-            {...messages.header}
-            values={{
-              name: stay.customerName,
-              date,
-            }}
-          />
-        </H2>
+        <FormattedMessage {...messages.header} />
       </Header>
-      <UpperBody>
-        <InputWrapper flex={4}>
-          <Input
-            name="serviceInput"
-            type="text"
-            value={serviceInput}
-            placeholder="Service"
-            onChange={handleInputChange}
-          />
-        </InputWrapper>
-        <InputWrapper flex={1}>
-          <Input
-            name="priceInput"
-            type="text"
-            value={priceInput}
-            placeholder="Price (HKD)"
-            onChange={handleInputChange}
-          />
-        </InputWrapper>
-        <Button
-          bgColor={colors.support}
-          textColor={colors.lightGray}
-          onClick={addCharge}
-        >
+      <Details>
+        <GuestName>
+          {stay.customerName}
+        </GuestName>
+        <RoomNumber>
+          {stay.roomNumber}
+        </RoomNumber>
+        <DateOfStay>
+          {date}
+        </DateOfStay>
+      </Details>
+      <AddChargeRow>
+        <Input
+          name="serviceInput"
+          type="text"
+          value={serviceInput}
+          placeholder="Enter Service"
+          onChange={handleInputChange}
+          width="420px"
+        />
+        <Currency>
+          {stay.currency}
+        </Currency>
+        <Input
+          name="priceInput"
+          type="text"
+          value={priceInput}
+          placeholder="Price"
+          onChange={handleInputChange}
+          width="120px"
+        />
+        <AddChargeButton onClick={addCharge}>
           <FormattedMessage {...messages.addCharge} />
-        </Button>
-      </UpperBody>
-      <LowerBody>
-        <TableContainer>
-          <HeaderRow mb={1}>
-            <HeaderCol width={mapColToWidth.service}>
-              <FormattedMessage {...messages.service} />
-            </HeaderCol>
-            <HeaderCol width={mapColToWidth.hasItBeenUpdated}>
-              <FormattedMessage {...messages.hasItBeenUpdated} />
-            </HeaderCol>
-            <HeaderCol width={mapColToWidth.hasItBeenSettled}>
-              <FormattedMessage {...messages.hasItBeenSettled} />
-            </HeaderCol>
-            <HeaderCol width={mapColToWidth.price}>
-              <FormattedMessage
-                {...messages.price}
-                values={{ currency: stay.currency }}
-              />
-            </HeaderCol>
-          </HeaderRow>
-          {charges.map(({ service, updated, status, charge }, i) =>
-            <BodyRow key={i}>
-              <BodyRowLayer>
-                <BodyCol width={mapColToWidth.service}>
-                  {service}
-                </BodyCol>
-                <BodyCol width={mapColToWidth.hasItBeenUpdated}>
-                  {updated
-                    ? <FormattedMessage {...messages.yes} />
-                    : <FormattedMessage {...messages.no} />}
-                </BodyCol>
-                <BodyCol width={mapColToWidth.hasItBeenSettled}>
-                  {status === 'Settled'
-                    ? <FormattedMessage {...messages.yes} />
-                    : <FormattedMessage {...messages.no} />}
-                </BodyCol>
-                <BodyCol width={mapColToWidth.price}>
-                  {charge}
-                </BodyCol>
-              </BodyRowLayer>
-            </BodyRow>
-          )}
-          <HeaderRow>
-            <HeaderCol width={mapColToWidth.service}>
-              <FormattedMessage {...messages.total} />
-            </HeaderCol>
-            <HeaderCol width={mapColToWidth.hasItBeenUpdated} />
-            <HeaderCol width={mapColToWidth.hasItBeenSettled} />
-            <HeaderCol width={mapColToWidth.price}>
-              {charges.reduce(
-                (prev, current) => (prev * 1 + current.charge * 1).toFixed(2),
-                0
-              )}
-            </HeaderCol>
-          </HeaderRow>
-        </TableContainer>
-      </LowerBody>
+        </AddChargeButton>
+      </AddChargeRow>
+      <TableContainer>
+        <HeaderRow mb={1}>
+          <HeaderCol width={mapColToWidth.service}>
+            <FormattedMessage {...messages.service} />
+          </HeaderCol>
+          <HeaderCol width={mapColToWidth.hasItBeenUpdated}>
+            <FormattedMessage {...messages.hasItBeenUpdated} />
+          </HeaderCol>
+          <HeaderCol width={mapColToWidth.hasItBeenSettled}>
+            <FormattedMessage {...messages.hasItBeenSettled} />
+          </HeaderCol>
+          <HeaderCol width={mapColToWidth.price}>
+            <FormattedMessage
+              {...messages.price}
+              values={{ currency: stay.currency }}
+            />
+          </HeaderCol>
+        </HeaderRow>
+        {charges.map(({ service, updated, status, charge }, i) =>
+          <BodyRow key={i}>
+            <BodyRowLayer>
+              <BodyCol width={mapColToWidth.service}>
+                {service}
+              </BodyCol>
+              <BodyCol width={mapColToWidth.hasItBeenUpdated}>
+                {updated
+                  ? <FormattedMessage {...messages.yes} />
+                  : <FormattedMessage {...messages.no} />}
+              </BodyCol>
+              <BodyCol width={mapColToWidth.hasItBeenSettled}>
+                {status === 'Settled'
+                  ? <FormattedMessage {...messages.yes} />
+                  : <FormattedMessage {...messages.no} />}
+              </BodyCol>
+              <BodyCol width={mapColToWidth.price}>
+                {charge}
+              </BodyCol>
+            </BodyRowLayer>
+          </BodyRow>
+        )}
+        <HeaderRow>
+          <HeaderCol width={mapColToWidth.service}>
+            <FormattedMessage {...messages.total} />
+          </HeaderCol>
+          <HeaderCol width={mapColToWidth.hasItBeenUpdated} />
+          <HeaderCol width={mapColToWidth.hasItBeenSettled} />
+          <HeaderCol width={mapColToWidth.price}>
+            {charges.reduce(
+              (prev, current) => (prev * 1 + current.charge * 1).toFixed(2),
+              0
+            )}
+          </HeaderCol>
+        </HeaderRow>
+      </TableContainer>
       <Footer>
         <Button
-          bgColor={colors.base}
+          bgColor={colors.base2}
           textColor={colors.lightGray}
           mr={1}
           ph={2}

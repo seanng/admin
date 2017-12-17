@@ -11,7 +11,7 @@ import colors from 'themes/colors';
 const StyledInput = styled.input`
   font-size: 14px;
   font-weight: 300;
-  color: ${colors.base1};
+  color: ${colors.base2};
   background-color: ${colors.white};
   width: ${props => (props.width ? props.width : '100%')};
   height: 40px;

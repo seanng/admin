@@ -2,8 +2,6 @@ import React from 'react';
 import Modal from 'react-modal';
 import { FormattedMessage } from 'react-intl';
 import { getFormattedDate, hasNewCharge } from 'utils/helpers';
-import colors from 'themes/colors';
-import Button from '../Button';
 import Input from '../Input';
 import modalStyle from './modalStyle';
 import Header from './Header';
@@ -14,22 +12,12 @@ import DateOfStay from './DateOfStay';
 import AddChargeRow from './AddChargeRow';
 import Currency from './Currency';
 import AddChargeButton from './AddChargeButton';
-
-import TableContainer from '../Table/Container';
-import HeaderRow from '../Table/HeaderRow';
-import HeaderCol from '../Table/HeaderCol';
-import BodyRow from '../Table/BodyRow';
-import BodyRowLayer from '../Table/BodyRowLayer';
-import BodyCol from '../Table/BodyCol';
+import TH from './TH';
+import TD from './TD';
+import LTD from './LTD';
 import Footer from './Footer';
+import FooterButton from './FooterButton';
 import messages from './messages';
-
-const mapColToWidth = {
-  service: '40%',
-  hasItBeenUpdated: '20%',
-  hasItBeenSettled: '20%',
-  price: '20%',
-};
 
 function ChargesModal({
   isOpen,
@@ -89,79 +77,69 @@ function ChargesModal({
           <FormattedMessage {...messages.addCharge} />
         </AddChargeButton>
       </AddChargeRow>
-      <TableContainer>
-        <HeaderRow mb={1}>
-          <HeaderCol width={mapColToWidth.service}>
-            <FormattedMessage {...messages.service} />
-          </HeaderCol>
-          <HeaderCol width={mapColToWidth.hasItBeenUpdated}>
-            <FormattedMessage {...messages.hasItBeenUpdated} />
-          </HeaderCol>
-          <HeaderCol width={mapColToWidth.hasItBeenSettled}>
-            <FormattedMessage {...messages.hasItBeenSettled} />
-          </HeaderCol>
-          <HeaderCol width={mapColToWidth.price}>
-            <FormattedMessage
-              {...messages.price}
-              values={{ currency: stay.currency }}
-            />
-          </HeaderCol>
-        </HeaderRow>
-        {charges.map(({ service, updated, status, charge }, i) =>
-          <BodyRow key={i}>
-            <BodyRowLayer>
-              <BodyCol width={mapColToWidth.service}>
+      <table style={{ width: '100%' }}>
+        <thead>
+          <tr>
+            <TH first alignLeft>
+              <FormattedMessage {...messages.service} />
+            </TH>
+            <TH>
+              <FormattedMessage {...messages.updatedOn} />
+            </TH>
+            <TH>
+              <FormattedMessage {...messages.settledOn} />
+            </TH>
+            <TH>
+              <FormattedMessage {...messages.charge} />
+            </TH>
+          </tr>
+        </thead>
+        <tbody>
+          {charges.map(({ service, updated, updatedAt, status, charge }, i) =>
+            <tr key={i}>
+              <TD first alignLeft>
                 {service}
-              </BodyCol>
-              <BodyCol width={mapColToWidth.hasItBeenUpdated}>
-                {updated
-                  ? <FormattedMessage {...messages.yes} />
-                  : <FormattedMessage {...messages.no} />}
-              </BodyCol>
-              <BodyCol width={mapColToWidth.hasItBeenSettled}>
+              </TD>
+              <TD>
+                {updated ? getFormattedDate(updatedAt) : '-'}
+              </TD>
+              <TD>
                 {status === 'Settled'
                   ? <FormattedMessage {...messages.yes} />
-                  : <FormattedMessage {...messages.no} />}
-              </BodyCol>
-              <BodyCol width={mapColToWidth.price}>
-                {charge}
-              </BodyCol>
-            </BodyRowLayer>
-          </BodyRow>
-        )}
-        <HeaderRow>
-          <HeaderCol width={mapColToWidth.service}>
-            <FormattedMessage {...messages.total} />
-          </HeaderCol>
-          <HeaderCol width={mapColToWidth.hasItBeenUpdated} />
-          <HeaderCol width={mapColToWidth.hasItBeenSettled} />
-          <HeaderCol width={mapColToWidth.price}>
-            {charges.reduce(
-              (prev, current) => (prev * 1 + current.charge * 1).toFixed(2),
-              0
-            )}
-          </HeaderCol>
-        </HeaderRow>
-      </TableContainer>
+                  : '-'}
+              </TD>
+              <TD>
+                {stay.currency + charge}
+              </TD>
+            </tr>
+          )}
+          <tr>
+            <LTD label>
+              <FormattedMessage {...messages.total} />
+            </LTD>
+            <LTD />
+            <LTD />
+            <LTD>
+              {stay.currency +
+                charges.reduce(
+                  (prev, current) => (prev * 1 + current.charge * 1).toFixed(2),
+                  0
+                )}
+            </LTD>
+          </tr>
+        </tbody>
+      </table>
       <Footer>
-        <Button
-          bgColor={colors.base2}
-          textColor={colors.lightGray}
-          mr={1}
-          ph={2}
-          onClick={closeModal}
-        >
+        <FooterButton onClick={closeModal}>
           <FormattedMessage {...messages.cancel} />
-        </Button>
-        <Button
-          bgColor={colors.support}
-          textColor={colors.lightGray}
+        </FooterButton>
+        <FooterButton
+          primary
           onClick={updateCharges}
-          ph={2}
           disabled={hasNewCharge(charges)}
         >
           <FormattedMessage {...messages.updateCharges} />
-        </Button>
+        </FooterButton>
       </Footer>
     </Modal>
   );

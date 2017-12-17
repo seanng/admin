@@ -10,10 +10,10 @@ export function camelize(str) {
 }
 
 export function getFormattedDate(start, end) {
-  if (isSameDay(start, end)) {
-    return format(start, 'MMM Do');
+  if (!end || isSameDay(start, end)) {
+    return format(start, 'DD/MM/YYYY');
   }
-  return `${format(start, 'MMM Do')} - ${format(end, 'MMM Do')}`;
+  return `${format(start, 'DD')} - ${format(end, 'DD/MM/YYYY')}`;
 }
 
 export function getFormattedDuration(start, end) {

@@ -10,6 +10,7 @@ export default {
     left: 0,
     right: 0,
     margin: 'auto',
+    maxHeight: '90%',
     width: '800px',
     borderRadius: '0px',
     padding: '0px 40px',

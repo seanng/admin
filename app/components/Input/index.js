@@ -9,20 +9,21 @@ import styled from 'styled-components';
 import colors from 'themes/colors';
 
 const StyledInput = styled.input`
-  font-size: 1rem;
-  color: ${colors.inputDark};
+  font-size: 14px;
+  font-weight: 300;
+  color: ${colors.base1};
   background-color: ${colors.white};
-  border-radius: 0.8rem;
-  width: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  padding: 0.65rem 0.8rem;
+  width: ${props => (props.width ? props.width : '100%')};
+  height: 40px;
+  border: 1px solid ${colors.base4};
+  padding-left: 10px;
 
   &:focus {
     outline: none;
   }
 `;
 
-function Input({ type, value, onChange, name, placeholder }) {
+function Input({ type, value, onChange, name, placeholder, width }) {
   return (
     <StyledInput
       type={type}
@@ -30,6 +31,7 @@ function Input({ type, value, onChange, name, placeholder }) {
       onChange={onChange}
       name={name}
       placeholder={placeholder}
+      width={width}
     />
   );
 }

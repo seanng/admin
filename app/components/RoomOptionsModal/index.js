@@ -37,13 +37,13 @@ function RoomOptionsModal({
       </GuestName>
       {roomStatus === 'occupied' &&
         <div>
-          <Button bg={colors.secondary} onClick={closeModal}>
+          <Button bg={colors.base1} onClick={closeModal}>
             <FormattedMessage {...messages.cancel} />
           </Button>
         </div>}
       {roomStatus === 'reserved' &&
         <div>
-          <Button bg={colors.secondary} onClick={closeModal}>
+          <Button bg={colors.base1} onClick={closeModal}>
             <FormattedMessage {...messages.cancel} />
           </Button>
         </div>}
@@ -52,7 +52,7 @@ function RoomOptionsModal({
           <Button onClick={makeAvailable}>
             <FormattedMessage {...messages.makeAvailable} />
           </Button>
-          <Button bg={colors.secondary} onClick={closeModal}>
+          <Button bg={colors.base1} onClick={closeModal}>
             <FormattedMessage {...messages.cancel} />
           </Button>
         </div>}
@@ -61,7 +61,7 @@ function RoomOptionsModal({
           <Button bg={colors.danger} onClick={removeRoom}>
             <FormattedMessage {...messages.removeRoom} />
           </Button>
-          <Button bg={colors.secondary} onClick={closeModal}>
+          <Button bg={colors.base1} onClick={closeModal}>
             <FormattedMessage {...messages.cancel} />
           </Button>
         </div>}

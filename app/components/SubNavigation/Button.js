@@ -3,7 +3,8 @@ import colors from 'themes/colors';
 import DefaultButton from 'components/Button';
 
 const Button = styled(DefaultButton)`
-  background-color: ${props => (props.selected ? colors.support : colors.base)};
+  background-color: ${props =>
+    props.selected ? colors.support : colors.base2};
   min-width: 12rem;
 
   &:hover {

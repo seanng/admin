@@ -4,7 +4,7 @@ import colors from 'themes/colors';
 const RoomStatus = styled.div`
   display: flex;
   justify-content: center;
-  color: ${colors.base};
+  color: ${colors.base2};
   font-size: 14px;
   margin-bottom: 20px;
 `;

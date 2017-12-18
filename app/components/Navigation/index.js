@@ -17,7 +17,6 @@ import NavItem from './NavItem';
 import Logo from './Logo';
 
 function Navigation({ logout, navigate, pathname }) {
-  console.log('what is pathname? ', pathname);
   return (
     <NavContainer>
       <NavItem first>

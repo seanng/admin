@@ -13,5 +13,6 @@ export default {
     width: '400px',
     borderRadius: '0px',
     padding: '40px',
+    maxHeight: '90%',
   },
 };

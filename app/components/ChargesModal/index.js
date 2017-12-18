@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { FormattedMessage } from 'react-intl';
-import { getFormattedDate, hasNewCharge } from 'utils/helpers';
+import { getFormattedDate } from 'utils/helpers';
 import Input from '../Input';
 import modalStyle from './modalStyle';
 import Header from './Header';
@@ -31,6 +31,7 @@ function ChargesModal({
   addCharge,
 }) {
   const date = getFormattedDate(stay.checkInTime, stay.checkOutTime);
+  const hasNewCharges = charges.findIndex(charge => !charge.updatedAt) !== -1;
   return (
     <Modal
       contentLabel="chargesModal"
@@ -95,13 +96,13 @@ function ChargesModal({
           </tr>
         </thead>
         <tbody>
-          {charges.map(({ service, updated, updatedAt, status, charge }, i) =>
+          {charges.map(({ service, updatedAt, status, charge }, i) =>
             <tr key={i}>
               <TD first alignLeft>
                 {service}
               </TD>
               <TD>
-                {updated ? getFormattedDate(updatedAt) : '-'}
+                {updatedAt ? getFormattedDate(new Date(updatedAt)) : '-'}
               </TD>
               <TD>
                 {status === 'Settled'
@@ -133,11 +134,7 @@ function ChargesModal({
         <FooterButton onClick={closeModal}>
           <FormattedMessage {...messages.cancel} />
         </FooterButton>
-        <FooterButton
-          primary
-          onClick={updateCharges}
-          disabled={hasNewCharge(charges)}
-        >
+        <FooterButton primary onClick={updateCharges} disabled={!hasNewCharges}>
           <FormattedMessage {...messages.updateCharges} />
         </FooterButton>
       </Footer>

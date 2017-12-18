@@ -32,12 +32,6 @@ export function getUserType(index) {
   return dictionary[index];
 }
 
-export function hasNewCharge(charges) {
-  const res = charges.findIndex(charge => (charge.updated = false)) !== -1;
-  console.log('res', res);
-  return res;
-}
-
 export function getNavIconColor(currentPath, pathNames) {
   if (pathNames.indexOf(currentPath) !== -1) {
     return '#FFFFFF';

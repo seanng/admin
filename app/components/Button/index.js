@@ -13,7 +13,6 @@ const StyledButton = styled.div`
   align-items: center;
   cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
   opacity: ${props => props.disabled && '0.3'};
-  background-color: ${props => (props.bgColor ? props.bgColor : colors.base)};
   color: ${props => (props.textColor ? props.textColor : colors.lightGray)};
   padding-top: ${props => props.pv && `${props.pv}rem`};
   padding-bottom: ${props => props.pv && `${props.pv}rem`};
@@ -29,7 +28,11 @@ const StyledButton = styled.div`
 
 function Button({ onClick, disabled, children, ...rest }) {
   return (
-    <StyledButton {...rest} onClick={() => !disabled && onClick()}>
+    <StyledButton
+      disabled={disabled}
+      {...rest}
+      onClick={() => !disabled && onClick()}
+    >
       {children}
     </StyledButton>
   );

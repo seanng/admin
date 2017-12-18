@@ -23,6 +23,11 @@ export const selectHasLoaded = () =>
     substate.get('hasLoaded')
   );
 
+export const selectIsEditingMode = () =>
+  createSelector(selectHotelProfileDomain(), substate =>
+    substate.get('isEditingMode')
+  );
+
 const makeSelectHotelProfile = () =>
   createSelector(selectHotelProfileDomain(), substate => substate.toJS());
 

@@ -5,11 +5,15 @@
  */
 
 import { fromJS } from 'immutable';
-import { GET_HOTEL_INFO_SUCCESS, GET_HOTEL_INFO_FAIL } from './constants';
+import {
+  GET_HOTEL_INFO_SUCCESS,
+  GET_HOTEL_INFO_FAIL,
+  SET_EDITING_MODE,
+} from './constants';
 
 const initialState = fromJS({
   hasLoaded: false,
-  isEditingHotelProfile: false,
+  isEditingMode: false,
   hotelInfo: {},
 });
 
@@ -17,13 +21,19 @@ function hotelProfileReducer(state = initialState, action) {
   switch (action.type) {
     case GET_HOTEL_INFO_SUCCESS:
       return state.merge({
-        isEditingHotelProfile: false,
+        isEditingMode: false,
         hotelInfo: action.info,
         hasLoaded: true,
       });
     case GET_HOTEL_INFO_FAIL:
       console.error('error getting hotel info.');
       return state;
+
+    case SET_EDITING_MODE:
+      return state.merge({
+        isEditingMode: action.bool,
+      });
+
     default:
       return state;
   }

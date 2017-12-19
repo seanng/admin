@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.HotelProfile.edit',
     defaultMessage: 'EDIT',
   },
+  primary: {
+    id: 'app.containers.HotelProfile.primary',
+    defaultMessage: 'PRIMARY',
+  },
   save: {
     id: 'app.containers.HotelProfile.save',
     defaultMessage: 'SAVE',

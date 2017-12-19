@@ -21,6 +21,10 @@ import Container from './Container';
 import Head from './Head';
 import HotelName from './HotelName';
 import HeadButton from './HeadButton';
+import Body from './Body';
+import PhotosContainer from './PhotosContainer';
+import PrimaryPhoto from './PrimaryPhoto';
+import OpacityLayer from './OpacityLayer';
 import messages from './messages';
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -58,6 +62,15 @@ export class HotelProfile extends React.PureComponent {
               <FormattedMessage {...messages.edit} />
             </HeadButton>}
         </Head>
+        <Body>
+          <PhotosContainer>
+            <PrimaryPhoto src={hotel.get('photos').get(0)}>
+              <OpacityLayer>
+                <FormattedMessage {...messages.primary} />
+              </OpacityLayer>
+            </PrimaryPhoto>
+          </PhotosContainer>
+        </Body>
         <HotelPhotos
           hotelName={hotel.get('name')}
           photos={hotel.get('photos')}

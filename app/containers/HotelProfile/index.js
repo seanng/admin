@@ -9,9 +9,8 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { selectHotelId } from 'containers/App/selectors';
-import HotelPhotos from 'components/HotelPhotos';
 import HotelDescription from 'components/HotelDescription';
-import { getHotelInfo, setEditingMode } from './actions';
+import { getHotelInfo, setEditingMode, rearrangePhotos } from './actions';
 import {
   selectHotelInfo,
   selectHasLoaded,
@@ -23,8 +22,10 @@ import HotelName from './HotelName';
 import HeadButton from './HeadButton';
 import Body from './Body';
 import PhotosContainer from './PhotosContainer';
-import PrimaryPhoto from './PrimaryPhoto';
+import Photo from './Photo';
 import OpacityLayer from './OpacityLayer';
+import DroppableZone from './DroppableZone';
+import DraggablePhoto from './DraggablePhoto';
 import messages from './messages';
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -33,6 +34,11 @@ export class HotelProfile extends React.PureComponent {
     const { fetchHotelInfo, hotelId } = this.props;
     fetchHotelInfo(hotelId);
   }
+
+  movePhoto = (dragIndex, hoverIndex) => {
+    const dragPhoto = this.props.hotel.getIn(['photos', dragIndex]);
+    this.props.rearrangePhotos(dragIndex, hoverIndex, dragPhoto);
+  };
 
   handleCancelClick() {
     this.props.setEditingMode(false);
@@ -43,6 +49,7 @@ export class HotelProfile extends React.PureComponent {
     if (!hasLoaded) {
       return <div>loading...</div>;
     }
+    const hotelPhotos = hotel.get('photos');
     return (
       <Container>
         <Head>
@@ -64,17 +71,29 @@ export class HotelProfile extends React.PureComponent {
         </Head>
         <Body>
           <PhotosContainer>
-            <PrimaryPhoto src={hotel.get('photos').get(0)}>
+            <Photo src={hotelPhotos.first()} height="190px">
               <OpacityLayer>
                 <FormattedMessage {...messages.primary} />
               </OpacityLayer>
-            </PrimaryPhoto>
+            </Photo>
+            <DroppableZone isEditingMode={isEditingMode}>
+              {hotelPhotos.valueSeq().map((photo, i) =>
+                <DraggablePhoto
+                  key={i}
+                  index={i}
+                  isEditingMode={isEditingMode}
+                  movePhoto={this.movePhoto}
+                >
+                  <Photo src={photo}>
+                    <OpacityLayer>
+                      {i + 1}
+                    </OpacityLayer>
+                  </Photo>
+                </DraggablePhoto>
+              )}
+            </DroppableZone>
           </PhotosContainer>
         </Body>
-        <HotelPhotos
-          hotelName={hotel.get('name')}
-          photos={hotel.get('photos')}
-        />
         <HotelDescription />
       </Container>
     );
@@ -93,6 +112,8 @@ function mapDispatchToProps(dispatch) {
     dispatch,
     setEditingMode: bool => dispatch(setEditingMode(bool)),
     fetchHotelInfo: id => dispatch(getHotelInfo(id)),
+    rearrangePhotos: (dragIndex, hoverIndex, dragPhoto) =>
+      dispatch(rearrangePhotos(dragIndex, hoverIndex, dragPhoto)),
   };
 }
 

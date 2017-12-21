@@ -4,7 +4,11 @@
  *
  */
 
-import { GET_HOTEL_INFO, SET_EDITING_MODE } from './constants';
+import {
+  GET_HOTEL_INFO,
+  SET_EDITING_MODE,
+  REARRANGE_PHOTOS,
+} from './constants';
 
 export function getHotelInfo(id) {
   return {
@@ -17,5 +21,14 @@ export function setEditingMode(bool) {
   return {
     type: SET_EDITING_MODE,
     bool,
+  };
+}
+
+export function rearrangePhotos(dragIndex, hoverIndex, dragPhoto) {
+  return {
+    type: REARRANGE_PHOTOS,
+    dragIndex,
+    hoverIndex,
+    dragPhoto,
   };
 }

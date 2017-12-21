@@ -9,6 +9,7 @@ import {
   GET_HOTEL_INFO_SUCCESS,
   GET_HOTEL_INFO_FAIL,
   SET_EDITING_MODE,
+  REARRANGE_PHOTOS,
 } from './constants';
 
 const initialState = fromJS({
@@ -33,6 +34,16 @@ function hotelProfileReducer(state = initialState, action) {
       return state.merge({
         isEditingMode: action.bool,
       });
+
+    case REARRANGE_PHOTOS: {
+      const { dragIndex, hoverIndex, dragPhoto } = action;
+      /* eslint-disable no-param-reassign */
+      return state.updateIn(['hotelInfo', 'photos'], photos => {
+        photos = photos.splice(dragIndex, 1);
+        photos = photos.splice(hoverIndex, 0, dragPhoto);
+        return photos;
+      });
+    }
 
     default:
       return state;

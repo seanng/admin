@@ -1,10 +1,17 @@
+const { getConfigurationValue } = require('../config');
 const Sequelize = require('sequelize');
 
 // placeholder username and password
 // TODO: move pw and username to a separate settings file
-const sequelize = new Sequelize('haven', 'root', 'Ca$hmere1', {
-  dialect: 'postgres',
-});
+const dbConfig = getConfigurationValue('postgres');
+const sequelize = new Sequelize(
+  dbConfig.dbName,
+  dbConfig.username,
+  dbConfig.password,
+  {
+    dialect: 'postgres',
+  }
+);
 
 /* Schema Definitions */
 const Customer = sequelize.define('customer', {

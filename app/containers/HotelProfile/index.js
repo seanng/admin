@@ -26,6 +26,13 @@ import Photo from './Photo';
 import OpacityLayer from './OpacityLayer';
 import DroppableZone from './DroppableZone';
 import DraggablePhoto from './DraggablePhoto';
+import AddPhoto from './AddPhoto';
+import DetailsContainer from './DetailsContainer';
+import DetailsCard from './DetailsCard';
+import RowWrapper from './RowWrapper';
+import Label from './Label';
+import RatesWrapper from './RatesWrapper';
+import Description from './Description';
 import messages from './messages';
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -76,7 +83,7 @@ export class HotelProfile extends React.PureComponent {
                 <FormattedMessage {...messages.primary} />
               </OpacityLayer>
             </Photo>
-            <DroppableZone isEditingMode={isEditingMode}>
+            <DroppableZone>
               {hotelPhotos.valueSeq().map((photo, i) =>
                 <DraggablePhoto
                   key={i}
@@ -91,8 +98,59 @@ export class HotelProfile extends React.PureComponent {
                   </Photo>
                 </DraggablePhoto>
               )}
+              <AddPhoto>
+                {hotelPhotos.size + 1}
+              </AddPhoto>
             </DroppableZone>
           </PhotosContainer>
+          <DetailsContainer>
+            {!isEditingMode &&
+              <div>
+                <DetailsCard>
+                  <RowWrapper>
+                    <Label>
+                      <FormattedMessage {...messages.rate} />
+                    </Label>
+                    <RatesWrapper>
+                      <div>
+                        {hotel.get('currency')}{' '}
+                        {Number(hotel.get('rate')).toFixed()} /{' '}
+                        <FormattedMessage {...messages.hour} />
+                      </div>
+                      <div>
+                        {hotel.get('currency')}{' '}
+                        {Number(hotel.get('rate') / 60).toFixed()} /{' '}
+                        <FormattedMessage {...messages.minute} />
+                      </div>
+                    </RatesWrapper>
+                  </RowWrapper>
+                  <RowWrapper next>
+                    <Label>
+                      <FormattedMessage {...messages.minimum} />
+                    </Label>
+                    <div>
+                      {hotel.get('currency')} 500
+                    </div>
+                  </RowWrapper>
+                </DetailsCard>
+                <DetailsCard>
+                  <RowWrapper>
+                    <Label>
+                      <FormattedMessage {...messages.roomType} />
+                    </Label>
+                    <div>Deluxe Room</div>
+                  </RowWrapper>
+                </DetailsCard>
+                <DetailsCard>
+                  <Label>
+                    <FormattedMessage {...messages.description} />
+                  </Label>
+                  <Description>
+                    {hotel.get('policies')}
+                  </Description>
+                </DetailsCard>
+              </div>}
+          </DetailsContainer>
         </Body>
         <HotelDescription />
       </Container>

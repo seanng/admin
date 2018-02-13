@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  amenities: {
+    id: 'app.containers.HotelProfile.amenities',
+    defaultMessage: 'AMENITIES',
+  },
   cancel: {
     id: 'app.containers.HotelProfile.cancel',
     defaultMessage: 'CANCEL',
@@ -16,6 +20,10 @@ export default defineMessages({
   hour: {
     id: 'app.containers.HotelProfile.hour',
     defaultMessage: 'hour',
+  },
+  miniBar: {
+    id: 'app.containers.HotelProfile.miniBar',
+    defaultMessage: 'MINI BAR',
   },
   minimum: {
     id: 'app.containers.HotelProfile.minimum',

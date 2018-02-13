@@ -18,6 +18,7 @@ import {
 } from './actions';
 import {
   selectHotelInfo,
+  selectEditedHotelInfo,
   selectHasLoaded,
   selectIsEditingMode,
 } from './selectors';
@@ -38,6 +39,8 @@ import RowWrapper from './RowWrapper';
 import Label from './Label';
 import RatesWrapper from './RatesWrapper';
 import Description from './Description';
+import Amenities from './Amenities';
+import Amenity from './Amenity';
 import messages from './messages';
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -50,11 +53,11 @@ export class HotelProfile extends React.PureComponent {
   handleSaveHotelProfile = () => {
     // 1. handle validation checks
     // 2. if pass, save hotel profile
-    this.props.saveHotelProfile(this.props.hotel.get('hotelInfo'));
+    this.props.saveHotelProfile(this.props.editedHotelInfo);
   };
 
   movePhoto = (dragIndex, hoverIndex) => {
-    const dragPhoto = this.props.hotel.getIn(['photos', dragIndex]);
+    const dragPhoto = this.props.editedHotelInfo.getIn(['photos', dragIndex]);
     this.props.rearrangePhotos(dragIndex, hoverIndex, dragPhoto);
   };
 
@@ -62,12 +65,17 @@ export class HotelProfile extends React.PureComponent {
     if (!this.props.hasLoaded) {
       return <div>loading...</div>;
     }
-    const hotelPhotos = this.props.hotel.get('photos');
+    const hotelPhotos = this.props.isEditingMode
+      ? this.props.editedHotelInfo.get('photos')
+      : this.props.hotelInfo.get('photos');
+    const hotelAmenities = this.props.isEditingMode
+      ? this.props.editedHotelInfo.get('amenities')
+      : this.props.hotelInfo.get('amenities');
     return (
       <Container>
         <Head>
           <HotelName isEditingMode={this.props.isEditingMode}>
-            {this.props.hotel.get('name')}
+            {this.props.hotelInfo.get('name')}
           </HotelName>
           {this.props.isEditingMode &&
             <HeadButton onClick={() => this.props.cancelEditingMode()}>
@@ -119,14 +127,16 @@ export class HotelProfile extends React.PureComponent {
                     </Label>
                     <RatesWrapper>
                       <div>
-                        {this.props.hotel.get('currency')}{' '}
-                        {Number(this.props.hotel.get('rate')).toFixed()} /{' '}
+                        {this.props.hotelInfo.get('currency')}{' '}
+                        {Number(this.props.hotelInfo.get('rate')).toFixed()} /{' '}
                         <FormattedMessage {...messages.hour} />
                       </div>
                       <div>
-                        {this.props.hotel.get('currency')}{' '}
-                        {Number(this.props.hotel.get('rate') / 60).toFixed()} /{' '}
-                        <FormattedMessage {...messages.minute} />
+                        {this.props.hotelInfo.get('currency')}{' '}
+                        {Number(
+                          this.props.hotelInfo.get('rate') / 60
+                        ).toFixed()}{' '}
+                        / <FormattedMessage {...messages.minute} />
                       </div>
                     </RatesWrapper>
                   </RowWrapper>
@@ -135,7 +145,7 @@ export class HotelProfile extends React.PureComponent {
                       <FormattedMessage {...messages.minimum} />
                     </Label>
                     <div>
-                      {this.props.hotel.get('currency')} 500
+                      {this.props.hotelInfo.get('currency')} 500
                     </div>
                   </RowWrapper>
                 </DetailsCard>
@@ -152,8 +162,18 @@ export class HotelProfile extends React.PureComponent {
                     <FormattedMessage {...messages.description} />
                   </Label>
                   <Description>
-                    {this.props.hotel.get('policies')}
+                    {this.props.hotelInfo.get('policies')}
                   </Description>
+                </DetailsCard>
+                <DetailsCard>
+                  <Label>
+                    <FormattedMessage {...messages.amenities} />
+                  </Label>
+                  <Amenities>
+                    {hotelAmenities.map((amenity, i) =>
+                      <Amenity key={i} index={i} amenity={amenity} />
+                    )}
+                  </Amenities>
                 </DetailsCard>
               </div>}
           </DetailsContainer>
@@ -164,7 +184,8 @@ export class HotelProfile extends React.PureComponent {
 }
 
 const mapStateToProps = createStructuredSelector({
-  hotel: selectHotelInfo(),
+  hotelInfo: selectHotelInfo(),
+  editedHotelInfo: selectEditedHotelInfo(),
   hotelId: selectHotelId(),
   hasLoaded: selectHasLoaded(),
   isEditingMode: selectIsEditingMode(),

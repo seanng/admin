@@ -58,7 +58,7 @@ const fakeData = {
         'https://static.pexels.com/photos/271672/pexels-photo-271672.jpeg',
         'https://static.pexels.com/photos/189293/pexels-photo-189293.jpeg',
       ],
-      amenities: ['Mini Bar'],
+      amenities: ['miniBar'],
       lat: 22.279148,
       lng: 114.186829,
       address: '88 Yee Wo St, Causeway Bay',

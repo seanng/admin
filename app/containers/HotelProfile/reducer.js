@@ -17,7 +17,7 @@ const initialState = fromJS({
   hasLoaded: false,
   isEditingMode: false,
   hotelInfo: {},
-  originalHotelInfo: {},
+  editedHotelInfo: {},
 });
 
 function hotelProfileReducer(state = initialState, action) {
@@ -35,19 +35,18 @@ function hotelProfileReducer(state = initialState, action) {
     case SET_EDITING_MODE:
       return state.merge({
         isEditingMode: true,
-        originalHotelInfo: state.get('hotelInfo').toJS(),
+        editedHotelInfo: state.get('hotelInfo').toJS(),
       });
 
     case CANCEL_EDITING_MODE:
       return state.merge({
         isEditingMode: false,
-        hotelInfo: state.get('originalHotelInfo').toJS(),
       });
 
     case REARRANGE_PHOTOS: {
       const { dragIndex, hoverIndex, dragPhoto } = action;
       /* eslint-disable no-param-reassign */
-      return state.updateIn(['hotelInfo', 'photos'], photos => {
+      return state.updateIn(['editedHotelInfo', 'photos'], photos => {
         photos = photos.splice(dragIndex, 1);
         photos = photos.splice(hoverIndex, 0, dragPhoto);
         return photos;

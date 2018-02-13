@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { selectHotelId } from 'containers/App/selectors';
-import HotelDescription from 'components/HotelDescription';
 import { getHotelInfo, setEditingMode, rearrangePhotos } from './actions';
 import {
   selectHotelInfo,
@@ -152,7 +151,6 @@ export class HotelProfile extends React.PureComponent {
               </div>}
           </DetailsContainer>
         </Body>
-        <HotelDescription />
       </Container>
     );
   }

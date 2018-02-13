@@ -8,6 +8,8 @@ import {
   GET_HOTEL_INFO,
   SET_EDITING_MODE,
   REARRANGE_PHOTOS,
+  CANCEL_EDITING_MODE,
+  SAVE_HOTEL_PROFILE,
 } from './constants';
 
 export function getHotelInfo(id) {
@@ -17,10 +19,22 @@ export function getHotelInfo(id) {
   };
 }
 
-export function setEditingMode(bool) {
+export function setEditingMode() {
   return {
     type: SET_EDITING_MODE,
-    bool,
+  };
+}
+
+export function cancelEditingMode() {
+  return {
+    type: CANCEL_EDITING_MODE,
+  };
+}
+
+export function saveHotelProfile(hotelInfo) {
+  return {
+    type: SAVE_HOTEL_PROFILE,
+    hotelInfo,
   };
 }
 

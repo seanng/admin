@@ -9,6 +9,7 @@ import {
   GET_HOTEL_INFO_SUCCESS,
   GET_HOTEL_INFO_FAIL,
   SET_EDITING_MODE,
+  CANCEL_EDITING_MODE,
   REARRANGE_PHOTOS,
 } from './constants';
 
@@ -16,6 +17,7 @@ const initialState = fromJS({
   hasLoaded: false,
   isEditingMode: false,
   hotelInfo: {},
+  originalHotelInfo: {},
 });
 
 function hotelProfileReducer(state = initialState, action) {
@@ -32,7 +34,14 @@ function hotelProfileReducer(state = initialState, action) {
 
     case SET_EDITING_MODE:
       return state.merge({
-        isEditingMode: action.bool,
+        isEditingMode: true,
+        originalHotelInfo: state.get('hotelInfo').toJS(),
+      });
+
+    case CANCEL_EDITING_MODE:
+      return state.merge({
+        isEditingMode: false,
+        hotelInfo: state.get('originalHotelInfo').toJS(),
       });
 
     case REARRANGE_PHOTOS: {

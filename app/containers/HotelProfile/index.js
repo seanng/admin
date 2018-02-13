@@ -9,7 +9,13 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { selectHotelId } from 'containers/App/selectors';
-import { getHotelInfo, setEditingMode, rearrangePhotos } from './actions';
+import {
+  getHotelInfo,
+  setEditingMode,
+  rearrangePhotos,
+  cancelEditingMode,
+  saveHotelProfile,
+} from './actions';
 import {
   selectHotelInfo,
   selectHasLoaded,
@@ -41,37 +47,38 @@ export class HotelProfile extends React.PureComponent {
     fetchHotelInfo(hotelId);
   }
 
+  handleSaveHotelProfile = () => {
+    // 1. handle validation checks
+    // 2. if pass, save hotel profile
+    this.props.saveHotelProfile(this.props.hotel.get('hotelInfo'));
+  };
+
   movePhoto = (dragIndex, hoverIndex) => {
     const dragPhoto = this.props.hotel.getIn(['photos', dragIndex]);
     this.props.rearrangePhotos(dragIndex, hoverIndex, dragPhoto);
   };
 
-  handleCancelClick() {
-    this.props.setEditingMode(false);
-  }
-
   render() {
-    const { hotel, hasLoaded, isEditingMode } = this.props;
-    if (!hasLoaded) {
+    if (!this.props.hasLoaded) {
       return <div>loading...</div>;
     }
-    const hotelPhotos = hotel.get('photos');
+    const hotelPhotos = this.props.hotel.get('photos');
     return (
       <Container>
         <Head>
-          <HotelName isEditingMode={isEditingMode}>
-            {hotel.get('name')}
+          <HotelName isEditingMode={this.props.isEditingMode}>
+            {this.props.hotel.get('name')}
           </HotelName>
-          {isEditingMode &&
-            <HeadButton onClick={() => this.handleCancelClick()}>
+          {this.props.isEditingMode &&
+            <HeadButton onClick={() => this.props.cancelEditingMode()}>
               <FormattedMessage {...messages.cancel} />
             </HeadButton>}
-          {isEditingMode &&
-            <HeadButton primary>
+          {this.props.isEditingMode &&
+            <HeadButton primary onClick={() => this.handleSaveHotelProfile()}>
               <FormattedMessage {...messages.save} />
             </HeadButton>}
-          {!isEditingMode &&
-            <HeadButton primary onClick={() => this.props.setEditingMode(true)}>
+          {!this.props.isEditingMode &&
+            <HeadButton primary onClick={() => this.props.setEditingMode()}>
               <FormattedMessage {...messages.edit} />
             </HeadButton>}
         </Head>
@@ -87,7 +94,7 @@ export class HotelProfile extends React.PureComponent {
                 <DraggablePhoto
                   key={i}
                   index={i}
-                  isEditingMode={isEditingMode}
+                  isEditingMode={this.props.isEditingMode}
                   movePhoto={this.movePhoto}
                 >
                   <Photo src={photo}>
@@ -103,7 +110,7 @@ export class HotelProfile extends React.PureComponent {
             </DroppableZone>
           </PhotosContainer>
           <DetailsContainer>
-            {!isEditingMode &&
+            {!this.props.isEditingMode &&
               <div>
                 <DetailsCard>
                   <RowWrapper>
@@ -112,13 +119,13 @@ export class HotelProfile extends React.PureComponent {
                     </Label>
                     <RatesWrapper>
                       <div>
-                        {hotel.get('currency')}{' '}
-                        {Number(hotel.get('rate')).toFixed()} /{' '}
+                        {this.props.hotel.get('currency')}{' '}
+                        {Number(this.props.hotel.get('rate')).toFixed()} /{' '}
                         <FormattedMessage {...messages.hour} />
                       </div>
                       <div>
-                        {hotel.get('currency')}{' '}
-                        {Number(hotel.get('rate') / 60).toFixed()} /{' '}
+                        {this.props.hotel.get('currency')}{' '}
+                        {Number(this.props.hotel.get('rate') / 60).toFixed()} /{' '}
                         <FormattedMessage {...messages.minute} />
                       </div>
                     </RatesWrapper>
@@ -128,7 +135,7 @@ export class HotelProfile extends React.PureComponent {
                       <FormattedMessage {...messages.minimum} />
                     </Label>
                     <div>
-                      {hotel.get('currency')} 500
+                      {this.props.hotel.get('currency')} 500
                     </div>
                   </RowWrapper>
                 </DetailsCard>
@@ -145,7 +152,7 @@ export class HotelProfile extends React.PureComponent {
                     <FormattedMessage {...messages.description} />
                   </Label>
                   <Description>
-                    {hotel.get('policies')}
+                    {this.props.hotel.get('policies')}
                   </Description>
                 </DetailsCard>
               </div>}
@@ -166,7 +173,9 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
-    setEditingMode: bool => dispatch(setEditingMode(bool)),
+    setEditingMode: () => dispatch(setEditingMode()),
+    cancelEditingMode: () => dispatch(cancelEditingMode()),
+    saveHotelProfile: hotelInfo => dispatch(saveHotelProfile(hotelInfo)),
     fetchHotelInfo: id => dispatch(getHotelInfo(id)),
     rearrangePhotos: (dragIndex, hoverIndex, dragPhoto) =>
       dispatch(rearrangePhotos(dragIndex, hoverIndex, dragPhoto)),

@@ -10,6 +10,7 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { selectHotelId } from 'containers/App/selectors';
 import TrashIcon from 'react-icons/lib/md/delete';
+import CrosshairIcon from 'react-icons/lib/md/add';
 import colors from 'themes/colors';
 import {
   getHotelInfo,
@@ -44,6 +45,7 @@ import RatesWrapper from './RatesWrapper';
 import Description from './Description';
 import Amenities from './Amenities';
 import Amenity from './Amenity';
+import CrosshairWrapper from './CrosshairWrapper';
 import messages from './messages';
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -70,6 +72,76 @@ export class HotelProfile extends React.PureComponent {
     this.props.rearrangePhotos(dragIndex, hoverIndex, dragPhoto);
   };
 
+  renderDetailsEditing() {
+    return (
+      <div>
+        <DetailsCard>hello</DetailsCard>
+      </div>
+    );
+  }
+
+  renderDetailsPreview() {
+    return (
+      <div>
+        <DetailsCard>
+          <RowWrapper>
+            <Label>
+              <FormattedMessage {...messages.rate} />
+            </Label>
+            <RatesWrapper>
+              <div>
+                {this.props.hotelInfo.get('currency')}{' '}
+                {Number(this.props.hotelInfo.get('rate')).toFixed()} /{' '}
+                <FormattedMessage {...messages.hour} />
+              </div>
+              <div>
+                {this.props.hotelInfo.get('currency')}{' '}
+                {Number(this.props.hotelInfo.get('rate') / 60).toFixed()} /{' '}
+                <FormattedMessage {...messages.minute} />
+              </div>
+            </RatesWrapper>
+          </RowWrapper>
+          <RowWrapper next>
+            <Label>
+              <FormattedMessage {...messages.minimum} />
+            </Label>
+            <div>
+              {this.props.hotelInfo.get('currency')} 500
+            </div>
+          </RowWrapper>
+        </DetailsCard>
+        <DetailsCard>
+          <RowWrapper>
+            <Label>
+              <FormattedMessage {...messages.roomType} />
+            </Label>
+            <div>Deluxe Room</div>
+          </RowWrapper>
+        </DetailsCard>
+        <DetailsCard>
+          <Label>
+            <FormattedMessage {...messages.description} />
+          </Label>
+          <Description>
+            {this.props.hotelInfo.get('policies')}
+          </Description>
+        </DetailsCard>
+        <DetailsCard>
+          <Label>
+            <FormattedMessage {...messages.amenities} />
+          </Label>
+          <Amenities>
+            {this.props.hotelInfo
+              .get('amenities')
+              .map((amenity, i) =>
+                <Amenity key={i} index={i} amenity={amenity} />
+              )}
+          </Amenities>
+        </DetailsCard>
+      </div>
+    );
+  }
+
   render() {
     if (!this.props.hasLoaded) {
       return <div>loading...</div>;
@@ -77,9 +149,6 @@ export class HotelProfile extends React.PureComponent {
     const hotelPhotos = this.props.isEditingMode
       ? this.props.editedHotelInfo.get('photos')
       : this.props.hotelInfo.get('photos');
-    const hotelAmenities = this.props.isEditingMode
-      ? this.props.editedHotelInfo.get('amenities')
-      : this.props.hotelInfo.get('amenities');
     return (
       <Container>
         <Head>
@@ -128,70 +197,19 @@ export class HotelProfile extends React.PureComponent {
                   </Photo>
                 </DraggablePhoto>
               )}
-              <AddPhoto>
-                {hotelPhotos.size + 1}
-              </AddPhoto>
+              {this.props.isEditingMode &&
+                <AddPhoto>
+                  {hotelPhotos.size + 1}
+                  <CrosshairWrapper>
+                    <CrosshairIcon size={20} color={colors.primary} />
+                  </CrosshairWrapper>
+                </AddPhoto>}
             </DroppableZone>
           </PhotosContainer>
           <DetailsContainer>
-            {!this.props.isEditingMode &&
-              <div>
-                <DetailsCard>
-                  <RowWrapper>
-                    <Label>
-                      <FormattedMessage {...messages.rate} />
-                    </Label>
-                    <RatesWrapper>
-                      <div>
-                        {this.props.hotelInfo.get('currency')}{' '}
-                        {Number(this.props.hotelInfo.get('rate')).toFixed()} /{' '}
-                        <FormattedMessage {...messages.hour} />
-                      </div>
-                      <div>
-                        {this.props.hotelInfo.get('currency')}{' '}
-                        {Number(
-                          this.props.hotelInfo.get('rate') / 60
-                        ).toFixed()}{' '}
-                        / <FormattedMessage {...messages.minute} />
-                      </div>
-                    </RatesWrapper>
-                  </RowWrapper>
-                  <RowWrapper next>
-                    <Label>
-                      <FormattedMessage {...messages.minimum} />
-                    </Label>
-                    <div>
-                      {this.props.hotelInfo.get('currency')} 500
-                    </div>
-                  </RowWrapper>
-                </DetailsCard>
-                <DetailsCard>
-                  <RowWrapper>
-                    <Label>
-                      <FormattedMessage {...messages.roomType} />
-                    </Label>
-                    <div>Deluxe Room</div>
-                  </RowWrapper>
-                </DetailsCard>
-                <DetailsCard>
-                  <Label>
-                    <FormattedMessage {...messages.description} />
-                  </Label>
-                  <Description>
-                    {this.props.hotelInfo.get('policies')}
-                  </Description>
-                </DetailsCard>
-                <DetailsCard>
-                  <Label>
-                    <FormattedMessage {...messages.amenities} />
-                  </Label>
-                  <Amenities>
-                    {hotelAmenities.map((amenity, i) =>
-                      <Amenity key={i} index={i} amenity={amenity} />
-                    )}
-                  </Amenities>
-                </DetailsCard>
-              </div>}
+            {this.props.isEditingMode
+              ? this.renderDetailsEditing()
+              : this.renderDetailsPreview()}
           </DetailsContainer>
         </Body>
       </Container>

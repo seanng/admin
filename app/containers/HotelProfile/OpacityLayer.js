@@ -13,6 +13,13 @@ const OpacityLayer = styled.div`
   font-size: 14px;
   font-weight: 600;
   color: ${colors.white};
+  ${props =>
+    props.isEditingMode &&
+    `
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  `};
 `;
 
 export default OpacityLayer;

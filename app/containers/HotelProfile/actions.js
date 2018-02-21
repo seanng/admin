@@ -10,6 +10,7 @@ import {
   REARRANGE_PHOTOS,
   CANCEL_EDITING_MODE,
   SAVE_HOTEL_PROFILE,
+  DELETE_PHOTO,
 } from './constants';
 
 export function getHotelInfo(id) {
@@ -44,5 +45,12 @@ export function rearrangePhotos(dragIndex, hoverIndex, dragPhoto) {
     dragIndex,
     hoverIndex,
     dragPhoto,
+  };
+}
+
+export function deletePhoto(index) {
+  return {
+    type: DELETE_PHOTO,
+    index,
   };
 }

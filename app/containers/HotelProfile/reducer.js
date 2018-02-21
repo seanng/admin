@@ -11,6 +11,8 @@ import {
   SET_EDITING_MODE,
   CANCEL_EDITING_MODE,
   REARRANGE_PHOTOS,
+  DELETE_PHOTO,
+  SAVE_HOTEL_PROFILE_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({
@@ -50,6 +52,21 @@ function hotelProfileReducer(state = initialState, action) {
         photos = photos.splice(dragIndex, 1);
         photos = photos.splice(hoverIndex, 0, dragPhoto);
         return photos;
+      });
+    }
+
+    case DELETE_PHOTO: {
+      return state.updateIn(['editedHotelInfo', 'photos'], photos => {
+        photos = photos.splice(action.index, 1);
+        return photos;
+      });
+    }
+
+    case SAVE_HOTEL_PROFILE_SUCCESS: {
+      return state.merge({
+        isEditingMode: false,
+        hotelInfo: action.hotelInfo,
+        hasLoaded: true,
       });
     }
 

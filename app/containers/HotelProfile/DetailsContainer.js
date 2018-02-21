@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-const InfoContainer = styled.div`
+const DetailsContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 580px;
 `;
 
-export default InfoContainer;
+export default DetailsContainer;

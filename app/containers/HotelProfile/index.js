@@ -9,12 +9,15 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { selectHotelId } from 'containers/App/selectors';
+import TrashIcon from 'react-icons/lib/md/delete';
+import colors from 'themes/colors';
 import {
   getHotelInfo,
   setEditingMode,
   rearrangePhotos,
   cancelEditingMode,
   saveHotelProfile,
+  deletePhoto,
 } from './actions';
 import {
   selectHotelInfo,
@@ -54,6 +57,12 @@ export class HotelProfile extends React.PureComponent {
     // 1. handle validation checks
     // 2. if pass, save hotel profile
     this.props.saveHotelProfile(this.props.editedHotelInfo);
+  };
+
+  handleDeletePhoto = index => {
+    // 1. TODO: confirmation - are you sure you want to delete?
+    // 2. if okay, delete photo.
+    this.props.deletePhoto(index);
   };
 
   movePhoto = (dragIndex, hoverIndex) => {
@@ -106,8 +115,15 @@ export class HotelProfile extends React.PureComponent {
                   movePhoto={this.movePhoto}
                 >
                   <Photo src={photo}>
-                    <OpacityLayer>
+                    <OpacityLayer isEditingMode={this.props.isEditingMode}>
                       {i + 1}
+                      {this.props.isEditingMode &&
+                        <TrashIcon
+                          size={20}
+                          color={colors.danger}
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => this.handleDeletePhoto(i)}
+                        />}
                     </OpacityLayer>
                   </Photo>
                 </DraggablePhoto>
@@ -200,6 +216,7 @@ function mapDispatchToProps(dispatch) {
     fetchHotelInfo: id => dispatch(getHotelInfo(id)),
     rearrangePhotos: (dragIndex, hoverIndex, dragPhoto) =>
       dispatch(rearrangePhotos(dragIndex, hoverIndex, dragPhoto)),
+    deletePhoto: index => dispatch(deletePhoto(index)),
   };
 }
 

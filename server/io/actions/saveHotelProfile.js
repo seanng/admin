@@ -14,12 +14,12 @@ module.exports = (client, action) =>
   reducer(action.hotelInfo, (err, hotelInfo) => {
     if (err) {
       return reply(client, {
-        type: 'app/HotelProfile/SAVED_HOTEL_PROFILE_ERROR',
+        type: 'app/HotelProfile/SAVE_HOTEL_PROFILE_ERROR',
         err,
       });
     }
     return reply(client, {
-      type: 'app/HotelProfile/SAVED_HOTEL_PROFILE',
+      type: 'app/HotelProfile/SAVE_HOTEL_PROFILE_SUCCESS',
       hotelInfo,
     });
   });

@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.HotelProfile.edit',
     defaultMessage: 'EDIT',
   },
+  hotelName: {
+    id: 'app.containers.HotelProfile.hotelName',
+    defaultMessage: 'HOTEL NAME',
+  },
   hour: {
     id: 'app.containers.HotelProfile.hour',
     defaultMessage: 'hour',
@@ -40,6 +44,10 @@ export default defineMessages({
   rate: {
     id: 'app.containers.HotelProfile.rate',
     defaultMessage: 'RATE',
+  },
+  ratePerHour: {
+    id: 'app.containers.HotelProfile.ratePerHour',
+    defaultMessage: 'RATE (PER HOUR)',
   },
   roomType: {
     id: 'app.containers.HotelProfile.roomType',

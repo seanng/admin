@@ -12,6 +12,7 @@ import { selectHotelId } from 'containers/App/selectors';
 import TrashIcon from 'react-icons/lib/md/delete';
 import CrosshairIcon from 'react-icons/lib/md/add';
 import colors from 'themes/colors';
+import Input from 'components/Input';
 import {
   getHotelInfo,
   setEditingMode,
@@ -19,6 +20,7 @@ import {
   cancelEditingMode,
   saveHotelProfile,
   deletePhoto,
+  editHotelInfo,
 } from './actions';
 import {
   selectHotelInfo,
@@ -61,10 +63,25 @@ export class HotelProfile extends React.PureComponent {
     this.props.saveHotelProfile(this.props.editedHotelInfo);
   };
 
+  handleInputChange = event => {
+    const key = event.target.name.slice(0, -5);
+    const value = event.target.value;
+    this.props.editHotelInfo(key, value);
+  };
+
   handleDeletePhoto = index => {
     // 1. TODO: confirmation - are you sure you want to delete?
     // 2. if okay, delete photo.
     this.props.deletePhoto(index);
+  };
+
+  handleRemoveAmenity = index => {
+    console.log('the index: ', index);
+  };
+
+  openAmenitiesModal = () => {
+    // TODO: open amenities modal.
+    console.log('should open amenities modal.');
   };
 
   movePhoto = (dragIndex, hoverIndex) => {
@@ -75,7 +92,90 @@ export class HotelProfile extends React.PureComponent {
   renderDetailsEditing() {
     return (
       <div>
-        <DetailsCard>hello</DetailsCard>
+        <DetailsCard>
+          <RowWrapper>
+            <Label>
+              <FormattedMessage {...messages.hotelName} />
+            </Label>
+            <Input
+              name="nameInput"
+              type="text"
+              placeholder="Your Hotel Name Here"
+              onChange={this.handleInputChange}
+              value={this.props.editedHotelInfo.get('name')}
+              width="380px"
+            />
+          </RowWrapper>
+          <RowWrapper next>
+            <Label>
+              <FormattedMessage {...messages.ratePerHour} />
+            </Label>
+            <Input
+              name="rateInput"
+              type="number"
+              placeholder="Input Desired Hourly Rate"
+              onChange={this.handleInputChange}
+              value={this.props.editedHotelInfo.get('rate')}
+              width="380px"
+            />
+          </RowWrapper>
+          <RowWrapper next>
+            <Label>
+              <FormattedMessage {...messages.minimum} />
+            </Label>
+            <Input
+              name="minChargeInput"
+              type="number"
+              placeholder="Input Desired Minimum Charge"
+              onChange={this.handleInputChange}
+              value={this.props.editedHotelInfo.get('minCharge')}
+              width="380px"
+            />
+          </RowWrapper>
+          <RowWrapper next>
+            <Label>
+              <FormattedMessage {...messages.roomType} />
+            </Label>
+            <Input
+              name="roomTypeInput"
+              type="text"
+              placeholder="Input Room Type"
+              onChange={this.handleInputChange}
+              value={this.props.editedHotelInfo.get('roomType')}
+              width="380px"
+            />
+          </RowWrapper>
+          <RowWrapper next>
+            <Label>
+              <FormattedMessage {...messages.description} />
+            </Label>
+          </RowWrapper>
+          {/* TODO: CREATE DESCRIPTION TEXT EDITOR */}
+          <RowWrapper next>
+            <Label>
+              <FormattedMessage {...messages.amenities} />
+            </Label>
+            <CrosshairIcon
+              size={20}
+              color={colors.primary}
+              style={{ cursor: 'pointer' }}
+              onClick={() => this.openAmenitiesModal()}
+            />
+          </RowWrapper>
+          <Amenities>
+            {this.props.editedHotelInfo
+              .get('amenities')
+              .map((amenity, i) =>
+                <Amenity
+                  isEditing
+                  key={i}
+                  index={i}
+                  amenity={amenity}
+                  removeAmenity={this.handleRemoveAmenity}
+                />
+              )}
+          </Amenities>
+        </DetailsCard>
       </div>
     );
   }
@@ -106,7 +206,8 @@ export class HotelProfile extends React.PureComponent {
               <FormattedMessage {...messages.minimum} />
             </Label>
             <div>
-              {this.props.hotelInfo.get('currency')} 500
+              {this.props.hotelInfo.get('currency')}{' '}
+              {this.props.hotelInfo.get('minCharge')}
             </div>
           </RowWrapper>
         </DetailsCard>
@@ -115,7 +216,9 @@ export class HotelProfile extends React.PureComponent {
             <Label>
               <FormattedMessage {...messages.roomType} />
             </Label>
-            <div>Deluxe Room</div>
+            <div>
+              {this.props.hotelInfo.get('roomType')}
+            </div>
           </RowWrapper>
         </DetailsCard>
         <DetailsCard>
@@ -235,6 +338,7 @@ function mapDispatchToProps(dispatch) {
     rearrangePhotos: (dragIndex, hoverIndex, dragPhoto) =>
       dispatch(rearrangePhotos(dragIndex, hoverIndex, dragPhoto)),
     deletePhoto: index => dispatch(deletePhoto(index)),
+    editHotelInfo: (key, value) => dispatch(editHotelInfo(key, value)),
   };
 }
 

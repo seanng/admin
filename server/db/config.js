@@ -62,9 +62,11 @@ const Hotel = sequelize.define('hotel', {
   lng: Sequelize.DECIMAL,
   address: Sequelize.STRING,
   paymentInfo: Sequelize.JSON, // <-- this needs to be looked into further
-  rate: Sequelize.DECIMAL(10, 2), // <-- hourly? or per minute?
+  rate: Sequelize.DECIMAL(10, 2), // <-- hourly
   currency: Sequelize.STRING,
   rating: Sequelize.DECIMAL,
+  roomType: Sequelize.STRING,
+  minCharge: Sequelize.DECIMAL,
 });
 
 const Stay = sequelize.define('stay', {

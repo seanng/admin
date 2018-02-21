@@ -43,8 +43,9 @@ const fakeData = {
   hotels: [
     {
       name: 'Regal Hotel Wanchai',
-      rate: 400.0,
+      rate: 400,
       currency: 'HKD',
+      minCharge: 500,
       policies: `Lorem ipsum dolor sit amet, pro ut accusamus elaboraret. Ei quidam definitiones eum, ex eruditi tibique definiebas sed. Sed epicurei delicata consequat at. No habeo evertitur duo.
 
     Epicuri platonem moderatius his id. Pri audiam nominati signiferumque an, mel id mundi aliquam offendit. Ad audiam similique interesset cum, mei malis ubique epicurei ei, ei tota dignissim interpretaris vis. Corrumpit persecuti mel ne, ea eripuit denique argumentum sed, mel id quas noluisse. An aliquam graecis his, ei his malis utinam labores.
@@ -62,10 +63,11 @@ const fakeData = {
       lat: 22.279148,
       lng: 114.186829,
       address: '88 Yee Wo St, Causeway Bay',
+      roomType: 'Deluxe Room',
     },
     {
       name: 'Sheraton Hotel Kowloon',
-      rate: 400.0,
+      rate: 400,
       currency: 'HKD',
       policies: `Lorem ipsum dolor sit amet, pro ut accusamus elaboraret. Ei quidam definitiones eum, ex eruditi tibique definiebas sed. Sed epicurei delicata consequat at. No habeo evertitur duo.
 
@@ -84,10 +86,11 @@ Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian 
       lat: 22.279148,
       lng: 114.186829,
       address: '88 Yee Wo St, Causeway Bay',
+      roomType: 'Deluxe Room',
     },
     {
       name: 'Stevenage Hotel',
-      rate: 400.0,
+      rate: 400,
       currency: 'HKD',
       policies: `Lorem ipsum dolor sit amet, pro ut accusamus elaboraret. Ei quidam definitiones eum, ex eruditi tibique definiebas sed. Sed epicurei delicata consequat at. No habeo evertitur duo.
 
@@ -110,6 +113,7 @@ Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian 
     {
       name: 'Westin Hotel',
       rate: 400.0,
+      minCharge: 500,
       currency: 'HKD',
       policies: `Lorem ipsum dolor sit amet, pro ut accusamus elaboraret. Ei quidam definitiones eum, ex eruditi tibique definiebas sed. Sed epicurei delicata consequat at. No habeo evertitur duo.
 
@@ -128,10 +132,12 @@ Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian 
       lat: 22.279148,
       lng: 114.186829,
       address: '88 Yee Wo St, Causeway Bay',
+      roomType: 'Standard Room',
     },
     {
       name: 'W Hotel',
-      rate: 400.0,
+      rate: 400,
+      minCharge: 500,
       currency: 'HKD',
       policies: `Lorem ipsum dolor sit amet, pro ut accusamus elaboraret. Ei quidam definitiones eum, ex eruditi tibique definiebas sed. Sed epicurei delicata consequat at. No habeo evertitur duo.
 
@@ -150,6 +156,7 @@ Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian 
       lat: 22.279148,
       lng: 114.186829,
       address: '88 Yee Wo St, Causeway Bay',
+      roomType: 'Deluxe Room',
     },
   ],
   employees: [

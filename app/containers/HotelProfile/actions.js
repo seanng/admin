@@ -11,6 +11,7 @@ import {
   CANCEL_EDITING_MODE,
   SAVE_HOTEL_PROFILE,
   DELETE_PHOTO,
+  EDIT_HOTEL_INFO,
 } from './constants';
 
 export function getHotelInfo(id) {
@@ -52,5 +53,13 @@ export function deletePhoto(index) {
   return {
     type: DELETE_PHOTO,
     index,
+  };
+}
+
+export function editHotelInfo(key, value) {
+  return {
+    type: EDIT_HOTEL_INFO,
+    key,
+    value,
   };
 }

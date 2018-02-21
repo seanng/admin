@@ -13,6 +13,7 @@ import {
   REARRANGE_PHOTOS,
   DELETE_PHOTO,
   SAVE_HOTEL_PROFILE_SUCCESS,
+  EDIT_HOTEL_INFO,
 } from './constants';
 
 const initialState = fromJS({
@@ -62,13 +63,15 @@ function hotelProfileReducer(state = initialState, action) {
       });
     }
 
-    case SAVE_HOTEL_PROFILE_SUCCESS: {
+    case SAVE_HOTEL_PROFILE_SUCCESS:
       return state.merge({
         isEditingMode: false,
         hotelInfo: action.hotelInfo,
         hasLoaded: true,
       });
-    }
+
+    case EDIT_HOTEL_INFO:
+      return state.setIn(['editedHotelInfo', action.key], action.value);
 
     default:
       return state;

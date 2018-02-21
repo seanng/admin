@@ -38,7 +38,11 @@ class AddRoomModal extends React.Component {
             onChange={this.props.handleInputChange}
           />
         </InputWrapper>
-        <Button primary onClick={this.props.addRoom}>
+        <Button
+          primary
+          onClick={this.props.addRoom}
+          disabled={this.props.addRoomInput === ''}
+        >
           <FormattedMessage {...messages.addRoom} />
         </Button>
         <Button onClick={this.props.closeModal}>

@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-const ContainerWrapper = styled.div`
+const AddChargeRow = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
+  margin-bottom: 20px;
 `;
 
-export default ContainerWrapper;
+export default AddChargeRow;

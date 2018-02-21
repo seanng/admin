@@ -14,6 +14,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { FormattedMessage } from 'react-intl';
 import LoginPage from 'containers/LoginPage';
 import LoadingPage from 'components/LoadingPage';
 import Navigation from 'components/Navigation';
@@ -21,6 +22,9 @@ import Container from 'components/Container';
 import { checkAuth, invalidateToken, logout } from './actions';
 import { selectUser, selectHasLoaded } from './selectors';
 import AppWrapper from './AppWrapper';
+import SubNavContainer from './SubNavContainer';
+import SubNavButton from './SubNavButton';
+import messages from './messages';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends React.PureComponent {
@@ -32,7 +36,25 @@ class App extends React.PureComponent {
     return this.props.invalidateToken();
   }
 
+  pathsWithSubNav = [
+    '/hotelprofile',
+    '/teammanagement',
+    '/earnings',
+    '/settings',
+  ];
+
   navigate = path => this.props.router.push(path);
+
+  shouldRenderSubNav = () => {
+    const { pathname } = this.props.location;
+    /* eslint-disable no-restricted-syntax */
+    for (const path of this.pathsWithSubNav) {
+      if (pathname.indexOf(path) !== -1) {
+        return true;
+      }
+    }
+    return false;
+  };
 
   renderApplication() {
     return (
@@ -43,6 +65,19 @@ class App extends React.PureComponent {
           pathname={this.props.location.pathname}
           logout={this.props.logout}
         />
+        {this.shouldRenderSubNav() &&
+          <SubNavContainer>
+            {this.pathsWithSubNav.map((path, i) =>
+              <SubNavButton
+                key={path}
+                first={i === 0}
+                active={this.props.location.pathname.indexOf(path) !== -1}
+                onClick={() => this.navigate(path)}
+              >
+                <FormattedMessage {...messages[path]} />
+              </SubNavButton>
+            )}
+          </SubNavContainer>}
         <Container>
           {React.Children.toArray(this.props.children)}
         </Container>

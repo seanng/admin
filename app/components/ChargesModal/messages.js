@@ -6,17 +6,21 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  header: {
-    id: 'app.components.ChargesModal.header',
-    defaultMessage: 'Surcharges for {name} on {date}',
-  },
   addCharge: {
     id: 'app.components.ChargesModal.addCharge',
-    defaultMessage: 'Add Charge',
+    defaultMessage: 'ADD',
+  },
+  charge: {
+    id: 'app.components.ChargesModal.charge',
+    defaultMessage: 'CHARGE',
+  },
+  header: {
+    id: 'app.components.ChargesModal.header',
+    defaultMessage: 'ADD CHARGE(S)',
   },
   service: {
     id: 'app.components.ChargesModal.service',
-    defaultMessage: 'Service',
+    defaultMessage: 'SERVICE',
   },
   hasItBeenUpdated: {
     id: 'app.components.ChargesModal.hasItBeenUpdated',
@@ -38,16 +42,24 @@ export default defineMessages({
     id: 'app.components.ChargesModal.no',
     defaultMessage: 'No',
   },
+  settledOn: {
+    id: 'app.components.ChargesModal.settledOn',
+    defaultMessage: 'SETTLED',
+  },
   total: {
     id: 'app.components.ChargesModal.total',
-    defaultMessage: 'Total',
+    defaultMessage: 'TOTAL',
+  },
+  updatedOn: {
+    id: 'app.components.ChargesModal.updatedOn',
+    defaultMessage: 'UPDATED',
   },
   updateCharges: {
     id: 'app.components.ChargesModal.updateCharges',
-    defaultMessage: 'Save Charges',
+    defaultMessage: 'SAVE CHARGES',
   },
   cancel: {
     id: 'app.components.ChargesModal.cancel',
-    defaultMessage: 'Close',
+    defaultMessage: 'CANCEL',
   },
 });

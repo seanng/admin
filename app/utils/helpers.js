@@ -10,10 +10,10 @@ export function camelize(str) {
 }
 
 export function getFormattedDate(start, end) {
-  if (isSameDay(start, end)) {
-    return format(start, 'MMM Do');
+  if (!end || isSameDay(start, end)) {
+    return format(start, 'DD/MM/YYYY');
   }
-  return `${format(start, 'MMM Do')} - ${format(end, 'MMM Do')}`;
+  return `${format(start, 'DD')} - ${format(end, 'DD/MM/YYYY')}`;
 }
 
 export function getFormattedDuration(start, end) {
@@ -30,12 +30,6 @@ export function getUserType(index) {
     3: 'superUser',
   };
   return dictionary[index];
-}
-
-export function hasNewCharge(charges) {
-  const res = charges.findIndex(charge => (charge.updated = false)) !== -1;
-  console.log('res', res);
-  return res;
 }
 
 export function getNavIconColor(currentPath, pathNames) {

@@ -4,7 +4,7 @@ import colors from 'themes/colors';
 const RoomNumber = styled.div`
   display: flex;
   justify-content: center;
-  color: ${colors.base};
+  color: ${colors.base2};
   font-size: 48px;
   margin-bottom: 25px;
 `;

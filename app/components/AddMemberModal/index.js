@@ -61,7 +61,7 @@ function AddMemberModal({
           Send Invite
         </Button>
         <Button
-          bgColor={colors.base}
+          bgColor={colors.base2}
           textColor={colors.lightGray}
           onClick={closeModal}
         >

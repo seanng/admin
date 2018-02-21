@@ -10,7 +10,7 @@ const BodyCol = styled.div`
   margin-left: ${props => props.ml && props.ml};
   font-size: 14px;
   font-weight: 600;
-  color: ${props => (props.color ? props.color : colors.base)};
+  color: ${props => (props.color ? props.color : colors.base2)};
 `;
 
 export default BodyCol;

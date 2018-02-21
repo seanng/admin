@@ -42,13 +42,9 @@ function pastStaysReducer(state = initialState, action) {
     }
 
     case FETCH_CHARGES_SUCCESS: {
-      const charges = action.charges.map(charge => {
-        charge.updated = true;
-        return charge;
-      });
       return state.merge({
         isModalOpen: true,
-        charges,
+        charges: action.charges,
       });
     }
 

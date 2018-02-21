@@ -1,32 +1,23 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { FormattedMessage } from 'react-intl';
-import { getFormattedDate, hasNewCharge } from 'utils/helpers';
-import colors from 'themes/colors';
-import Button from '../Button';
+import { getFormattedDate } from 'utils/helpers';
 import Input from '../Input';
-import H2 from '../fonts/H2';
-import InputWrapper from './InputWrapper';
 import modalStyle from './modalStyle';
 import Header from './Header';
-import UpperBody from './UpperBody';
-import LowerBody from './LowerBody';
-
-import TableContainer from '../Table/Container';
-import HeaderRow from '../Table/HeaderRow';
-import HeaderCol from '../Table/HeaderCol';
-import BodyRow from '../Table/BodyRow';
-import BodyRowLayer from '../Table/BodyRowLayer';
-import BodyCol from '../Table/BodyCol';
+import Details from './Details';
+import GuestName from './GuestName';
+import RoomNumber from './RoomNumber';
+import DateOfStay from './DateOfStay';
+import AddChargeRow from './AddChargeRow';
+import Currency from './Currency';
+import AddChargeButton from './AddChargeButton';
+import TH from './TH';
+import TD from './TD';
+import LTD from './LTD';
 import Footer from './Footer';
+import FooterButton from './FooterButton';
 import messages from './messages';
-
-const mapColToWidth = {
-  service: '40%',
-  hasItBeenUpdated: '20%',
-  hasItBeenSettled: '20%',
-  price: '20%',
-};
 
 function ChargesModal({
   isOpen,
@@ -40,7 +31,7 @@ function ChargesModal({
   addCharge,
 }) {
   const date = getFormattedDate(stay.checkInTime, stay.checkOutTime);
-  console.log('charges ? ', charges);
+  const hasNewCharges = charges.findIndex(charge => !charge.updatedAt) !== -1;
   return (
     <Modal
       contentLabel="chargesModal"
@@ -50,118 +41,102 @@ function ChargesModal({
       shouldCloseOnOverlayClick={false}
     >
       <Header>
-        <H2>
-          <FormattedMessage
-            {...messages.header}
-            values={{
-              name: stay.customerName,
-              date,
-            }}
-          />
-        </H2>
+        <FormattedMessage {...messages.header} />
       </Header>
-      <UpperBody>
-        <InputWrapper flex={4}>
-          <Input
-            name="serviceInput"
-            type="text"
-            value={serviceInput}
-            placeholder="Service"
-            onChange={handleInputChange}
-          />
-        </InputWrapper>
-        <InputWrapper flex={1}>
-          <Input
-            name="priceInput"
-            type="text"
-            value={priceInput}
-            placeholder="Price (HKD)"
-            onChange={handleInputChange}
-          />
-        </InputWrapper>
-        <Button
-          bgColor={colors.support}
-          textColor={colors.lightGray}
-          onClick={addCharge}
-        >
+      <Details>
+        <GuestName>
+          {stay.customerName}
+        </GuestName>
+        <RoomNumber>
+          {stay.roomNumber}
+        </RoomNumber>
+        <DateOfStay>
+          {date}
+        </DateOfStay>
+      </Details>
+      <AddChargeRow>
+        <Input
+          name="serviceInput"
+          type="text"
+          value={serviceInput}
+          placeholder="Enter Service"
+          onChange={handleInputChange}
+          width="420px"
+        />
+        <Currency>
+          {stay.currency}
+        </Currency>
+        <Input
+          name="priceInput"
+          type="text"
+          value={priceInput}
+          placeholder="Price"
+          onChange={handleInputChange}
+          width="120px"
+        />
+        <AddChargeButton onClick={addCharge}>
           <FormattedMessage {...messages.addCharge} />
-        </Button>
-      </UpperBody>
-      <LowerBody>
-        <TableContainer>
-          <HeaderRow mb={1}>
-            <HeaderCol width={mapColToWidth.service}>
+        </AddChargeButton>
+      </AddChargeRow>
+      <table style={{ width: '100%' }}>
+        <thead>
+          <tr>
+            <TH first alignLeft>
               <FormattedMessage {...messages.service} />
-            </HeaderCol>
-            <HeaderCol width={mapColToWidth.hasItBeenUpdated}>
-              <FormattedMessage {...messages.hasItBeenUpdated} />
-            </HeaderCol>
-            <HeaderCol width={mapColToWidth.hasItBeenSettled}>
-              <FormattedMessage {...messages.hasItBeenSettled} />
-            </HeaderCol>
-            <HeaderCol width={mapColToWidth.price}>
-              <FormattedMessage
-                {...messages.price}
-                values={{ currency: stay.currency }}
-              />
-            </HeaderCol>
-          </HeaderRow>
-          {charges.map(({ service, updated, status, charge }, i) =>
-            <BodyRow key={i}>
-              <BodyRowLayer>
-                <BodyCol width={mapColToWidth.service}>
-                  {service}
-                </BodyCol>
-                <BodyCol width={mapColToWidth.hasItBeenUpdated}>
-                  {updated
-                    ? <FormattedMessage {...messages.yes} />
-                    : <FormattedMessage {...messages.no} />}
-                </BodyCol>
-                <BodyCol width={mapColToWidth.hasItBeenSettled}>
-                  {status === 'Settled'
-                    ? <FormattedMessage {...messages.yes} />
-                    : <FormattedMessage {...messages.no} />}
-                </BodyCol>
-                <BodyCol width={mapColToWidth.price}>
-                  {charge}
-                </BodyCol>
-              </BodyRowLayer>
-            </BodyRow>
+            </TH>
+            <TH>
+              <FormattedMessage {...messages.updatedOn} />
+            </TH>
+            <TH>
+              <FormattedMessage {...messages.settledOn} />
+            </TH>
+            <TH>
+              <FormattedMessage {...messages.charge} />
+            </TH>
+          </tr>
+        </thead>
+        <tbody>
+          {charges.map(({ service, updatedAt, status, charge }, i) =>
+            <tr key={i}>
+              <TD first alignLeft>
+                {service}
+              </TD>
+              <TD>
+                {updatedAt ? getFormattedDate(new Date(updatedAt)) : '-'}
+              </TD>
+              <TD>
+                {status === 'Settled'
+                  ? <FormattedMessage {...messages.yes} />
+                  : '-'}
+              </TD>
+              <TD>
+                {stay.currency + charge}
+              </TD>
+            </tr>
           )}
-          <HeaderRow>
-            <HeaderCol width={mapColToWidth.service}>
+          <tr>
+            <LTD label>
               <FormattedMessage {...messages.total} />
-            </HeaderCol>
-            <HeaderCol width={mapColToWidth.hasItBeenUpdated} />
-            <HeaderCol width={mapColToWidth.hasItBeenSettled} />
-            <HeaderCol width={mapColToWidth.price}>
-              {charges.reduce(
-                (prev, current) => (prev * 1 + current.charge * 1).toFixed(2),
-                0
-              )}
-            </HeaderCol>
-          </HeaderRow>
-        </TableContainer>
-      </LowerBody>
+            </LTD>
+            <LTD />
+            <LTD />
+            <LTD>
+              {stay.currency +
+                charges.reduce(
+                  (prev, current) => (prev * 1 + current.charge * 1).toFixed(2),
+                  0
+                )}
+            </LTD>
+          </tr>
+        </tbody>
+      </table>
       <Footer>
-        <Button
-          bgColor={colors.base}
-          textColor={colors.lightGray}
-          mr={1}
-          ph={2}
-          onClick={closeModal}
-        >
+        <FooterButton onClick={closeModal}>
           <FormattedMessage {...messages.cancel} />
-        </Button>
-        <Button
-          bgColor={colors.support}
-          textColor={colors.lightGray}
-          onClick={updateCharges}
-          ph={2}
-          disabled={hasNewCharge(charges)}
-        >
+        </FooterButton>
+        <FooterButton primary onClick={updateCharges} disabled={!hasNewCharges}>
           <FormattedMessage {...messages.updateCharges} />
-        </Button>
+        </FooterButton>
       </Footer>
     </Modal>
   );

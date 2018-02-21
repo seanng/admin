@@ -2,13 +2,17 @@
 import colors from 'themes/colors';
 export default {
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    backgroundColor: colors.modalOverlay,
   },
   content: {
-    top: '50px',
-    bottom: '50px',
-    right: '50px',
-    left: '50px',
-    backgroundColor: colors.lightGray,
+    position: 'relative',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    margin: 'auto',
+    maxHeight: '90%',
+    width: '800px',
+    borderRadius: '0px',
+    padding: '0px 40px',
   },
 };

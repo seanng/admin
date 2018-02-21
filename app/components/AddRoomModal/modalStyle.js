@@ -11,6 +11,7 @@ export default {
     right: 0,
     margin: '0 auto',
     height: '480px',
+    maxHeight: '90%',
     width: '400px',
     borderRadius: '0px',
     padding: '40px',

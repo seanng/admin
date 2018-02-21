@@ -14,6 +14,7 @@ import {
   DELETE_PHOTO,
   SAVE_HOTEL_PROFILE_SUCCESS,
   EDIT_HOTEL_INFO,
+  REMOVE_AMENITY,
 } from './constants';
 
 const initialState = fromJS({
@@ -72,6 +73,12 @@ function hotelProfileReducer(state = initialState, action) {
 
     case EDIT_HOTEL_INFO:
       return state.setIn(['editedHotelInfo', action.key], action.value);
+
+    case REMOVE_AMENITY:
+      return state.updateIn(['editedHotelInfo', 'amenities'], amenities => {
+        amenities = amenities.splice(action.index, 1);
+        return amenities;
+      });
 
     default:
       return state;

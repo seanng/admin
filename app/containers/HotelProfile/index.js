@@ -21,6 +21,7 @@ import {
   saveHotelProfile,
   deletePhoto,
   editHotelInfo,
+  removeAmenity,
 } from './actions';
 import {
   selectHotelInfo,
@@ -77,6 +78,7 @@ export class HotelProfile extends React.PureComponent {
 
   handleRemoveAmenity = index => {
     console.log('the index: ', index);
+    this.props.removeAmenity(index);
   };
 
   openAmenitiesModal = () => {
@@ -339,6 +341,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(rearrangePhotos(dragIndex, hoverIndex, dragPhoto)),
     deletePhoto: index => dispatch(deletePhoto(index)),
     editHotelInfo: (key, value) => dispatch(editHotelInfo(key, value)),
+    removeAmenity: index => dispatch(removeAmenity(index)),
   };
 }
 

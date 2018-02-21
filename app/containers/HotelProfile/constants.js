@@ -19,3 +19,4 @@ export const DELETE_PHOTO = 'app/HotelProfile/DELETE_PHOTO';
 export const EDIT_HOTEL_INFO = 'app/HotelProfile/EDIT_HOTEL_INFO';
 export const SET_EDITING_MODE = 'app/HotelProfile/SET_EDITING_MODE';
 export const CANCEL_EDITING_MODE = 'app/HotelProfile/CANCEL_EDITING_MODE';
+export const REMOVE_AMENITY = 'app/HotelProfile/REMOVE_AMENITY';

@@ -12,6 +12,7 @@ import {
   SAVE_HOTEL_PROFILE,
   DELETE_PHOTO,
   EDIT_HOTEL_INFO,
+  REMOVE_AMENITY,
 } from './constants';
 
 export function getHotelInfo(id) {
@@ -61,5 +62,12 @@ export function editHotelInfo(key, value) {
     type: EDIT_HOTEL_INFO,
     key,
     value,
+  };
+}
+
+export function removeAmenity(index) {
+  return {
+    type: REMOVE_AMENITY,
+    index,
   };
 }

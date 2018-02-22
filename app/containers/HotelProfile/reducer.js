@@ -14,7 +14,10 @@ import {
   DELETE_PHOTO,
   SAVE_HOTEL_PROFILE_SUCCESS,
   EDIT_HOTEL_INFO,
+  OPEN_AMENITIES_MODAL,
+  CLOSE_AMENITIES_MODAL,
   REMOVE_AMENITY,
+  SAVE_SELECTED_AMENITIES,
 } from './constants';
 
 const initialState = fromJS({
@@ -22,6 +25,8 @@ const initialState = fromJS({
   isEditingMode: false,
   hotelInfo: {},
   editedHotelInfo: {},
+  selectedAmenities: [],
+  isAmenitiesModalOpen: false,
 });
 
 function hotelProfileReducer(state = initialState, action) {
@@ -79,6 +84,25 @@ function hotelProfileReducer(state = initialState, action) {
         amenities = amenities.splice(action.index, 1);
         return amenities;
       });
+
+    case OPEN_AMENITIES_MODAL:
+      return state.merge({
+        selectedAmenities: state.getIn(['editedHotelInfo', 'amenities']),
+        isAmenitiesModalOpen: true,
+      });
+
+    case CLOSE_AMENITIES_MODAL:
+      return state.set('isAmenitiesModalOpen', false);
+
+    case SAVE_SELECTED_AMENITIES:
+      return state
+        .merge({
+          isAmenitiesModalOpen: false,
+        })
+        .mergeIn(
+          ['editedHotelInfo', 'amenities'],
+          state.get('selectedAmenities')
+        );
 
     default:
       return state;

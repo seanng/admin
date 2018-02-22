@@ -13,6 +13,7 @@ import TrashIcon from 'react-icons/lib/md/delete';
 import CrosshairIcon from 'react-icons/lib/md/add';
 import colors from 'themes/colors';
 import Input from 'components/Input';
+import AmenitiesModal from 'components/AmenitiesModal';
 import {
   getHotelInfo,
   setEditingMode,
@@ -22,12 +23,17 @@ import {
   deletePhoto,
   editHotelInfo,
   removeAmenity,
+  openAmenitiesModal,
+  closeAmenitiesModal,
+  saveSelectedAmenities,
 } from './actions';
 import {
   selectHotelInfo,
   selectEditedHotelInfo,
   selectHasLoaded,
   selectIsEditingMode,
+  selectIsAmenitiesModalOpen,
+  selectSelectedAmenities,
 } from './selectors';
 import Container from './Container';
 import Head from './Head';
@@ -79,11 +85,6 @@ export class HotelProfile extends React.PureComponent {
   handleRemoveAmenity = index => {
     console.log('the index: ', index);
     this.props.removeAmenity(index);
-  };
-
-  openAmenitiesModal = () => {
-    // TODO: open amenities modal.
-    console.log('should open amenities modal.');
   };
 
   movePhoto = (dragIndex, hoverIndex) => {
@@ -161,7 +162,7 @@ export class HotelProfile extends React.PureComponent {
               size={20}
               color={colors.primary}
               style={{ cursor: 'pointer' }}
-              onClick={() => this.openAmenitiesModal()}
+              onClick={this.props.openAmenitiesModal}
             />
           </RowWrapper>
           <Amenities>
@@ -317,6 +318,11 @@ export class HotelProfile extends React.PureComponent {
               : this.renderDetailsPreview()}
           </DetailsContainer>
         </Body>
+        <AmenitiesModal
+          isOpen={this.props.isAmenitiesModalOpen}
+          closeModal={this.props.closeAmenitiesModal}
+          saveAmenities={this.props.saveSelectedAmenities}
+        />
       </Container>
     );
   }
@@ -328,6 +334,8 @@ const mapStateToProps = createStructuredSelector({
   hotelId: selectHotelId(),
   hasLoaded: selectHasLoaded(),
   isEditingMode: selectIsEditingMode(),
+  isAmenitiesModalOpen: selectIsAmenitiesModalOpen(),
+  selectedAmenities: selectSelectedAmenities(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -342,6 +350,9 @@ function mapDispatchToProps(dispatch) {
     deletePhoto: index => dispatch(deletePhoto(index)),
     editHotelInfo: (key, value) => dispatch(editHotelInfo(key, value)),
     removeAmenity: index => dispatch(removeAmenity(index)),
+    openAmenitiesModal: () => dispatch(openAmenitiesModal()),
+    closeAmenitiesModal: () => dispatch(closeAmenitiesModal()),
+    saveSelectedAmenities: () => dispatch(saveSelectedAmenities()),
   };
 }
 

@@ -13,6 +13,9 @@ import {
   DELETE_PHOTO,
   EDIT_HOTEL_INFO,
   REMOVE_AMENITY,
+  OPEN_AMENITIES_MODAL,
+  CLOSE_AMENITIES_MODAL,
+  SAVE_SELECTED_AMENITIES,
 } from './constants';
 
 export function getHotelInfo(id) {
@@ -69,5 +72,23 @@ export function removeAmenity(index) {
   return {
     type: REMOVE_AMENITY,
     index,
+  };
+}
+
+export function openAmenitiesModal() {
+  return {
+    type: OPEN_AMENITIES_MODAL,
+  };
+}
+
+export function closeAmenitiesModal() {
+  return {
+    type: CLOSE_AMENITIES_MODAL,
+  };
+}
+
+export function saveSelectedAmenities() {
+  return {
+    type: SAVE_SELECTED_AMENITIES,
   };
 }

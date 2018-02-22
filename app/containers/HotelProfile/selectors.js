@@ -33,6 +33,16 @@ export const selectIsEditingMode = () =>
     substate.get('isEditingMode')
   );
 
+export const selectIsAmenitiesModalOpen = () =>
+  createSelector(selectHotelProfileDomain(), substate =>
+    substate.get('isAmenitiesModalOpen')
+  );
+
+export const selectSelectedAmenities = () =>
+  createSelector(selectHotelProfileDomain(), substate =>
+    substate.get('selectedAmenities')
+  );
+
 const makeSelectHotelProfile = () =>
   createSelector(selectHotelProfileDomain(), substate => substate.toJS());
 

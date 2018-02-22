@@ -17,13 +17,12 @@ const StyledInput = styled.input`
   height: 40px;
   border: 1px solid ${colors.base4};
   padding-left: 10px;
-
-  &:focus {
+  ${props => props.styles && props.styles} &:focus {
     outline: none;
   }
 `;
 
-function Input({ type, value, onChange, name, placeholder, width }) {
+function Input({ type, value, onChange, name, placeholder, width, styles }) {
   return (
     <StyledInput
       type={type}
@@ -32,6 +31,7 @@ function Input({ type, value, onChange, name, placeholder, width }) {
       name={name}
       placeholder={placeholder}
       width={width}
+      styles={styles}
     />
   );
 }

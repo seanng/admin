@@ -55,6 +55,7 @@ import RatesWrapper from './RatesWrapper';
 import Description from './Description';
 import Amenities from './Amenities';
 import Amenity from './Amenity';
+import Placeholder from './Placeholder';
 import CrosshairWrapper from './CrosshairWrapper';
 import messages from './messages';
 
@@ -178,7 +179,25 @@ export class HotelProfile extends React.PureComponent {
                   removeAmenity={this.handleRemoveAmenity}
                 />
               )}
+            {this.props.editedHotelInfo.get('amenities').size === 0 &&
+              <Placeholder>
+                <FormattedMessage {...messages.addAmenities} />
+              </Placeholder>}
           </Amenities>
+          <RowWrapper next>
+            <Label>
+              <FormattedMessage {...messages.location} />
+            </Label>
+          </RowWrapper>
+          <Input
+            name="addressInput"
+            type="text"
+            placeholder="Add location"
+            onChange={this.handleInputChange}
+            value={this.props.editedHotelInfo.get('address')}
+            styles="margin-top: 10px;"
+            width="100%"
+          />
         </DetailsCard>
       </div>
     );
@@ -243,6 +262,10 @@ export class HotelProfile extends React.PureComponent {
               .map((amenity, i) =>
                 <Amenity key={i} index={i} amenity={amenity} />
               )}
+            {this.props.hotelInfo.get('amenities').size === 0 &&
+              <Placeholder>
+                <FormattedMessage {...messages.addAmenities} />
+              </Placeholder>}
           </Amenities>
         </DetailsCard>
       </div>

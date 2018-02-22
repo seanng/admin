@@ -57,6 +57,7 @@ import Amenities from './Amenities';
 import Amenity from './Amenity';
 import Placeholder from './Placeholder';
 import CrosshairWrapper from './CrosshairWrapper';
+import LocationMap from './LocationMap';
 import messages from './messages';
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -267,6 +268,15 @@ export class HotelProfile extends React.PureComponent {
                 <FormattedMessage {...messages.addAmenities} />
               </Placeholder>}
           </Amenities>
+        </DetailsCard>
+        <DetailsCard>
+          <Label>
+            <FormattedMessage {...messages.location} />
+          </Label>
+          <Description>
+            {this.props.hotelInfo.get('address')}
+          </Description>
+          <LocationMap />
         </DetailsCard>
       </div>
     );

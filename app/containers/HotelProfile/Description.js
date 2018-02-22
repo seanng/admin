@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import colors from 'themes/colors';
 
 const Description = styled.div`
-  margin-top: 30px;
+  margin-top: 20px;
   font-size: 14px;
   text-align: justify;
   color: ${colors.base2};

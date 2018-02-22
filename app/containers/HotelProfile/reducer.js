@@ -18,6 +18,7 @@ import {
   CLOSE_AMENITIES_MODAL,
   REMOVE_AMENITY,
   SAVE_SELECTED_AMENITIES,
+  SELECT_AMENITY,
 } from './constants';
 
 const initialState = fromJS({
@@ -78,6 +79,17 @@ function hotelProfileReducer(state = initialState, action) {
 
     case EDIT_HOTEL_INFO:
       return state.setIn(['editedHotelInfo', action.key], action.value);
+
+    case SELECT_AMENITY:
+      return state.update('selectedAmenities', selectedAmenities => {
+        const amenityIndex = selectedAmenities.indexOf(action.amenity);
+        if (amenityIndex === -1) {
+          selectedAmenities = selectedAmenities.push(action.amenity);
+          return selectedAmenities;
+        }
+        selectedAmenities = selectedAmenities.splice(amenityIndex, 1);
+        return selectedAmenities;
+      });
 
     case REMOVE_AMENITY:
       return state.updateIn(['editedHotelInfo', 'amenities'], amenities => {

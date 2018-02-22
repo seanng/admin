@@ -12,6 +12,7 @@ import {
   SAVE_HOTEL_PROFILE,
   DELETE_PHOTO,
   EDIT_HOTEL_INFO,
+  SELECT_AMENITY,
   REMOVE_AMENITY,
   OPEN_AMENITIES_MODAL,
   CLOSE_AMENITIES_MODAL,
@@ -72,6 +73,13 @@ export function removeAmenity(index) {
   return {
     type: REMOVE_AMENITY,
     index,
+  };
+}
+
+export function selectAmenity(amenity) {
+  return {
+    type: SELECT_AMENITY,
+    amenity,
   };
 }
 

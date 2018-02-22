@@ -22,6 +22,7 @@ import {
   saveHotelProfile,
   deletePhoto,
   editHotelInfo,
+  selectAmenity,
   removeAmenity,
   openAmenitiesModal,
   closeAmenitiesModal,
@@ -322,6 +323,8 @@ export class HotelProfile extends React.PureComponent {
           isOpen={this.props.isAmenitiesModalOpen}
           closeModal={this.props.closeAmenitiesModal}
           saveAmenities={this.props.saveSelectedAmenities}
+          selectedAmenities={this.props.selectedAmenities}
+          selectAmenity={this.props.selectAmenity}
         />
       </Container>
     );
@@ -350,6 +353,7 @@ function mapDispatchToProps(dispatch) {
     deletePhoto: index => dispatch(deletePhoto(index)),
     editHotelInfo: (key, value) => dispatch(editHotelInfo(key, value)),
     removeAmenity: index => dispatch(removeAmenity(index)),
+    selectAmenity: amenity => dispatch(selectAmenity(amenity)),
     openAmenitiesModal: () => dispatch(openAmenitiesModal()),
     closeAmenitiesModal: () => dispatch(closeAmenitiesModal()),
     saveSelectedAmenities: () => dispatch(saveSelectedAmenities()),

@@ -1,13 +1,19 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import colors from 'themes/colors';
-import MiniBarIcon from 'react-icons/lib/md/local-gas-station';
+import amenities from 'data/amenities';
 import TrashIcon from 'react-icons/lib/md/delete';
+// TO DELETE: react-icons.
+import MiniBarIcon from 'react-icons/lib/md/local-gas-station';
+import LaundryIcon from 'react-icons/lib/md/local-laundry-service';
+import WifiIcon from 'react-icons/lib/md/wifi';
 import styled from 'styled-components';
-import messages from './messages';
 
+// TO DELETE (move to data/amenities)
 const mapAmenityToIcon = {
   miniBar: <MiniBarIcon size={24} />,
+  laundry: <LaundryIcon size={24} />,
+  freeWifi: <WifiIcon size={24} />,
 };
 
 export default function Amenity({ amenity, index, isEditing, removeAmenity }) {
@@ -22,9 +28,10 @@ export default function Amenity({ amenity, index, isEditing, removeAmenity }) {
         />}
       <Wrapper index={index}>
         <div style={{ marginBottom: '4px' }}>
+          {/* TODO: change to image & source from amenities[amenity].imageSource */}
           {mapAmenityToIcon[amenity]}
         </div>
-        <FormattedMessage {...messages[amenity]} />
+        <FormattedMessage {...amenities[amenity].message} />
       </Wrapper>
     </Container>
   );

@@ -8,6 +8,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
+import PlacesAutocomplete from 'react-places-autocomplete';
 import { selectHotelId } from 'containers/App/selectors';
 import TrashIcon from 'react-icons/lib/md/delete';
 import CrosshairIcon from 'react-icons/lib/md/add';
@@ -79,6 +80,10 @@ export class HotelProfile extends React.PureComponent {
     this.props.editHotelInfo(key, value);
   };
 
+  handleAutocompleteChange = input => {
+    this.props.editHotelInfo('address', input);
+  };
+
   handleDeletePhoto = index => {
     // 1. TODO: confirmation - are you sure you want to delete?
     // 2. if okay, delete photo.
@@ -96,6 +101,26 @@ export class HotelProfile extends React.PureComponent {
   };
 
   renderDetailsEditing() {
+    const autoCompleteInput = {
+      type: 'text',
+      value: this.props.editedHotelInfo.get('address'),
+      onChange: this.handleAutocompleteChange,
+      name: 'addressInput',
+    };
+    const autoCompleteStyles = {
+      root: {
+        marginTop: '10px',
+      },
+      input: {
+        fontSize: '14px',
+        fontWeight: 300,
+        color: colors.base2,
+        width: '100%',
+        height: '40px',
+        border: `1px solid ${colors.base4}`,
+        paddingLeft: '10px',
+      },
+    };
     return (
       <div>
         <DetailsCard>
@@ -190,14 +215,9 @@ export class HotelProfile extends React.PureComponent {
               <FormattedMessage {...messages.location} />
             </Label>
           </RowWrapper>
-          <Input
-            name="addressInput"
-            type="text"
-            placeholder="Add location"
-            onChange={this.handleInputChange}
-            value={this.props.editedHotelInfo.get('address')}
-            styles="margin-top: 10px;"
-            width="100%"
+          <PlacesAutocomplete
+            inputProps={autoCompleteInput}
+            styles={autoCompleteStyles}
           />
         </DetailsCard>
       </div>
@@ -276,7 +296,10 @@ export class HotelProfile extends React.PureComponent {
           <Description>
             {this.props.hotelInfo.get('address')}
           </Description>
-          <LocationMap />
+          <LocationMap
+            lat={this.props.hotelInfo.get('lat') * 1}
+            lng={this.props.hotelInfo.get('lng') * 1}
+          />
         </DetailsCard>
       </div>
     );

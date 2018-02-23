@@ -6,13 +6,17 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  member: {
-    id: 'app.components.TeamManagement.member',
-    defaultMessage: 'Member',
-  },
   admin: {
     id: 'app.components.TeamManagement.admin',
-    defaultMessage: 'Admin',
+    defaultMessage: 'ADMIN',
+  },
+  invite: {
+    id: 'app.components.TeamManagement.invite',
+    defaultMessage: 'INVITE',
+  },
+  member: {
+    id: 'app.components.TeamManagement.member',
+    defaultMessage: 'MEMBER',
   },
   superUser: {
     id: 'app.components.TeamManagement.superUser',
@@ -20,11 +24,11 @@ export default defineMessages({
   },
   upgradeToAdmin: {
     id: 'app.components.TeamManagement.upgradeToAdmin',
-    defaultMessage: 'Upgrade To Admin',
+    defaultMessage: 'UPGRADE TO ADMIN',
   },
-  remove: {
-    id: 'app.components.TeamManagement.remove',
-    defaultMessage: 'Remove',
+  removeMember: {
+    id: 'app.components.TeamManagement.removeMember',
+    defaultMessage: 'REMOVE MEMBER',
   },
   upgradeToAdminPrompt: {
     id: 'app.components.TeamManagement.upgradeToAdminPrompt',
@@ -45,5 +49,9 @@ export default defineMessages({
   addMember: {
     id: 'app.components.TeamManagement.addMember',
     defaultMessage: 'Add Member',
+  },
+  teamManagement: {
+    id: 'app.components.TeamManagement.teamManagement',
+    defaultMessage: 'Team Management',
   },
 });

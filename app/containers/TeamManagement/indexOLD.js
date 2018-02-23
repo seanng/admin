@@ -8,9 +8,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
-import { camelize } from 'utils/helpers';
-import { selectHotelId, selectUserId } from 'containers/App/selectors';
+import { getUserType, camelize } from 'utils/helpers';
 import colors from 'themes/colors';
+import { selectHotelId, selectUserId } from 'containers/App/selectors';
+import Card from 'components/Card';
+import Button from 'components/Button';
+import H3 from 'components/fonts/H3';
+import H5 from 'components/fonts/H5';
+import TeamMemberCard from 'components/TeamMemberCard';
 import ConfirmationModal from 'components/ConfirmationModal';
 import AddMemberModal from 'components/AddMemberModal';
 import ProxyContainer from './ProxyContainer';
@@ -32,16 +37,11 @@ import {
 } from './selectors';
 import messages from './messages';
 import Container from './Container';
-import Head from './Head';
-import Heading from './Heading';
-import HeadButton from './HeadButton';
-import Body from './Body';
+import ItemsContainer from './ItemsContainer';
 import PreviewContainer from './PreviewContainer';
 import PreviewPhotoContainer from './PreviewPhotoContainer';
 import PreviewPhoto from './PreviewPhoto';
-import PreviewInfoCard from './PreviewInfoCard';
-import PreviewInfoRow from './PreviewInfoRow';
-import PreviewButton from './PreviewButton';
+import PreviewBody from './PreviewBody';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class TeamManagement extends React.PureComponent {
@@ -56,8 +56,6 @@ export class TeamManagement extends React.PureComponent {
     );
     this.mapPromptIdToAction[modalPromptId]();
   };
-
-  parseAdminLevel = adminLevel => ['member', 'admin'][adminLevel - 1];
 
   mapPromptIdToAction = {
     upgradeToAdmin: () => this.upgradeToAdmin(),
@@ -123,84 +121,104 @@ export class TeamManagement extends React.PureComponent {
   render() {
     const {
       hasLoaded,
+      membersList,
       previewedMember,
+      setPreviewMember,
       confirmationModalOptions,
       addMemberModalOptions,
     } = this.props;
+    const members = membersList.toJS();
     const previewedMemberJS = previewedMember ? previewedMember.toJS() : null;
     if (!hasLoaded) {
       return <div>loading...</div>;
     }
     return (
       <Container>
-        <Head>
-          <Heading>
-            <FormattedMessage {...messages.teamManagement} />
-          </Heading>
-          <HeadButton onClick={this.promptAddMemberModal}>
-            <FormattedMessage {...messages.invite} />
-          </HeadButton>
-        </Head>
-        <Body>
-          <PreviewContainer>
-            <PreviewPhotoContainer>
-              <PreviewPhoto src={previewedMemberJS.photoUrl} />
-              <ProxyContainer />
-            </PreviewPhotoContainer>
-            <PreviewInfoCard>
-              <PreviewInfoRow>
-                {`${previewedMemberJS.firstName} ${previewedMemberJS.lastName}`}
-              </PreviewInfoRow>
-              <PreviewInfoRow>
-                <FormattedMessage
-                  {...messages[
-                    this.parseAdminLevel(previewedMemberJS.adminLevel)
-                  ]}
-                />
-              </PreviewInfoRow>
-              <PreviewInfoRow>
-                {previewedMemberJS.email}
-              </PreviewInfoRow>
-              <PreviewInfoRow>
-                {previewedMemberJS.phoneNumber}
-              </PreviewInfoRow>
-            </PreviewInfoCard>
-            <PreviewButton
-              color={colors.primary}
-              onClick={this.promptUpgradeToAdmin}
-            >
-              <FormattedMessage {...messages.upgradeToAdmin} />
-            </PreviewButton>
-            <PreviewButton
-              color={colors.danger}
-              onClick={this.promptDeleteAccount}
-            >
-              <FormattedMessage {...messages.removeMember} />
-            </PreviewButton>
-          </PreviewContainer>
-        </Body>
-        <ConfirmationModal
-          isOpen={confirmationModalOptions.get('shouldDisplay')}
-          closeModal={this.resetConfirmationModal}
-          promptText={
-            <FormattedMessage
-              {...messages[
-                `${confirmationModalOptions.get('modalPromptId')}Prompt`
-              ]}
-              values={{
-                name: `${previewedMemberJS.firstName} ${previewedMemberJS.lastName}`,
-              }}
+        <ItemsContainer>
+          <TeamMemberCard promptAddMemberModal={this.promptAddMemberModal} />
+          {members.map((member, index) =>
+            <TeamMemberCard
+              member={member}
+              index={index}
+              previewedMember={previewedMemberJS}
+              setPreviewMember={setPreviewMember}
+              key={member.id}
             />
-          }
-          confirmationText={
-            <FormattedMessage
-              {...messages[
-                `${confirmationModalOptions.get('modalPromptId')}Confirm`
-              ]}
-            />
-          }
-          onConfirmClick={this.onConfirmClick}
-        />
+          )}
+        </ItemsContainer>
+        <PreviewContainer>
+          {previewedMemberJS &&
+            <Card noPadding>
+              <PreviewPhotoContainer>
+                <PreviewPhoto src={previewedMemberJS.photoUrl} />
+                <ProxyContainer />
+              </PreviewPhotoContainer>
+              <PreviewBody>
+                <H3 center mb={1.5}>
+                  {previewedMemberJS.firstName} {previewedMemberJS.lastName}
+                </H3>
+                <H5 center mb={1.5}>
+                  <FormattedMessage
+                    {...messages[getUserType(previewedMemberJS.adminLevel)]}
+                  />
+                </H5>
+                <H5 center mb={1.5}>
+                  {previewedMemberJS.email || '-'}
+                </H5>
+                <H5 center>
+                  {previewedMemberJS.phoneNumber || '-'}
+                </H5>
+              </PreviewBody>
+              {previewedMemberJS.adminLevel === 1 &&
+                <div>
+                  <Button
+                    width="100%"
+                    sharp
+                    pv="1"
+                    bgColor={colors.support}
+                    onClick={this.promptUpgradeToAdmin}
+                  >
+                    <H5 center color={colors.white} mb={0}>
+                      <FormattedMessage {...messages.upgradeToAdmin} />
+                    </H5>
+                  </Button>
+                  <Button
+                    width="100%"
+                    pv="1"
+                    sharp
+                    bgColor={colors.danger}
+                    onClick={this.promptDeleteAccount}
+                  >
+                    <H5 center color={colors.white} mb={0}>
+                      <FormattedMessage {...messages.remove} />
+                    </H5>
+                  </Button>
+                </div>}
+            </Card>}
+        </PreviewContainer>
+        {previewedMemberJS &&
+          <ConfirmationModal
+            isOpen={confirmationModalOptions.get('shouldDisplay')}
+            closeModal={this.resetConfirmationModal}
+            promptText={
+              <FormattedMessage
+                {...messages[
+                  `${confirmationModalOptions.get('modalPromptId')}Prompt`
+                ]}
+                values={{
+                  name: `${previewedMemberJS.firstName} ${previewedMemberJS.lastName}`,
+                }}
+              />
+            }
+            confirmationText={
+              <FormattedMessage
+                {...messages[
+                  `${confirmationModalOptions.get('modalPromptId')}Confirm`
+                ]}
+              />
+            }
+            onConfirmClick={this.onConfirmClick}
+          />}
         <AddMemberModal
           closeModal={this.resetAddMemberModal}
           handleInputChange={this.handleModalInputChange}

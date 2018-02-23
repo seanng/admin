@@ -44,6 +44,8 @@ function teamManagementReducer(state = initialState, action) {
       return state.merge({
         hasLoaded: true,
         membersList: action.employees,
+        previewedMemberIndex: 0,
+        previewedMember: action.employees[0],
       });
     case SET_MEMBER_TO_PREVIEW: {
       if (state.get('previewedMemberIndex') === action.index) {

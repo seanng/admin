@@ -8,7 +8,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-import PlacesAutocomplete from 'react-places-autocomplete';
+import PlacesAutocomplete, {
+  geocodeByPlaceId,
+  getLatLng,
+} from 'react-places-autocomplete';
 import { selectHotelId } from 'containers/App/selectors';
 import TrashIcon from 'react-icons/lib/md/delete';
 import CrosshairIcon from 'react-icons/lib/md/add';
@@ -28,6 +31,7 @@ import {
   openAmenitiesModal,
   closeAmenitiesModal,
   saveSelectedAmenities,
+  setLatLng,
 } from './actions';
 import {
   selectHotelInfo,
@@ -84,6 +88,13 @@ export class HotelProfile extends React.PureComponent {
     this.props.editHotelInfo('address', input);
   };
 
+  handleAutocompleteSelect = (address, placeId) => {
+    this.props.editHotelInfo('address', address);
+    geocodeByPlaceId(placeId)
+      .then(results => getLatLng(results[0]))
+      .then(({ lat, lng }) => this.props.setLatLng(lat, lng));
+  };
+
   handleDeletePhoto = index => {
     // 1. TODO: confirmation - are you sure you want to delete?
     // 2. if okay, delete photo.
@@ -101,13 +112,13 @@ export class HotelProfile extends React.PureComponent {
   };
 
   renderDetailsEditing() {
-    const autoCompleteInput = {
+    const autocompleteInput = {
       type: 'text',
       value: this.props.editedHotelInfo.get('address'),
       onChange: this.handleAutocompleteChange,
       name: 'addressInput',
     };
-    const autoCompleteStyles = {
+    const autocompleteStyles = {
       root: {
         marginTop: '10px',
       },
@@ -120,6 +131,21 @@ export class HotelProfile extends React.PureComponent {
         border: `1px solid ${colors.base4}`,
         paddingLeft: '10px',
       },
+      autocompleteContainer: {
+        zIndex: 10,
+      },
+      autocompleteItem: {
+        fontSize: '14px',
+        fontWeight: 300,
+        color: colors.base2,
+      },
+      autocompleteItemActive: {
+        backgroundColor: colors.base3,
+        color: colors.white,
+      },
+    };
+    const autocompleteOptions = {
+      componentRestrictions: { country: 'hk' },
     };
     return (
       <div>
@@ -216,8 +242,15 @@ export class HotelProfile extends React.PureComponent {
             </Label>
           </RowWrapper>
           <PlacesAutocomplete
-            inputProps={autoCompleteInput}
-            styles={autoCompleteStyles}
+            inputProps={autocompleteInput}
+            styles={autocompleteStyles}
+            onSelect={this.handleAutocompleteSelect}
+            options={autocompleteOptions}
+            highlightFirstSuggestion
+          />
+          <LocationMap
+            lat={this.props.editedHotelInfo.get('lat') * 1}
+            lng={this.props.editedHotelInfo.get('lng') * 1}
           />
         </DetailsCard>
       </div>
@@ -413,6 +446,7 @@ function mapDispatchToProps(dispatch) {
     openAmenitiesModal: () => dispatch(openAmenitiesModal()),
     closeAmenitiesModal: () => dispatch(closeAmenitiesModal()),
     saveSelectedAmenities: () => dispatch(saveSelectedAmenities()),
+    setLatLng: (lat, lng) => dispatch(setLatLng(lat, lng)),
   };
 }
 

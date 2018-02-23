@@ -25,3 +25,4 @@ export const OPEN_AMENITIES_MODAL = 'app/HotelProfile/OPEN_AMENITIES_MODAL';
 export const CLOSE_AMENITIES_MODAL = 'app/HotelProfile/CLOSE_AMENITIES_MODAL';
 export const SAVE_SELECTED_AMENITIES =
   'app/HotelProfile/SAVE_SELECTED_AMENITIES';
+export const SET_LAT_LNG = 'app/HotelProfile/SET_LAT_LNG';

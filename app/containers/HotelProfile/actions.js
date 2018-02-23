@@ -17,6 +17,7 @@ import {
   OPEN_AMENITIES_MODAL,
   CLOSE_AMENITIES_MODAL,
   SAVE_SELECTED_AMENITIES,
+  SET_LAT_LNG,
 } from './constants';
 
 export function getHotelInfo(id) {
@@ -98,5 +99,13 @@ export function closeAmenitiesModal() {
 export function saveSelectedAmenities() {
   return {
     type: SAVE_SELECTED_AMENITIES,
+  };
+}
+
+export function setLatLng(lat, lng) {
+  return {
+    type: SET_LAT_LNG,
+    lat,
+    lng,
   };
 }

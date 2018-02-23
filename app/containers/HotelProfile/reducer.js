@@ -19,6 +19,7 @@ import {
   REMOVE_AMENITY,
   SAVE_SELECTED_AMENITIES,
   SELECT_AMENITY,
+  SET_LAT_LNG,
 } from './constants';
 
 const initialState = fromJS({
@@ -115,6 +116,11 @@ function hotelProfileReducer(state = initialState, action) {
           ['editedHotelInfo', 'amenities'],
           state.get('selectedAmenities')
         );
+
+    case SET_LAT_LNG:
+      return state
+        .setIn(['editedHotelInfo', 'lat'], action.lat)
+        .setIn(['editedHotelInfo', 'lng'], action.lng);
 
     default:
       return state;

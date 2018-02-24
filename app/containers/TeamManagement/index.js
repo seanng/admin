@@ -13,7 +13,6 @@ import { selectHotelId, selectUserId } from 'containers/App/selectors';
 import colors from 'themes/colors';
 import ConfirmationModal from 'components/ConfirmationModal';
 import AddMemberModal from 'components/AddMemberModal';
-import ProxyContainer from './ProxyContainer';
 import {
   getEmployees,
   setMemberToPreview,
@@ -37,11 +36,14 @@ import Heading from './Heading';
 import HeadButton from './HeadButton';
 import Body from './Body';
 import PreviewContainer from './PreviewContainer';
-import PreviewPhotoContainer from './PreviewPhotoContainer';
 import PreviewPhoto from './PreviewPhoto';
 import PreviewInfoCard from './PreviewInfoCard';
 import PreviewInfoRow from './PreviewInfoRow';
 import PreviewButton from './PreviewButton';
+import MemberListContainer from './MemberListContainer';
+import TeamMemberCard from './TeamMemberCard';
+import OpacityLayer from './OpacityLayer';
+import Label from './Label';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class TeamManagement extends React.PureComponent {
@@ -123,10 +125,13 @@ export class TeamManagement extends React.PureComponent {
   render() {
     const {
       hasLoaded,
+      membersList,
       previewedMember,
       confirmationModalOptions,
       addMemberModalOptions,
+      setPreviewMember,
     } = this.props;
+    const members = membersList.toJS();
     const previewedMemberJS = previewedMember ? previewedMember.toJS() : null;
     if (!hasLoaded) {
       return <div>loading...</div>;
@@ -143,10 +148,9 @@ export class TeamManagement extends React.PureComponent {
         </Head>
         <Body>
           <PreviewContainer>
-            <PreviewPhotoContainer>
-              <PreviewPhoto src={previewedMemberJS.photoUrl} />
-              <ProxyContainer />
-            </PreviewPhotoContainer>
+            <PreviewPhoto src={previewedMemberJS.photoUrl}>
+              <OpacityLayer />
+            </PreviewPhoto>
             <PreviewInfoCard>
               <PreviewInfoRow>
                 {`${previewedMemberJS.firstName} ${previewedMemberJS.lastName}`}
@@ -165,12 +169,13 @@ export class TeamManagement extends React.PureComponent {
                 {previewedMemberJS.phoneNumber}
               </PreviewInfoRow>
             </PreviewInfoCard>
-            <PreviewButton
-              color={colors.primary}
-              onClick={this.promptUpgradeToAdmin}
-            >
-              <FormattedMessage {...messages.upgradeToAdmin} />
-            </PreviewButton>
+            {previewedMemberJS.adminLevel === 1 &&
+              <PreviewButton
+                color={colors.primary}
+                onClick={this.promptUpgradeToAdmin}
+              >
+                <FormattedMessage {...messages.upgradeToAdmin} />
+              </PreviewButton>}
             <PreviewButton
               color={colors.danger}
               onClick={this.promptDeleteAccount}
@@ -178,6 +183,26 @@ export class TeamManagement extends React.PureComponent {
               <FormattedMessage {...messages.removeMember} />
             </PreviewButton>
           </PreviewContainer>
+          <MemberListContainer>
+            {members.map((member, index) =>
+              <TeamMemberCard
+                key={member.id}
+                src={member.photoUrl}
+                onClick={() => setPreviewMember(index)}
+              >
+                <OpacityLayer
+                  isHighlighted={previewedMemberJS.id === member.id}
+                >
+                  {`${member.firstName} ${member.lastName}`}
+                  <Label>
+                    <FormattedMessage
+                      {...messages[this.parseAdminLevel(member.adminLevel)]}
+                    />
+                  </Label>
+                </OpacityLayer>
+              </TeamMemberCard>
+            )}
+          </MemberListContainer>
         </Body>
         <ConfirmationModal
           isOpen={confirmationModalOptions.get('shouldDisplay')}

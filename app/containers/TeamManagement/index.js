@@ -8,7 +8,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
-import { camelize } from 'utils/helpers';
 import { selectHotelId, selectUserId } from 'containers/App/selectors';
 import colors from 'themes/colors';
 import ConfirmationModal from 'components/ConfirmationModal';
@@ -75,15 +74,24 @@ export class TeamManagement extends React.PureComponent {
 
   handleModalInputChange = e => {
     const options = { ...this.props.addMemberModalOptions.toJS() };
-    options[camelize(e.target.name)] = e.target.value;
+    options[e.target.name] = e.target.value;
     this.props.setAddMemberOptions(options);
+  };
+
+  handleModalAddPhoto = () => {
+    console.log('clicked add photo');
   };
 
   handleAddMember = () => {
     const { addMemberModalOptions, addMember, hotelId, userId } = this.props;
-    const { firstName, lastName, email } = addMemberModalOptions.toJS();
+    const {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+    } = addMemberModalOptions.toJS();
     // check if all fields have been filled
-    addMember({ firstName, lastName, email }, hotelId, userId);
+    addMember({ firstName, lastName, email, phoneNumber }, hotelId, userId);
   };
 
   resetAddMemberModal = () => {
@@ -231,6 +239,7 @@ export class TeamManagement extends React.PureComponent {
           handleInputChange={this.handleModalInputChange}
           modalConfig={addMemberModalOptions}
           handleAddMember={this.handleAddMember}
+          handleAddPhoto={this.handleModalAddPhoto}
         />
       </Container>
     );

@@ -30,7 +30,9 @@ const initialState = fromJS({
     shouldDisplay: false,
     firstName: '',
     lastName: '',
-    email: '',
+    emailAddress: '',
+    contactNumber: '',
+    type: '',
   },
 });
 

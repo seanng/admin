@@ -66,10 +66,9 @@ export function addEmployee(details, hotelId, userId) {
   };
 }
 
-export function addMemberPhotoUpload(photoFile, imagePreviewUrl) {
+export function addMemberPhotoUpload(imagePreviewUrl) {
   return {
     type: ADD_MEMBER_PHOTO_UPLOAD,
-    photoFile,
     imagePreviewUrl,
   };
 }

@@ -33,7 +33,6 @@ const initialState = fromJS({
     lastName: '',
     email: '',
     contactNumber: '',
-    photoFile: null,
     imagePreviewUrl: null,
   },
 });
@@ -114,9 +113,8 @@ function teamManagementReducer(state = initialState, action) {
     }
 
     case ADD_MEMBER_PHOTO_UPLOAD: {
-      const { photoFile, imagePreviewUrl } = action;
+      const { imagePreviewUrl } = action;
       return state.mergeIn(['addMemberModalOptions'], {
-        photoFile,
         imagePreviewUrl,
       });
     }

@@ -10,6 +10,7 @@ import {
   REARRANGE_PHOTOS,
   CANCEL_EDITING_MODE,
   SAVE_HOTEL_PROFILE,
+  ADD_PHOTO,
   DELETE_PHOTO,
   EDIT_HOTEL_INFO,
   SELECT_AMENITY,
@@ -52,6 +53,13 @@ export function rearrangePhotos(dragIndex, hoverIndex, dragPhoto) {
     dragIndex,
     hoverIndex,
     dragPhoto,
+  };
+}
+
+export function addPhoto(imagePreviewUrl) {
+  return {
+    type: ADD_PHOTO,
+    imagePreviewUrl,
   };
 }
 

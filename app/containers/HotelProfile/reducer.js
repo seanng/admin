@@ -12,6 +12,7 @@ import {
   CANCEL_EDITING_MODE,
   REARRANGE_PHOTOS,
   DELETE_PHOTO,
+  ADD_PHOTO,
   SAVE_HOTEL_PROFILE_SUCCESS,
   EDIT_HOTEL_INFO,
   OPEN_AMENITIES_MODAL,
@@ -67,6 +68,13 @@ function hotelProfileReducer(state = initialState, action) {
       return state.updateIn(['editedHotelInfo', 'photos'], photos => {
         photos = photos.splice(dragIndex, 1);
         photos = photos.splice(hoverIndex, 0, dragPhoto);
+        return photos;
+      });
+    }
+
+    case ADD_PHOTO: {
+      return state.updateIn(['editedHotelInfo', 'photos'], photos => {
+        photos = photos.push(action.imagePreviewUrl);
         return photos;
       });
     }

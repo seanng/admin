@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import colors from 'themes/colors';
 
 const AddPhoto = styled.div`
+  position: relative;
   width: 180px;
   height: 180px;
   cursor: pointer;

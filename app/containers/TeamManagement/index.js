@@ -85,7 +85,7 @@ export class TeamManagement extends React.PureComponent {
     const reader = new FileReader();
     const file = e.target.files[0];
     reader.onloadend = () => {
-      this.props.addMemberPhotoUpload(file, reader.result);
+      this.props.addMemberPhotoUpload(reader.result);
     };
     reader.readAsDataURL(file);
   };
@@ -97,11 +97,11 @@ export class TeamManagement extends React.PureComponent {
       lastName,
       email,
       contactNumber,
-      photoFile,
+      imagePreviewUrl,
     } = addMemberModalOptions.toJS();
     // check if all fields have been filled
     addMember(
-      { firstName, lastName, email, contactNumber, photoFile },
+      { firstName, lastName, email, contactNumber, imagePreviewUrl },
       hotelId,
       userId
     );
@@ -287,8 +287,8 @@ const mapDispatchToProps = dispatch => ({
   deleteAccount: memberId => dispatch(deleteEmployee(memberId)),
   addMember: (memberDetails, hotelId, userId) =>
     dispatch(addEmployee(memberDetails, hotelId, userId)),
-  addMemberPhotoUpload: (file, imagePreviewUrl) =>
-    dispatch(addMemberPhotoUpload(file, imagePreviewUrl)),
+  addMemberPhotoUpload: imagePreviewUrl =>
+    dispatch(addMemberPhotoUpload(imagePreviewUrl)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamManagement);

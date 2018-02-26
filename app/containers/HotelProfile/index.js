@@ -17,6 +17,7 @@ import TrashIcon from 'react-icons/lib/md/delete';
 import CrosshairIcon from 'react-icons/lib/md/add';
 import colors from 'themes/colors';
 import Input from 'components/Input';
+import ImageFile from 'components/ImageFile';
 import AmenitiesModal from 'components/AmenitiesModal';
 import {
   getHotelInfo,
@@ -24,6 +25,7 @@ import {
   rearrangePhotos,
   cancelEditingMode,
   saveHotelProfile,
+  addPhoto,
   deletePhoto,
   editHotelInfo,
   selectAmenity,
@@ -93,6 +95,16 @@ export class HotelProfile extends React.PureComponent {
     geocodeByPlaceId(placeId)
       .then(results => getLatLng(results[0]))
       .then(({ lat, lng }) => this.props.setLatLng(lat, lng));
+  };
+
+  handleAddPhoto = e => {
+    e.preventDefault();
+    const reader = new FileReader();
+    const file = e.target.files[0];
+    reader.onloadend = () => {
+      this.props.addPhoto(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   handleDeletePhoto = index => {
@@ -399,6 +411,11 @@ export class HotelProfile extends React.PureComponent {
                   <CrosshairWrapper>
                     <CrosshairIcon size={20} color={colors.primary} />
                   </CrosshairWrapper>
+                  <ImageFile
+                    onChange={this.handleAddPhoto}
+                    type="file"
+                    accept="image/png,image/gif,image/jpeg"
+                  />
                 </AddPhoto>}
             </DroppableZone>
           </PhotosContainer>
@@ -447,6 +464,7 @@ function mapDispatchToProps(dispatch) {
     closeAmenitiesModal: () => dispatch(closeAmenitiesModal()),
     saveSelectedAmenities: () => dispatch(saveSelectedAmenities()),
     setLatLng: (lat, lng) => dispatch(setLatLng(lat, lng)),
+    addPhoto: imagePreviewUrl => dispatch(addPhoto(imagePreviewUrl)),
   };
 }
 

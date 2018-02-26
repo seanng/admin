@@ -8,6 +8,6 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   cancel: {
     id: 'app.components.ConfirmationModal.cancel',
-    defaultMessage: 'Cancel',
+    defaultMessage: 'CANCEL',
   },
 });

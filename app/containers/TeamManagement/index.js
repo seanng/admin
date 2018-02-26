@@ -44,6 +44,7 @@ import MemberListContainer from './MemberListContainer';
 import TeamMemberCard from './TeamMemberCard';
 import OpacityLayer from './OpacityLayer';
 import Label from './Label';
+import ConfirmationModal from '../../components/ConfirmationModal';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class TeamManagement extends React.PureComponent {
@@ -233,6 +234,9 @@ export class TeamManagement extends React.PureComponent {
             )}
           </MemberListContainer>
         </Body>
+        <ConfirmationModal
+        // this should probably be a container.
+        />
         {/* <ConfirmationModal
           isOpen={confirmationModalOptions.get('shouldDisplay')}
           closeModal={this.resetConfirmationModal}

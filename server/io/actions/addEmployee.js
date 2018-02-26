@@ -5,7 +5,7 @@ const { generatePassword, generateEmailHtml } = require('../../utils/helpers');
 const sendMail = require('../../utils/sendMail');
 
 const addEmployee = (
-  { firstName, lastName, email },
+  { firstName, lastName, email, contactNumber, photo },
   hotelId,
   inviterId,
   respond

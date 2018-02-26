@@ -109,6 +109,7 @@ Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian 
       lat: 22.279148,
       lng: 114.186829,
       address: '88 Yee Wo St, Causeway Bay',
+      roomType: 'Standard Room',
     },
     {
       name: 'Westin Hotel',

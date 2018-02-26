@@ -15,6 +15,7 @@ import {
   SET_ADD_MEMBER_OPTIONS,
   DELETE_EMPLOYEE_SUCCESS,
   ADD_EMPLOYEE_SUCCESS,
+  ADD_MEMBER_PHOTO_UPLOAD,
 } from './constants';
 
 const initialState = fromJS({
@@ -30,9 +31,10 @@ const initialState = fromJS({
     shouldDisplay: false,
     firstName: '',
     lastName: '',
-    emailAddress: '',
+    email: '',
     contactNumber: '',
-    type: '',
+    photoFile: null,
+    imagePreviewUrl: null,
   },
 });
 
@@ -108,6 +110,14 @@ function teamManagementReducer(state = initialState, action) {
           shouldDisplay: false,
         },
         membersList: action.employees,
+      });
+    }
+
+    case ADD_MEMBER_PHOTO_UPLOAD: {
+      const { photoFile, imagePreviewUrl } = action;
+      return state.mergeIn(['addMemberModalOptions'], {
+        photoFile,
+        imagePreviewUrl,
       });
     }
 

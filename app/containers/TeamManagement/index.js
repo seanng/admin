@@ -10,7 +10,7 @@ import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
 import { selectHotelId, selectUserId } from 'containers/App/selectors';
 import colors from 'themes/colors';
-import ConfirmationModal from 'components/ConfirmationModal';
+// import ConfirmationModal from 'components/ConfirmationModal';
 import AddMemberModal from 'components/AddMemberModal';
 import {
   getEmployees,
@@ -20,6 +20,7 @@ import {
   setAddMemberOptions,
   deleteEmployee,
   addEmployee,
+  addMemberPhotoUpload,
 } from './actions';
 import {
   selectHasLoaded,
@@ -75,11 +76,18 @@ export class TeamManagement extends React.PureComponent {
   handleModalInputChange = e => {
     const options = { ...this.props.addMemberModalOptions.toJS() };
     options[e.target.name] = e.target.value;
+    console.log('the options: ', options);
     this.props.setAddMemberOptions(options);
   };
 
-  handleModalAddPhoto = () => {
-    console.log('clicked add photo');
+  handleModalPhotoChange = e => {
+    e.preventDefault();
+    const reader = new FileReader();
+    const file = e.target.files[0];
+    reader.onloadend = () => {
+      this.props.addMemberPhotoUpload(file, reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   handleAddMember = () => {
@@ -88,10 +96,15 @@ export class TeamManagement extends React.PureComponent {
       firstName,
       lastName,
       email,
-      phoneNumber,
+      contactNumber,
+      photoFile,
     } = addMemberModalOptions.toJS();
     // check if all fields have been filled
-    addMember({ firstName, lastName, email, phoneNumber }, hotelId, userId);
+    addMember(
+      { firstName, lastName, email, contactNumber, photoFile },
+      hotelId,
+      userId
+    );
   };
 
   resetAddMemberModal = () => {
@@ -130,12 +143,20 @@ export class TeamManagement extends React.PureComponent {
     deleteAccount(previewedMember.get('id'));
   };
 
+  shouldDisableAddMemberButton = () => {
+    // need to do validation here.
+    if (!this.props.addMemberModalOptions.get('lastName')) {
+      return true;
+    }
+    return false;
+  };
+
   render() {
     const {
       hasLoaded,
       membersList,
       previewedMember,
-      confirmationModalOptions,
+      // confirmationModalOptions,
       addMemberModalOptions,
       setPreviewMember,
     } = this.props;
@@ -212,7 +233,7 @@ export class TeamManagement extends React.PureComponent {
             )}
           </MemberListContainer>
         </Body>
-        <ConfirmationModal
+        {/* <ConfirmationModal
           isOpen={confirmationModalOptions.get('shouldDisplay')}
           closeModal={this.resetConfirmationModal}
           promptText={
@@ -233,13 +254,14 @@ export class TeamManagement extends React.PureComponent {
             />
           }
           onConfirmClick={this.onConfirmClick}
-        />
+        /> */}
         <AddMemberModal
           closeModal={this.resetAddMemberModal}
           handleInputChange={this.handleModalInputChange}
           modalConfig={addMemberModalOptions}
           handleAddMember={this.handleAddMember}
-          handleAddPhoto={this.handleModalAddPhoto}
+          shouldDisableButton={this.shouldDisableAddMemberButton}
+          handlePhotoChange={this.handleModalPhotoChange}
         />
       </Container>
     );
@@ -265,6 +287,8 @@ const mapDispatchToProps = dispatch => ({
   deleteAccount: memberId => dispatch(deleteEmployee(memberId)),
   addMember: (memberDetails, hotelId, userId) =>
     dispatch(addEmployee(memberDetails, hotelId, userId)),
+  addMemberPhotoUpload: (file, imagePreviewUrl) =>
+    dispatch(addMemberPhotoUpload(file, imagePreviewUrl)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamManagement);

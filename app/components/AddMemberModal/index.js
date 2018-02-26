@@ -10,6 +10,7 @@ import colors from 'themes/colors';
 import { FormattedMessage } from 'react-intl';
 import CrosshairIcon from 'react-icons/lib/md/add';
 import Input from 'components/Input';
+import ImageFile from 'components/ImageFile';
 import Header from './Header';
 import Body from './Body';
 import AddPhotoCard from './AddPhotoCard';
@@ -25,7 +26,8 @@ function AddMemberModal({
   handleInputChange,
   modalConfig,
   handleAddMember,
-  handleAddPhoto,
+  shouldDisableButton,
+  handlePhotoChange,
 }) {
   return (
     <Modal
@@ -39,8 +41,14 @@ function AddMemberModal({
         <FormattedMessage {...messages.header} />
       </Header>
       <Body>
-        <AddPhotoCard onClick={handleAddPhoto}>
-          <CrosshairIcon size={20} color={colors.primary} />
+        <AddPhotoCard src={modalConfig.get('imagePreviewUrl')}>
+          {!modalConfig.get('imagePreviewUrl') &&
+            <CrosshairIcon size={20} color={colors.primary} />}
+          <ImageFile
+            onChange={handlePhotoChange}
+            type="file"
+            accept="image/png,image/gif,image/jpeg"
+          />
         </AddPhotoCard>
         <AddMemberDetails>
           <AddMemberRow>
@@ -93,7 +101,11 @@ function AddMemberModal({
         <Button onClick={closeModal}>
           <FormattedMessage {...messages.cancel} />
         </Button>
-        <Button primary onClick={handleAddMember}>
+        <Button
+          primary
+          onClick={handleAddMember}
+          disabled={shouldDisableButton()}
+        >
           <FormattedMessage {...messages.sendInvite} />
         </Button>
       </Footer>

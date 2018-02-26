@@ -24,3 +24,5 @@ export const DELETE_EMPLOYEE_SUCCESS =
 
 export const ADD_EMPLOYEE = 'server/ADD_EMPlOYEE';
 export const ADD_EMPLOYEE_SUCCESS = 'app/TeamManagement/ADD_EMPLOYEE_SUCCESS';
+export const ADD_MEMBER_PHOTO_UPLOAD =
+  'app/TeamManagement/ADD_MEMBER_PHOTO_UPLOAD';

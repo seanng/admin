@@ -53,21 +53,14 @@ export class TeamManagement extends React.PureComponent {
     fetchEmployees(hotelId);
   }
 
-  onConfirmClick = () => {
-    const modalPromptId = this.props.confirmationModalOptions.get(
-      'modalPromptId'
-    );
-    this.mapPromptIdToAction[modalPromptId]();
-  };
-
-  parseAdminLevel = adminLevel => ['member', 'admin'][adminLevel - 1];
-
   mapPromptIdToAction = {
     upgradeToAdmin: () => this.upgradeToAdmin(),
     deleteAccount: () => this.deleteAccount(),
   };
 
-  resetConfirmationModal = () => {
+  parseAdminLevel = adminLevel => ['member', 'admin'][adminLevel - 1];
+
+  handleConfirmationModalClose = () => {
     this.props.setConfirmationOptions({
       shouldDisplay: false,
       modalPromptId: '',
@@ -108,13 +101,20 @@ export class TeamManagement extends React.PureComponent {
     );
   };
 
-  resetAddMemberModal = () => {
+  handleConfirmClick = () => {
+    const modalPromptId = this.props.confirmationModalOptions.get(
+      'modalPromptId'
+    );
+    this.mapPromptIdToAction[modalPromptId]();
+  };
+
+  handleAddMemberModalClose = () => {
     this.props.setAddMemberOptions({
       shouldDisplay: false,
     });
   };
 
-  promptAddMemberModal = () => {
+  handleSendInviteClick = () => {
     this.props.setAddMemberOptions({
       shouldDisplay: true,
     });
@@ -157,7 +157,7 @@ export class TeamManagement extends React.PureComponent {
       hasLoaded,
       membersList,
       previewedMember,
-      // confirmationModalOptions,
+      confirmationModalOptions,
       addMemberModalOptions,
       setPreviewMember,
     } = this.props;
@@ -172,7 +172,7 @@ export class TeamManagement extends React.PureComponent {
           <Heading>
             <FormattedMessage {...messages.teamManagement} />
           </Heading>
-          <HeadButton onClick={this.promptAddMemberModal}>
+          <HeadButton onClick={this.handleSendInviteClick}>
             <FormattedMessage {...messages.invite} />
           </HeadButton>
         </Head>
@@ -235,12 +235,16 @@ export class TeamManagement extends React.PureComponent {
           </MemberListContainer>
         </Body>
         <ConfirmationModal
-        // this should probably be a container.
-        />
-        {/* <ConfirmationModal
           isOpen={confirmationModalOptions.get('shouldDisplay')}
-          closeModal={this.resetConfirmationModal}
-          promptText={
+          closeModal={this.handleConfirmationModalClose}
+          headerMessage={
+            <FormattedMessage
+              {...messages[
+                `${confirmationModalOptions.get('modalPromptId')}Header`
+              ]}
+            />
+          }
+          confirmationMessage={
             <FormattedMessage
               {...messages[
                 `${confirmationModalOptions.get('modalPromptId')}Prompt`
@@ -250,17 +254,17 @@ export class TeamManagement extends React.PureComponent {
               }}
             />
           }
-          confirmationText={
+          actionMessage={
             <FormattedMessage
               {...messages[
-                `${confirmationModalOptions.get('modalPromptId')}Confirm`
+                `${confirmationModalOptions.get('modalPromptId')}Action`
               ]}
             />
           }
-          onConfirmClick={this.onConfirmClick}
-        /> */}
+          onConfirmClick={this.handleConfirmClick}
+        />
         <AddMemberModal
-          closeModal={this.resetAddMemberModal}
+          closeModal={this.handleAddMemberModalClose}
           handleInputChange={this.handleModalInputChange}
           modalConfig={addMemberModalOptions}
           handleAddMember={this.handleAddMember}

@@ -30,21 +30,30 @@ export default defineMessages({
     id: 'app.components.TeamManagement.removeMember',
     defaultMessage: 'REMOVE MEMBER',
   },
+  upgradeToAdminHeader: {
+    id: 'app.components.TeamManagement.upgradeToAdminHeader',
+    defaultMessage: 'UPGRADE MEMBER',
+  },
   upgradeToAdminPrompt: {
     id: 'app.components.TeamManagement.upgradeToAdminPrompt',
-    defaultMessage: 'Upgrade {name} to Admin?',
+    defaultMessage: 'Are you sure you want to upgrade {name} to Admin?',
   },
-  upgradeToAdminConfirm: {
-    id: 'app.components.TeamManagement.upgradeToAdminConfirm',
-    defaultMessage: 'Confirm',
+  upgradeToAdminAction: {
+    id: 'app.components.TeamManagement.upgradeToAdminAction',
+    defaultMessage: 'YES, UPGRADE MEMBER',
+  },
+  deleteAccountHeader: {
+    id: 'app.components.TeamManagement.deleteAccountHeader',
+    defaultMessage: 'REMOVE MEMBER',
   },
   deleteAccountPrompt: {
     id: 'app.components.TeamManagement.deleteAccountPrompt',
-    defaultMessage: "Delete {name}'s account permanently?",
+    defaultMessage:
+      "Are you sure you want to remove {name}'s account permanently?",
   },
-  deleteAccountConfirm: {
-    id: 'app.components.TeamManagement.deleteAccountConfirm',
-    defaultMessage: 'Confirm',
+  deleteAccountAction: {
+    id: 'app.components.TeamManagement.deleteAccountAction',
+    defaultMessage: 'YES, REMOVE MEMBER',
   },
   addMember: {
     id: 'app.components.TeamManagement.addMember',

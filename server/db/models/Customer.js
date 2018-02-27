@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt-nodejs');
 const Promise = require('bluebird');
-const { Customer } = require('../config');
+const { Customer } = require('../schema');
 const cipher = Promise.promisify(bcrypt.hash);
 
 Customer.beforeCreate(user =>

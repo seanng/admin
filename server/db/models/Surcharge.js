@@ -1,3 +1,3 @@
-const { Surcharge } = require('../config');
+const { Surcharge } = require('../schema');
 
 module.exports = Surcharge;

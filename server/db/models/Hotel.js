@@ -1,3 +1,3 @@
-const { Hotel } = require('../config');
+const { Hotel } = require('../schema');
 
 module.exports = Hotel;

@@ -1,4 +1,4 @@
-const cache = require('./config');
+const cache = require('./index');
 
 const fakeRooms = [
   {

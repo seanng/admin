@@ -1,4 +1,4 @@
-const cache = require('../../cache/config');
+const cache = require('../../cache');
 const { reply } = require('../helpers');
 
 const fetchRooms = (hotelId, respond) => {

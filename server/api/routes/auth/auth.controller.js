@@ -1,6 +1,6 @@
 /* eslint consistent-return:0 */
-const { Customer } = require('../../db/models');
-const { signToken, validateToken } = require('../../db/helpers');
+const { Customer } = require('../../../db/models');
+const { signToken, validateToken } = require('../../../db/helpers');
 const controller = {};
 
 controller.postAuth = (res, rej, req) => {

@@ -1,4 +1,3 @@
-// const { Employee } = require('../../db/config');
 const { Employee } = require('../../db/models');
 const { reply } = require('../helpers');
 

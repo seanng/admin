@@ -1,11 +1,11 @@
-const { Employee } = require('../../db/models');
-const { signToken } = require('../../db/helpers');
+const { Customer } = require('../../../db/models');
+const { signToken } = require('../../../db/helpers');
 const controller = {};
 
-controller.createNewEmployee = (res, rej, req) => {
+controller.createNewCustomer = (res, rej, req) => {
   const { username, password, firstName, lastName, email, phoneNo } = req.body;
 
-  return Employee.create({
+  return Customer.create({
     username,
     password,
     firstName,
@@ -17,8 +17,8 @@ controller.createNewEmployee = (res, rej, req) => {
     .then(data => res({ data }));
 };
 
-// controller.getEmployee = (res, rej, req) => {};
+// controller.getCustomer = (res, rej, req) => {};
 
-// controller.putEmployee = (res, rej, req) => {};
+// controller.putCustomer = (res, rej, req) => {};
 
 module.exports = controller;

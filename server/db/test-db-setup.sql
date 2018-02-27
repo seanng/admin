@@ -1,2 +1,2 @@
-CREATE USER root WITH PASSWORD 'Ca$hmere1';
-CREATE DATABASE haven;
+CREATE postgres root WITH PASSWORD 'postgres';
+CREATE DATABASE haven_dev;

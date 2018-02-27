@@ -1,8 +1,6 @@
-const { getConfigurationValue } = require('../config');
+const { getConfigurationValue } = require('../config').env;
 const Sequelize = require('sequelize');
 
-// placeholder username and password
-// TODO: move pw and username to a separate settings file
 const dbConfig = getConfigurationValue('postgres');
 const sequelize = new Sequelize(
   dbConfig.dbName,
@@ -106,11 +104,6 @@ Surcharge.belongsTo(Stay);
 
 Hotel.hasMany(Employee);
 Employee.belongsTo(Hotel);
-
-// Customer.sync();
-// Hotel.sync();
-// Stay.sync();
-// Employee.sync();
 
 module.exports = {
   sequelize,

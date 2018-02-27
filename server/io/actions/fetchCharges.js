@@ -1,4 +1,3 @@
-// const { Surcharge } = require('../../db/config');
 const { Surcharge } = require('../../db/models');
 const { reply } = require('../helpers');
 

@@ -1,4 +1,4 @@
-const { sequelize } = require('./config');
+const { sequelize } = require('./schema');
 const { Surcharge, Stay, Hotel, Customer, Employee } = require('./models');
 
 const fakeData = {

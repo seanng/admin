@@ -1,4 +1,3 @@
-// const { Stay, Customer, Hotel } = require('../../db/config');
 const { Stay, Hotel, Customer } = require('../../db/models');
 const { reply } = require('../helpers');
 

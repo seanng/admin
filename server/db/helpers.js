@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { Stay, Customer } = require('./config');
+const { Stay, Customer } = require('./schema');
 const secret = '19ajsadijmvz';
 
 function retrieveStays(hotelId, respond) {

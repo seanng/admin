@@ -9,10 +9,10 @@ const BodyRow = styled.div`
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
   height: 60px;
+  cursor: pointer;
 
   &:hover {
     border: ${`5px solid ${colors.primary}`};
-    cursor: pointer;
   }
 `;
 

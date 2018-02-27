@@ -364,15 +364,15 @@ export class HotelProfile extends React.PureComponent {
             {this.props.hotelInfo.get('name')}
           </HotelName>
           {this.props.isEditingMode &&
-            <HeadButton onClick={() => this.props.cancelEditingMode()}>
+            <HeadButton onClick={this.props.cancelEditingMode}>
               <FormattedMessage {...messages.cancel} />
             </HeadButton>}
           {this.props.isEditingMode &&
-            <HeadButton primary onClick={() => this.handleSaveHotelProfile()}>
+            <HeadButton primary onClick={this.handleSaveHotelProfile}>
               <FormattedMessage {...messages.save} />
             </HeadButton>}
           {!this.props.isEditingMode &&
-            <HeadButton primary onClick={() => this.props.setEditingMode()}>
+            <HeadButton primary onClick={this.props.setEditingMode}>
               <FormattedMessage {...messages.edit} />
             </HeadButton>}
         </Head>

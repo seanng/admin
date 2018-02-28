@@ -12,9 +12,20 @@ import TrashIcon from 'react-icons/lib/md/delete';
 import CrosshairIcon from 'react-icons/lib/md/add';
 import AddPhotoCard from 'components/AddPhotoCard';
 import ImageFile from 'components/ImageFile';
+import ConfirmationModal from 'components/ConfirmationModal';
 import colors from 'themes/colors';
-import { init, editUser } from './actions';
-import { selectUserTemporary, selectHasLoaded } from './selectors';
+import {
+  init,
+  editUser,
+  resetUserTemporary,
+  displayConfirmDiscard,
+} from './actions';
+import {
+  selectUserTemporary,
+  selectHasLoaded,
+  selectIsDirty,
+  selectShouldDisplayConfirmationModal,
+} from './selectors';
 import { selectUser as selectUserPermanent } from '../App/selectors';
 import messages from './messages';
 import Container from './Container';
@@ -49,8 +60,16 @@ export class Settings extends React.PureComponent {
     reader.readAsDataURL(file);
   };
 
-  handleCancelClick = () => {
-    // confirmation modal.
+  handleConfirmDiscardClose = () => {
+    this.props.displayConfirmDiscard(false);
+  };
+
+  handleConfirmDiscardClick = () => {
+    this.props.resetUserTemporary(this.props.userPermanent);
+  };
+
+  handleDiscardClick = () => {
+    this.props.displayConfirmDiscard(true);
   };
 
   handleSaveClick = () => {};
@@ -65,15 +84,21 @@ export class Settings extends React.PureComponent {
     return (
       <Container>
         <Head>
-          <Heading>
+          <Heading isDirty={this.props.isDirty}>
             {fullName}
           </Heading>
-          <HeadButton onClick={this.handleCancelClick}>
-            <FormattedMessage {...messages.cancel} />
-          </HeadButton>
-          <HeadButton primary onClick={this.props.handleSaveClick}>
-            <FormattedMessage {...messages.save} />
-          </HeadButton>
+          {this.props.isDirty &&
+            <HeadButton onClick={this.handleDiscardClick}>
+              <FormattedMessage {...messages.discard} />
+            </HeadButton>}
+          {this.props.isDirty &&
+            <HeadButton
+              primary
+              disabled={!this.props.isDirty}
+              onClick={this.props.handleSaveClick}
+            >
+              <FormattedMessage {...messages.save} />
+            </HeadButton>}
         </Head>
         <Body>
           {this.props.userTemporary.get('photoUrl')
@@ -97,6 +122,20 @@ export class Settings extends React.PureComponent {
               </AddPhotoCard>}
           <Details />
         </Body>
+        <ConfirmationModal
+          isOpen={this.props.shouldDisplayConfirmDiscard}
+          closeModal={this.handleConfirmDiscardClose}
+          headerMessage={
+            <FormattedMessage {...messages.confirmDiscardHeader} />
+          }
+          confirmationMessage={
+            <FormattedMessage {...messages.confirmDiscardBody} />
+          }
+          actionMessage={
+            <FormattedMessage {...messages.confirmDiscardAction} />
+          }
+          onConfirmClick={this.handleConfirmDiscardClick}
+        />
       </Container>
     );
   }
@@ -106,6 +145,8 @@ const mapStateToProps = createStructuredSelector({
   userPermanent: selectUserPermanent(),
   userTemporary: selectUserTemporary(),
   hasLoaded: selectHasLoaded(),
+  isDirty: selectIsDirty(),
+  shouldDisplayConfirmDiscard: selectShouldDisplayConfirmationModal(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -113,6 +154,8 @@ function mapDispatchToProps(dispatch) {
     dispatch,
     init: user => dispatch(init(user)),
     editUser: options => dispatch(editUser(options)),
+    resetUserTemporary: userPerm => dispatch(resetUserTemporary(userPerm)),
+    displayConfirmDiscard: bool => dispatch(displayConfirmDiscard(bool)),
   };
 }
 

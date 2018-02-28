@@ -8,7 +8,7 @@ const Heading = styled.div`
   align-items: flex-start;
   padding-left: 20px;
   height: 60px;
-  width: 644px;
+  width: ${({ isDirty }) => (isDirty ? '644px' : '1004px')};
   background-color: ${colors.base2};
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
   font-size: 18px;

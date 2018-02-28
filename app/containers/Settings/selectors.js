@@ -12,6 +12,14 @@ const selectSettingsDomain = () => state => state.get('settings');
 export const selectHasLoaded = () =>
   createSelector(selectSettingsDomain(), substate => substate.get('hasLoaded'));
 
+export const selectIsDirty = () =>
+  createSelector(selectSettingsDomain(), substate => substate.get('isDirty'));
+
+export const selectShouldDisplayConfirmationModal = () =>
+  createSelector(selectSettingsDomain(), substate =>
+    substate.get('shouldDisplayConfirmationModal')
+  );
+
 export const selectUserTemporary = () =>
   createSelector(selectSettingsDomain(), substate =>
     substate.get('userTemporary')

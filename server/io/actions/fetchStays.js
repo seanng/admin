@@ -21,7 +21,7 @@ const fetchStays = (hotelId, respond) => {
         bookingTime: stay.bookingTime,
         checkInTime: stay.checkInTime,
         checkOutTime: stay.checkOutTime,
-        currency: stay.hotel.currency,
+        costCurrency: stay.hotel.costCurrency,
         customerName: `${stay.customer.firstName} ${stay.customer.lastName}`,
         roomNumber: stay.roomNumber,
         roomCharge: stay.roomCharge,
@@ -35,7 +35,6 @@ const fetchStays = (hotelId, respond) => {
 module.exports = client =>
   fetchStays(1, (err, stays) => {
     if (err) {
-      console.log('error!', err);
       return reply(client, {
         type: 'app/PastStays/FETCH_STAYS_ERROR',
       });

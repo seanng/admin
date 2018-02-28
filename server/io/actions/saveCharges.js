@@ -18,10 +18,8 @@ const saveCharges = (charges, totalCharge, stayId, respond) =>
 
 module.exports = (client, action) => {
   const { charges, newTotal, stayId } = action;
-  console.log('incoming saveCharges');
   return saveCharges(charges, newTotal, stayId, (err, updatedCharges) => {
     if (err) {
-      console.log('error!', err);
       return reply(client, {
         type: 'SAVE_CHARGES_ERROR',
       });

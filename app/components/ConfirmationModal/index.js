@@ -15,7 +15,6 @@ function ConfirmationModal({
   actionMessage,
   onConfirmClick,
 }) {
-  console.log('is open? ', isOpen);
   return (
     <Modal
       contentLabel="confirmationModal"

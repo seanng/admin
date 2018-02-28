@@ -1,6 +1,7 @@
 /* eslint consistent-return:0 */
 /* eslint global-require:0 */
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
 const argv = require('minimist')(process.argv.slice(2));
 const logger = require('./logger');
 const frontendSetup = require('./config/frontendMiddleware');
@@ -14,6 +15,7 @@ const resolve = require('path').resolve;
 const app = require('express')();
 
 app.use(bodyParser.json());
+app.use(morgan());
 app.use('/api', api);
 
 // In production we need to pass these values in instead of relying on webpack

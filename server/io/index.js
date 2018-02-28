@@ -3,7 +3,6 @@ const socketIO = require('socket.io');
 
 const routeHandler = (io, client) =>
   client.on('action', action => {
-    console.log('an action has come in.', action);
     if (action.type && action.type.split('server/')[1]) {
       const actionInSnake = action.type.split('server/')[1];
       const actionInCamel = actionInSnake
@@ -13,12 +12,10 @@ const routeHandler = (io, client) =>
       // eslint-disable-next-line global-require
       const reducerFile = require(`./actions/${actionInCamel}`);
       if (!reducerFile) {
-        return console.log('there was no reducerFile.');
+        return;
       }
-      return reducerFile(client, action);
-      // return actions[actionInCamel](client, action);
+      reducerFile(client, action);
     }
-    return console.log('no action type found.');
   });
 
 module.exports = server => {

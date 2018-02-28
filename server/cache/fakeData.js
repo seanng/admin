@@ -37,7 +37,6 @@ const fakeRooms = [
 
 module.exports = () =>
   cache.flushdb().then(() => {
-    console.log('inserting into cache');
     fakeRooms.forEach(room => {
       cache.sadd(`${room.hotelId}:available`, room.roomNumber);
       const key = `${room.hotelId}:room:${room.roomNumber}`;

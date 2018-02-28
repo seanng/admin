@@ -48,7 +48,6 @@ function hotelProfileReducer(state = initialState, action) {
       });
     }
     case GET_HOTEL_INFO_FAIL:
-      console.error('error getting hotel info.');
       return state;
 
     case SET_EDITING_MODE:
@@ -134,8 +133,8 @@ function hotelProfileReducer(state = initialState, action) {
 
     case SET_LAT_LNG:
       return state
-        .setIn(['editedHotelInfo', 'lat'], action.lat)
-        .setIn(['editedHotelInfo', 'lng'], action.lng);
+        .setIn(['editedHotelInfo', 'location', 'latitude'], action.lat)
+        .setIn(['editedHotelInfo', 'location', 'longitude'], action.lng);
 
     default:
       return state;

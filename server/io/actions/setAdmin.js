@@ -19,7 +19,6 @@ const setAdmin = (employeeId, respond) => {
 module.exports = (client, action) =>
   setAdmin(action.employeeId, (err, employeeId) => {
     if (err) {
-      console.log('what is the err!?', err);
       return reply(client, {
         type: 'app/TeamManagement/SET_ADMIN_FAIL',
         err,

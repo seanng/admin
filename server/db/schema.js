@@ -53,18 +53,19 @@ const Employee = sequelize.define('employee', {
 const Hotel = sequelize.define('hotel', {
   regDate: Sequelize.DATE,
   name: Sequelize.STRING,
-  policies: Sequelize.TEXT,
+  locationAddress: Sequelize.STRING,
+  locationLatitude: Sequelize.STRING,
+  locationLongitude: Sequelize.STRING,
+  costCurrency: Sequelize.STRING,
+  costMinCharge: Sequelize.DECIMAL(10, 2),
+  costPerHour: Sequelize.DECIMAL(10, 2),
+  costPerMinute: Sequelize.DECIMAL(10, 2),
   photos: Sequelize.ARRAY(Sequelize.STRING), // array[0] would be the primary photoURL
+  description: Sequelize.TEXT,
   amenities: Sequelize.ARRAY(Sequelize.STRING), // i.e. 'Free WiFi'
-  lat: Sequelize.DECIMAL,
-  lng: Sequelize.DECIMAL,
-  address: Sequelize.STRING,
   paymentInfo: Sequelize.JSON, // <-- this needs to be looked into further
-  rate: Sequelize.DECIMAL(10, 2), // <-- hourly
-  currency: Sequelize.STRING,
   rating: Sequelize.DECIMAL,
   roomType: Sequelize.STRING,
-  minCharge: Sequelize.DECIMAL,
 });
 
 const Stay = sequelize.define('stay', {

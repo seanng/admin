@@ -64,7 +64,7 @@ function ChargesModal({
           width="420px"
         />
         <Currency>
-          {stay.currency}
+          {stay.costCurrency}
         </Currency>
         <Input
           name="priceInput"
@@ -110,7 +110,7 @@ function ChargesModal({
                   : '-'}
               </TD>
               <TD>
-                {stay.currency + charge}
+                {stay.costCurrency + charge}
               </TD>
             </tr>
           )}
@@ -121,7 +121,7 @@ function ChargesModal({
             <LTD />
             <LTD />
             <LTD>
-              {stay.currency +
+              {stay.costCurrency +
                 charges.reduce(
                   (prev, current) => (prev * 1 + current.charge * 1).toFixed(2),
                   0

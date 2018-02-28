@@ -2,11 +2,7 @@
 const controller = require('./auth.controller');
 
 module.exports = (req, params) =>
-  new Promise((res, rej) => {
-    if (req.method === 'POST' && req.url.search('validateToken') > -1) {
-      return controller.validateToken(res, rej, req, params);
-    }
-
+  new Promise((resolve, reject) => {
     if (req.method === 'POST')
-      return controller.postAuth(res, rej, req, params);
+      return controller.postAuth(resolve, reject, req, params);
   });

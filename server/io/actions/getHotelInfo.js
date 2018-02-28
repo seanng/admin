@@ -10,7 +10,6 @@ const reducer = (id, respond) => {
 module.exports = (client, action) =>
   reducer(action.id, (err, info) => {
     if (err) {
-      console.error('error getting hotel info!', err);
       return reply(client, {
         type: 'GET_HOTEL_INFO_ERROR',
       });

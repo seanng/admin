@@ -22,7 +22,6 @@ function loginPageReducer(state = initialState, action) {
       return initialState;
 
     case ERROR:
-      console.log('error: ', action.msg);
       return state.set('error', action.msg);
 
     default:

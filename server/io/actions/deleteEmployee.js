@@ -12,7 +12,6 @@ const deleteEmployee = (employeeId, respond) => {
 module.exports = (client, action) =>
   deleteEmployee(action.employeeId, (err, employeeId) => {
     if (err) {
-      console.log('what is the err!?', err);
       return reply(client, {
         type: 'app/TeamManagement/DELETE_EMPLOYEE_FAIL',
         err,

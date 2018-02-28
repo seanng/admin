@@ -3,7 +3,6 @@ const { Hotel } = require('../../db/models');
 const { reply } = require('../helpers');
 
 const reducer = (hotelInfo, respond) => {
-  console.log('the hotelInfo: ', hotelInfo);
   Hotel.update(hotelInfo, { where: { id: hotelInfo.id } })
     .then(() => respond(null, hotelInfo))
     .catch(err => respond(err));

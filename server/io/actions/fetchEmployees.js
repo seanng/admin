@@ -15,7 +15,6 @@ const fetchEmployees = (hotelId, respond) => {
 module.exports = (client, action) =>
   fetchEmployees(action.hotelId, (err, employees) => {
     if (err) {
-      console.log('error finding employees.', err);
       return reply(client, {
         type: 'app/TeamManagement/FETCH_EMPLOYEES_ERROR',
         err,

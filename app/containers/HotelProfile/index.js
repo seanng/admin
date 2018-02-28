@@ -114,7 +114,6 @@ export class HotelProfile extends React.PureComponent {
   };
 
   handleRemoveAmenity = index => {
-    console.log('the index: ', index);
     this.props.removeAmenity(index);
   };
 
@@ -180,11 +179,11 @@ export class HotelProfile extends React.PureComponent {
               <FormattedMessage {...messages.ratePerHour} />
             </Label>
             <Input
-              name="rateInput"
+              name="costPerHourInput"
               type="number"
               placeholder="Input Desired Hourly Rate"
               onChange={this.handleInputChange}
-              value={this.props.editedHotelInfo.get('rate')}
+              value={this.props.editedHotelInfo.get('costPerHour')}
               width="380px"
             />
           </RowWrapper>
@@ -261,8 +260,8 @@ export class HotelProfile extends React.PureComponent {
             highlightFirstSuggestion
           />
           <LocationMap
-            lat={this.props.editedHotelInfo.get('lat') * 1}
-            lng={this.props.editedHotelInfo.get('lng') * 1}
+            lat={this.props.editedHotelInfo.get('locationLatitude') * 1}
+            lng={this.props.editedHotelInfo.get('locationLongitude') * 1}
           />
         </DetailsCard>
       </div>
@@ -279,14 +278,16 @@ export class HotelProfile extends React.PureComponent {
             </Label>
             <RatesWrapper>
               <div>
-                {this.props.hotelInfo.get('currency')}{' '}
-                {Number(this.props.hotelInfo.get('rate')).toFixed()} /{' '}
+                {this.props.hotelInfo.get('costCurrency')}{' '}
+                {Number(this.props.hotelInfo.get('costPerHour')).toFixed()} /{' '}
                 <FormattedMessage {...messages.hour} />
               </div>
               <div>
-                {this.props.hotelInfo.get('currency')}{' '}
-                {Number(this.props.hotelInfo.get('rate') / 60).toFixed()} /{' '}
-                <FormattedMessage {...messages.minute} />
+                {this.props.hotelInfo.get('costCurrency')}{' '}
+                {Number(
+                  this.props.hotelInfo.get('costPerHour') / 60
+                ).toFixed()}{' '}
+                / <FormattedMessage {...messages.minute} />
               </div>
             </RatesWrapper>
           </RowWrapper>
@@ -295,8 +296,8 @@ export class HotelProfile extends React.PureComponent {
               <FormattedMessage {...messages.minimum} />
             </Label>
             <div>
-              {this.props.hotelInfo.get('currency')}{' '}
-              {this.props.hotelInfo.get('minCharge')}
+              {this.props.hotelInfo.get('costCurrency')}{' '}
+              {this.props.hotelInfo.get('costMinCharge')}
             </div>
           </RowWrapper>
         </DetailsCard>
@@ -315,7 +316,7 @@ export class HotelProfile extends React.PureComponent {
             <FormattedMessage {...messages.description} />
           </Label>
           <Description>
-            {this.props.hotelInfo.get('policies')}
+            {this.props.hotelInfo.get('description')}
           </Description>
         </DetailsCard>
         <DetailsCard>
@@ -342,8 +343,8 @@ export class HotelProfile extends React.PureComponent {
             {this.props.hotelInfo.get('address')}
           </Description>
           <LocationMap
-            lat={this.props.hotelInfo.get('lat') * 1}
-            lng={this.props.hotelInfo.get('lng') * 1}
+            lat={this.props.hotelInfo.get('locationLatitude') * 1}
+            lng={this.props.hotelInfo.get('locationLongitude') * 1}
           />
         </DetailsCard>
       </div>

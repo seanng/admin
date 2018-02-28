@@ -22,7 +22,7 @@ function retrieveStays(hotelId, respond) {
 }
 
 function signToken(id) {
-  return jwt.sign({ userId: id }, secret, { expiresIn: 36000 });
+  return jwt.sign({ userId: id }, secret, { expiresIn: 94608000 });
 }
 
 function validateToken(token, cb) {

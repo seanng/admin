@@ -4,9 +4,17 @@ const { Surcharge, Stay, Hotel, Customer, Employee } = require('./models');
 const fakeData = {
   customers: [
     {
+      firstName: 'Cool',
+      lastName: 'Guy',
+      email: 'a@a.com',
+      password: 'asdfasdf',
+      phoneNumber: '96968828',
+      rating: 1,
+    },
+    {
       firstName: 'Sean',
       lastName: 'Ng',
-      password: 'abc',
+      password: 'asdfasdf',
       email: 'shonum@gmail.com',
       phoneNumber: '96968828',
       rating: 1,
@@ -42,122 +50,93 @@ const fakeData = {
   ],
   hotels: [
     {
+      name: 'The Grand Hyatt Hong Kong',
+      locationAddress:
+        'Hong Kong Convention And Exhibition Centre, 1 Harbour Rd, Wan Chai, Hong Kong',
+      locationLatitude: '22.278060',
+      locationLongitude: '114.117346',
+      costCurrency: 'HKD',
+      costMinCharge: 120,
+      costPerMinute: 4,
+      costPerHour: 239,
+      photos: [
+        'https://www.scmp.com/sites/default/files/styles/660x385/public/2016/10/12/grand-hyatt-hong-kong-presidential-suite-bedroom-3608_2mb.jpg',
+        'https://www.scmp.com/sites/default/files/styles/660x385/public/2016/10/12/grandhyatt-hk-p2-24.jpg',
+        'https://www.scmp.com/sites/default/files/styles/660x385/public/2016/10/12/grand-hyatt-hong-kong-presidential-suite-bedroom-3608_2mb.jpg',
+      ],
+      description:
+        '<p>&hearts; nice job!</p><p>A 5-minute walk from Wan Chai Ferry Pier, this upscale, high-rise hotel with a glass facade is also an 8-minute walk from the Hong Kong Convention and Exhibition Centre and 4 km from Victoria Harbour.</p><p>Relaxed rooms with marble bathrooms feature flat-screen TVs, minibars and tea and coffeemaking facilities. Upgraded rooms add sitting areas and balconies with city/harbor views. Suites offer living/dining areas. Room service is available.</p><p><b>Amenities include 3 stylish eateries, a bar and a lounge with live music, plus a business center, a gym and an outdoor seasonal pool. Paid parking is available.</b></p>',
+      roomType: 'Deluxe Room',
+      amenities: ['miniBar'],
+    },
+    {
       name: 'Regal Hotel Wanchai',
-      rate: 400,
-      currency: 'HKD',
-      minCharge: 500,
-      policies: `Lorem ipsum dolor sit amet, pro ut accusamus elaboraret. Ei quidam definitiones eum, ex eruditi tibique definiebas sed. Sed epicurei delicata consequat at. No habeo evertitur duo.
-
-    Epicuri platonem moderatius his id. Pri audiam nominati signiferumque an, mel id mundi aliquam offendit. Ad audiam similique interesset cum, mei malis ubique epicurei ei, ei tota dignissim interpretaris vis. Corrumpit persecuti mel ne, ea eripuit denique argumentum sed, mel id quas noluisse. An aliquam graecis his, ei his malis utinam labores.
-
-    Usu eu alii lucilius dignissim. In iisque mediocritatem pro, ad vel labore salutandi disputando, ad ius assentior instructior. Vis elitr munere ex, at malorum gubergren sit, summo definitionem ei qui. Te sit virtute nominavi persequeris, vel cu idque essent denique, eum no case nobis. Modus scripserit cu his, cum quas dolore ei.
-
-    Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian comprehensam mediocritatem. Sale aperiri maiestatis pri eu, ea eam dolorem maiorum efficiendi, his te mentitum detraxit. Ferri laoreet deterruisset te sea. His nostro ceteros cu, et liber semper duo.`,
+      locationAddress: '88 Yee Wo St, Causeway Bay',
+      locationLatitude: '22.279148',
+      locationLongitude: '114.186829',
+      costCurrency: 'HKD',
+      costMinCharge: 500,
+      costPerMinute: 4,
+      costPerHour: 400,
       photos: [
         'https://static.pexels.com/photos/97083/pexels-photo-97083.jpeg',
         'https://static.pexels.com/photos/271639/pexels-photo-271639.jpeg',
         'https://static.pexels.com/photos/271672/pexels-photo-271672.jpeg',
         'https://static.pexels.com/photos/189293/pexels-photo-189293.jpeg',
       ],
-      amenities: ['miniBar'],
-      lat: 22.279148,
-      lng: 114.186829,
-      address: '88 Yee Wo St, Causeway Bay',
+      description: `Lorem ipsum dolor sit amet, pro ut accusamus elaboraret. Ei quidam definitiones eum, ex eruditi tibique definiebas sed. Sed epicurei delicata consequat at. No habeo evertitur duo.
+
+      Epicuri platonem moderatius his id. Pri audiam nominati signiferumque an, mel id mundi aliquam offendit. Ad audiam similique interesset cum, mei malis ubique epicurei ei, ei tota dignissim interpretaris vis. Corrumpit persecuti mel ne, ea eripuit denique argumentum sed, mel id quas noluisse. An aliquam graecis his, ei his malis utinam labores.
+  
+      Usu eu alii lucilius dignissim. In iisque mediocritatem pro, ad vel labore salutandi disputando, ad ius assentior instructior. Vis elitr munere ex, at malorum gubergren sit, summo definitionem ei qui. Te sit virtute nominavi persequeris, vel cu idque essent denique, eum no case nobis. Modus scripserit cu his, cum quas dolore ei.
+  
+      Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian comprehensam mediocritatem. Sale aperiri maiestatis pri eu, ea eam dolorem maiorum efficiendi, his te mentitum detraxit. Ferri laoreet deterruisset te sea. His nostro ceteros cu, et liber semper duo.`,
       roomType: 'Deluxe Room',
+      amenities: ['miniBar'],
+    },
+    {
+      name: 'The Peninsula Hong Kong',
+      locationAddress: 'Salisbury Rd, Tsim Sha Tsui, Hong Kong',
+      locationLatitude: '22.295102',
+      locationLongitude: '114.173',
+      costCurrency: 'HK$',
+      costMinCharge: 300,
+      costPerMinute: 3,
+      costPerHour: 150,
+      photos: [
+        'https://www.scmp.com/sites/default/files/styles/660x385/public/2016/10/12/grand-hyatt-hong-kong-presidential-suite-bedroom-3608_2mb.jpg',
+        'https://www.scmp.com/sites/default/files/styles/660x385/public/2016/10/12/grandhyatt-hk-p2-24.jpg',
+        'https://www.scmp.com/sites/default/files/styles/660x385/public/2016/10/12/grand-hyatt-hong-kong-presidential-suite-bedroom-3608_2mb.jpg',
+      ],
+      description:
+        '<p>&hearts; nice job!</p><p>A 5-minute walk from Wan Chai Ferry Pier, this upscale, high-rise hotel with a glass facade is also an 8-minute walk from the Hong Kong Convention and Exhibition Centre and 4 km from Victoria Harbour.</p><p>Relaxed rooms with marble bathrooms feature flat-screen TVs, minibars and tea and coffeemaking facilities. Upgraded rooms add sitting areas and balconies with city/harbor views. Suites offer living/dining areas. Room service is available.</p><p><b>Amenities include 3 stylish eateries, a bar and a lounge with live music, plus a business center, a gym and an outdoor seasonal pool. Paid parking is available.</b></p>',
+      roomType: 'Deluxe Room',
+      amenities: ['wifi', 'gym', 'laundry', 'minibar', 'hairdryer'],
     },
     {
       name: 'Sheraton Hotel Kowloon',
-      rate: 400,
-      currency: 'HKD',
-      policies: `Lorem ipsum dolor sit amet, pro ut accusamus elaboraret. Ei quidam definitiones eum, ex eruditi tibique definiebas sed. Sed epicurei delicata consequat at. No habeo evertitur duo.
-
-Epicuri platonem moderatius his id. Pri audiam nominati signiferumque an, mel id mundi aliquam offendit. Ad audiam similique interesset cum, mei malis ubique epicurei ei, ei tota dignissim interpretaris vis. Corrumpit persecuti mel ne, ea eripuit denique argumentum sed, mel id quas noluisse. An aliquam graecis his, ei his malis utinam labores.
-
-Usu eu alii lucilius dignissim. In iisque mediocritatem pro, ad vel labore salutandi disputando, ad ius assentior instructior. Vis elitr munere ex, at malorum gubergren sit, summo definitionem ei qui. Te sit virtute nominavi persequeris, vel cu idque essent denique, eum no case nobis. Modus scripserit cu his, cum quas dolore ei.
-
-Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian comprehensam mediocritatem. Sale aperiri maiestatis pri eu, ea eam dolorem maiorum efficiendi, his te mentitum detraxit. Ferri laoreet deterruisset te sea. His nostro ceteros cu, et liber semper duo.`,
+      locationAddress: '88 Yee Wo St, Causeway Bay',
+      locationLatitude: '22.279148',
+      locationLongitude: '114.186829',
+      costCurrency: 'HKD',
+      costMinCharge: 500,
+      costPerMinute: 4,
+      costPerHour: 400,
       photos: [
         'https://static.pexels.com/photos/97083/pexels-photo-97083.jpeg',
         'https://static.pexels.com/photos/271639/pexels-photo-271639.jpeg',
         'https://static.pexels.com/photos/271672/pexels-photo-271672.jpeg',
         'https://static.pexels.com/photos/189293/pexels-photo-189293.jpeg',
       ],
-      amenities: [],
-      lat: 22.279148,
-      lng: 114.186829,
-      address: '88 Yee Wo St, Causeway Bay',
+      description: `Lorem ipsum dolor sit amet, pro ut accusamus elaboraret. Ei quidam definitiones eum, ex eruditi tibique definiebas sed. Sed epicurei delicata consequat at. No habeo evertitur duo.
+
+      Epicuri platonem moderatius his id. Pri audiam nominati signiferumque an, mel id mundi aliquam offendit. Ad audiam similique interesset cum, mei malis ubique epicurei ei, ei tota dignissim interpretaris vis. Corrumpit persecuti mel ne, ea eripuit denique argumentum sed, mel id quas noluisse. An aliquam graecis his, ei his malis utinam labores.
+  
+      Usu eu alii lucilius dignissim. In iisque mediocritatem pro, ad vel labore salutandi disputando, ad ius assentior instructior. Vis elitr munere ex, at malorum gubergren sit, summo definitionem ei qui. Te sit virtute nominavi persequeris, vel cu idque essent denique, eum no case nobis. Modus scripserit cu his, cum quas dolore ei.
+  
+      Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian comprehensam mediocritatem. Sale aperiri maiestatis pri eu, ea eam dolorem maiorum efficiendi, his te mentitum detraxit. Ferri laoreet deterruisset te sea. His nostro ceteros cu, et liber semper duo.`,
       roomType: 'Deluxe Room',
-    },
-    {
-      name: 'Stevenage Hotel',
-      rate: 400,
-      currency: 'HKD',
-      policies: `Lorem ipsum dolor sit amet, pro ut accusamus elaboraret. Ei quidam definitiones eum, ex eruditi tibique definiebas sed. Sed epicurei delicata consequat at. No habeo evertitur duo.
-
-    Epicuri platonem moderatius his id. Pri audiam nominati signiferumque an, mel id mundi aliquam offendit. Ad audiam similique interesset cum, mei malis ubique epicurei ei, ei tota dignissim interpretaris vis. Corrumpit persecuti mel ne, ea eripuit denique argumentum sed, mel id quas noluisse. An aliquam graecis his, ei his malis utinam labores.
-
-    Usu eu alii lucilius dignissim. In iisque mediocritatem pro, ad vel labore salutandi disputando, ad ius assentior instructior. Vis elitr munere ex, at malorum gubergren sit, summo definitionem ei qui. Te sit virtute nominavi persequeris, vel cu idque essent denique, eum no case nobis. Modus scripserit cu his, cum quas dolore ei.
-
-    Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian comprehensam mediocritatem. Sale aperiri maiestatis pri eu, ea eam dolorem maiorum efficiendi, his te mentitum detraxit. Ferri laoreet deterruisset te sea. His nostro ceteros cu, et liber semper duo.`,
-      photos: [
-        'https://static.pexels.com/photos/97083/pexels-photo-97083.jpeg',
-        'https://static.pexels.com/photos/271639/pexels-photo-271639.jpeg',
-        'https://static.pexels.com/photos/271672/pexels-photo-271672.jpeg',
-        'https://static.pexels.com/photos/189293/pexels-photo-189293.jpeg',
-      ],
       amenities: [],
-      lat: 22.279148,
-      lng: 114.186829,
-      address: '88 Yee Wo St, Causeway Bay',
-      roomType: 'Standard Room',
-    },
-    {
-      name: 'Westin Hotel',
-      rate: 400.0,
-      minCharge: 500,
-      currency: 'HKD',
-      policies: `Lorem ipsum dolor sit amet, pro ut accusamus elaboraret. Ei quidam definitiones eum, ex eruditi tibique definiebas sed. Sed epicurei delicata consequat at. No habeo evertitur duo.
-
-    Epicuri platonem moderatius his id. Pri audiam nominati signiferumque an, mel id mundi aliquam offendit. Ad audiam similique interesset cum, mei malis ubique epicurei ei, ei tota dignissim interpretaris vis. Corrumpit persecuti mel ne, ea eripuit denique argumentum sed, mel id quas noluisse. An aliquam graecis his, ei his malis utinam labores.
-
-    Usu eu alii lucilius dignissim. In iisque mediocritatem pro, ad vel labore salutandi disputando, ad ius assentior instructior. Vis elitr munere ex, at malorum gubergren sit, summo definitionem ei qui. Te sit virtute nominavi persequeris, vel cu idque essent denique, eum no case nobis. Modus scripserit cu his, cum quas dolore ei.
-
-    Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian comprehensam mediocritatem. Sale aperiri maiestatis pri eu, ea eam dolorem maiorum efficiendi, his te mentitum detraxit. Ferri laoreet deterruisset te sea. His nostro ceteros cu, et liber semper duo.`,
-      photos: [
-        'https://static.pexels.com/photos/97083/pexels-photo-97083.jpeg',
-        'https://static.pexels.com/photos/271639/pexels-photo-271639.jpeg',
-        'https://static.pexels.com/photos/271672/pexels-photo-271672.jpeg',
-        'https://static.pexels.com/photos/189293/pexels-photo-189293.jpeg',
-      ],
-      amenities: [],
-      lat: 22.279148,
-      lng: 114.186829,
-      address: '88 Yee Wo St, Causeway Bay',
-      roomType: 'Standard Room',
-    },
-    {
-      name: 'W Hotel',
-      rate: 400,
-      minCharge: 500,
-      currency: 'HKD',
-      policies: `Lorem ipsum dolor sit amet, pro ut accusamus elaboraret. Ei quidam definitiones eum, ex eruditi tibique definiebas sed. Sed epicurei delicata consequat at. No habeo evertitur duo.
-
-    Epicuri platonem moderatius his id. Pri audiam nominati signiferumque an, mel id mundi aliquam offendit. Ad audiam similique interesset cum, mei malis ubique epicurei ei, ei tota dignissim interpretaris vis. Corrumpit persecuti mel ne, ea eripuit denique argumentum sed, mel id quas noluisse. An aliquam graecis his, ei his malis utinam labores.
-
-    Usu eu alii lucilius dignissim. In iisque mediocritatem pro, ad vel labore salutandi disputando, ad ius assentior instructior. Vis elitr munere ex, at malorum gubergren sit, summo definitionem ei qui. Te sit virtute nominavi persequeris, vel cu idque essent denique, eum no case nobis. Modus scripserit cu his, cum quas dolore ei.
-
-    Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian comprehensam mediocritatem. Sale aperiri maiestatis pri eu, ea eam dolorem maiorum efficiendi, his te mentitum detraxit. Ferri laoreet deterruisset te sea. His nostro ceteros cu, et liber semper duo.`,
-      photos: [
-        'https://static.pexels.com/photos/97083/pexels-photo-97083.jpeg',
-        'https://static.pexels.com/photos/271639/pexels-photo-271639.jpeg',
-        'https://static.pexels.com/photos/271672/pexels-photo-271672.jpeg',
-        'https://static.pexels.com/photos/189293/pexels-photo-189293.jpeg',
-      ],
-      amenities: [],
-      lat: 22.279148,
-      lng: 114.186829,
-      address: '88 Yee Wo St, Causeway Bay',
-      roomType: 'Deluxe Room',
     },
   ],
   employees: [

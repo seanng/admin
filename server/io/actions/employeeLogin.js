@@ -10,7 +10,6 @@ module.exports = (client, action) => {
     .then(user =>
       user.comparePassword(password, (err, isMatch) => {
         if (err) {
-          console.log('the actual err: ', err);
           return reply(client, {
             type: 'app/Login/EMPLOYEE_LOGIN_ERROR',
             msg: 'DB Error',
@@ -28,11 +27,10 @@ module.exports = (client, action) => {
         });
       })
     )
-    .catch(err => {
-      console.log('what is the error in Catch? ', err);
-      return reply(client, {
+    .catch(() =>
+      reply(client, {
         type: 'app/Login/EMPLOYEE_LOGIN_ERROR',
         msg: 'No such user',
-      });
-    });
+      })
+    );
 };

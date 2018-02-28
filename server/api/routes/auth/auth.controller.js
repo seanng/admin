@@ -4,7 +4,9 @@ const { signToken, validateToken } = require('../../../db/helpers');
 const controller = {};
 
 controller.postAuth = (res, rej, req) => {
-  const { email, password } = req.body;
+  const { password } = req.body;
+  let { email } = req.body;
+  email = email.toLowerCase();
 
   return Customer.findOne({ where: { email } }).then(user =>
     user.comparePassword(password, (err, isMatch) => {

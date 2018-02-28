@@ -53,7 +53,6 @@ const openSansObserver = new FontFaceObserver('Open Sans', {});
 // When Open Sans is loaded, add a font-family using Open Sans to the body
 openSansObserver.load().then(
   () => {
-    console.log('font loaded.');
     document.body.classList.add('fontLoaded');
   },
   () => {

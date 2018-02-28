@@ -14,7 +14,6 @@ const fetchCharges = (stayId, respond) => {
 module.exports = (client, action) =>
   fetchCharges(action.stayId, (err, charges) => {
     if (err) {
-      console.log('error finding charges.', err);
       return reply(client, {
         type: 'app/PastStays/FETCH_CHARGES_ERROR',
         err,

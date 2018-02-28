@@ -5,14 +5,26 @@
  */
 
 import { fromJS } from 'immutable';
-import { DEFAULT_ACTION } from './constants';
+import { INIT, EDIT_USER } from './constants';
 
-const initialState = fromJS({});
+const initialState = fromJS({
+  hasLoaded: false,
+  userTemporary: {},
+});
 
 function settingsReducer(state = initialState, action) {
   switch (action.type) {
-    case DEFAULT_ACTION:
-      return state;
+    case INIT:
+      return state.merge({
+        hasLoaded: true,
+        userTemporary: action.user,
+      });
+
+    case EDIT_USER:
+      return state.merge({
+        userTemporary: action.options,
+      });
+
     default:
       return state;
   }

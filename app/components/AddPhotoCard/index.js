@@ -1,11 +1,8 @@
 import styled from 'styled-components';
 import colors from 'themes/colors';
 
-const AddPhoto = styled.div`
+const AddPhotoCard = styled.div`
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 235px;
   width: 235px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
@@ -18,8 +15,11 @@ const AddPhoto = styled.div`
     background-size: cover;
   `
       : `
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: ${colors.white};
   `};
 `;
 
-export default AddPhoto;
+export default AddPhotoCard;

@@ -10,7 +10,7 @@ import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
 import { selectHotelId, selectUserId } from 'containers/App/selectors';
 import colors from 'themes/colors';
-// import ConfirmationModal from 'components/ConfirmationModal';
+import ConfirmationModal from 'components/ConfirmationModal';
 import AddMemberModal from 'components/AddMemberModal';
 import {
   getEmployees,
@@ -20,7 +20,6 @@ import {
   setAddMemberOptions,
   deleteEmployee,
   addEmployee,
-  addMemberPhotoUpload,
 } from './actions';
 import {
   selectHasLoaded,
@@ -44,7 +43,6 @@ import MemberListContainer from './MemberListContainer';
 import TeamMemberCard from './TeamMemberCard';
 import OpacityLayer from './OpacityLayer';
 import Label from './Label';
-import ConfirmationModal from '../../components/ConfirmationModal';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class TeamManagement extends React.PureComponent {
@@ -70,7 +68,6 @@ export class TeamManagement extends React.PureComponent {
   handleModalInputChange = e => {
     const options = { ...this.props.addMemberModalOptions.toJS() };
     options[e.target.name] = e.target.value;
-    console.log('the options: ', options);
     this.props.setAddMemberOptions(options);
   };
 
@@ -78,10 +75,18 @@ export class TeamManagement extends React.PureComponent {
     e.preventDefault();
     const reader = new FileReader();
     const file = e.target.files[0];
+    const options = { ...this.props.addMemberModalOptions.toJS() };
     reader.onloadend = () => {
-      this.props.addMemberPhotoUpload(reader.result);
+      options.imagePreviewUrl = reader.result;
+      this.props.setAddMemberOptions(options);
     };
     reader.readAsDataURL(file);
+  };
+
+  handleModalPhotoRemove = () => {
+    const options = { ...this.props.addMemberModalOptions.toJS() };
+    delete options.imagePreviewUrl;
+    this.props.setAddMemberOptions(options);
   };
 
   handleAddMember = () => {
@@ -270,6 +275,7 @@ export class TeamManagement extends React.PureComponent {
           handleAddMember={this.handleAddMember}
           shouldDisableButton={this.shouldDisableAddMemberButton}
           handlePhotoChange={this.handleModalPhotoChange}
+          handlePhotoRemove={this.handleModalPhotoRemove}
         />
       </Container>
     );
@@ -295,8 +301,6 @@ const mapDispatchToProps = dispatch => ({
   deleteAccount: memberId => dispatch(deleteEmployee(memberId)),
   addMember: (memberDetails, hotelId, userId) =>
     dispatch(addEmployee(memberDetails, hotelId, userId)),
-  addMemberPhotoUpload: imagePreviewUrl =>
-    dispatch(addMemberPhotoUpload(imagePreviewUrl)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamManagement);

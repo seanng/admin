@@ -9,15 +9,17 @@ import Modal from 'react-modal';
 import colors from 'themes/colors';
 import { FormattedMessage } from 'react-intl';
 import CrosshairIcon from 'react-icons/lib/md/add';
+import TrashIcon from 'react-icons/lib/md/delete';
 import Input from 'components/Input';
 import ImageFile from 'components/ImageFile';
 import Header from './Header';
 import Body from './Body';
-import AddPhotoCard from './AddPhotoCard';
+import AddPhotoCard from '../AddPhotoCard';
 import AddMemberDetails from './AddMemberDetails';
 import AddMemberRow from './AddMemberRow';
 import Footer from './Footer';
 import Button from './Button';
+import OpacityLayer from './OpacityLayer';
 import modalStyle from './modalStyle';
 import messages from './messages';
 
@@ -28,6 +30,7 @@ function AddMemberModal({
   handleAddMember,
   shouldDisableButton,
   handlePhotoChange,
+  handlePhotoRemove,
 }) {
   return (
     <Modal
@@ -41,15 +44,25 @@ function AddMemberModal({
         <FormattedMessage {...messages.header} />
       </Header>
       <Body>
-        <AddPhotoCard src={modalConfig.get('imagePreviewUrl')}>
-          {!modalConfig.get('imagePreviewUrl') &&
-            <CrosshairIcon size={20} color={colors.primary} />}
-          <ImageFile
-            onChange={handlePhotoChange}
-            type="file"
-            accept="image/png,image/gif,image/jpeg"
-          />
-        </AddPhotoCard>
+        {modalConfig.get('imagePreviewUrl')
+          ? <AddPhotoCard src={modalConfig.get('imagePreviewUrl')}>
+              <OpacityLayer>
+                <TrashIcon
+                  color={colors.danger}
+                  size={20}
+                  style={{ cursor: 'pointer' }}
+                  onClick={handlePhotoRemove}
+                />
+              </OpacityLayer>
+            </AddPhotoCard>
+          : <AddPhotoCard src={modalConfig.get('imagePreviewUrl')}>
+              <CrosshairIcon size={20} color={colors.primary} />
+              <ImageFile
+                onChange={handlePhotoChange}
+                type="file"
+                accept="image/png,image/gif,image/jpeg"
+              />
+            </AddPhotoCard>}
         <AddMemberDetails>
           <AddMemberRow>
             <FormattedMessage {...messages.firstName} />

@@ -4,4 +4,5 @@
  *
  */
 
-export const DEFAULT_ACTION = 'app/Settings/DEFAULT_ACTION';
+export const INIT = 'app/Settings/INIT';
+export const EDIT_USER = 'app/Settings/EDIT_USER';

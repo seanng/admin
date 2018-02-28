@@ -12,7 +12,6 @@ import {
   SET_ADD_MEMBER_OPTIONS,
   DELETE_EMPLOYEE,
   ADD_EMPLOYEE,
-  ADD_MEMBER_PHOTO_UPLOAD,
 } from './constants';
 
 export function getEmployees(hotelId) {
@@ -63,12 +62,5 @@ export function addEmployee(details, hotelId, userId) {
     details,
     hotelId,
     userId,
-  };
-}
-
-export function addMemberPhotoUpload(imagePreviewUrl) {
-  return {
-    type: ADD_MEMBER_PHOTO_UPLOAD,
-    imagePreviewUrl,
   };
 }

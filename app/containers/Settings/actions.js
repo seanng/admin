@@ -4,10 +4,18 @@
  *
  */
 
-import { DEFAULT_ACTION } from './constants';
+import { INIT, EDIT_USER } from './constants';
 
-export function defaultAction() {
+export function init(user) {
   return {
-    type: DEFAULT_ACTION,
+    type: INIT,
+    user,
+  };
+}
+
+export function editUser(options) {
+  return {
+    type: EDIT_USER,
+    options,
   };
 }

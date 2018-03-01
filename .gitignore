@@ -11,3 +11,6 @@ dump.rdb
 npm-debug.log
 .idea
 .env
+
+# vim
+.vimrc.local

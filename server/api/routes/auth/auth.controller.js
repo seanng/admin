@@ -11,11 +11,11 @@ controller.postAuth = (res, rej, req) => {
   return Customer.findOne({ where: { email } }).then(user =>
     user.comparePassword(password, (err, isMatch) => {
       if (err) {
-        return res({ data: { error: 'DB error' } });
+        return res({ error: 'DB error' });
       } else if (isMatch) {
-        return res({ data: { token: signToken(user.id), user } });
+        return res({ token: signToken(user.id), user });
       }
-      return res({ data: { error: 'Invalid password' } });
+      return res({ error: 'Invalid password' });
     })
   );
 };
@@ -24,11 +24,11 @@ controller.validateToken = function validate(res, rej, req) {
   const { token } = req.body;
   validateToken(token, (err, decoded) => {
     if (err) {
-      return res({ data: { error: 'Decoding token error' } });
+      return res({ error: 'Decoding token error' });
     } else if (decoded) {
       return Customer.findOne({ where: { id: decoded.userId } }).then(user => {
         if (user) {
-          res({ data: { token, user } });
+          res({ token, user });
         } else {
           res({ error: 'User does not exist' });
         }

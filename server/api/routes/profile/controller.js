@@ -1,17 +1,17 @@
 const Customer = require('../../../db/models/Customer');
-const { validateToken } = require('../../../db/helpers');
+const { getUserIdByReq } = require('../../../utils/helpers');
 const controller = {};
 
 controller.update = (resolve, reject, req) => {
-  const jwtToken = req.header('Authorization');
-  validateToken(jwtToken, (err, customer) => {
-    if (err) {
-      return reject('FUck you.hacker');
-    }
-    return Customer.update(req.body.profile, {
-      where: { id: customer.userId },
-    }).then(() => resolve({ profile: req.body.profile }));
-  });
+  getUserIdByReq(req)
+    .then(userId => {
+      Customer.update(req.body.profile, {
+        where: { id: userId },
+      }).then(() => resolve({ profile: req.body.profile }));
+    })
+    .catch(err => {
+      reject(err);
+    });
 };
 
 module.exports = controller;

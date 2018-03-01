@@ -2,13 +2,13 @@
 const auth = require('./auth');
 const customer = require('./customer');
 const employee = require('./employee');
-const stays = require('./stays');
 const hotels = require('./hotels');
+const profile = require('./profile');
 
 module.exports = {
   auth,
-  stays,
   customer,
   employee,
   hotels,
+  profile,
 };

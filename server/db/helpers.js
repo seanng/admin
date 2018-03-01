@@ -29,8 +29,13 @@ function validateToken(token, cb) {
   return jwt.verify(token, secret, cb);
 }
 
+function parseToken(token) {
+  return jwt.decode(token);
+}
+
 module.exports = {
   retrieveStays,
   signToken,
   validateToken,
+  parseToken,
 };

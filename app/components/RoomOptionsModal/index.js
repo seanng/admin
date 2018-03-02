@@ -16,7 +16,6 @@ function RoomOptionsModal({
   roomNumber,
   guestName,
   removeRoom,
-  makeAvailable,
 }) {
   return (
     <Modal
@@ -43,15 +42,6 @@ function RoomOptionsModal({
         </div>}
       {roomStatus === 'reserved' &&
         <div>
-          <Button bg={colors.base1} onClick={closeModal}>
-            <FormattedMessage {...messages.cancel} />
-          </Button>
-        </div>}
-      {roomStatus === 'notReady' &&
-        <div>
-          <Button onClick={makeAvailable}>
-            <FormattedMessage {...messages.makeAvailable} />
-          </Button>
           <Button bg={colors.base1} onClick={closeModal}>
             <FormattedMessage {...messages.cancel} />
           </Button>

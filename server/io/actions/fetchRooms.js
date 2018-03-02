@@ -1,24 +1,29 @@
-const cache = require('../../cache');
 const { reply } = require('../helpers');
+const { Stay, Customer } = require('../../db/models');
 
 const fetchRooms = (hotelId, respond) => {
-  const pattern = `${hotelId}:room:*`;
-  cache.keys(pattern).then(keys => {
-    const rooms = [];
-    keys
-      .reduce(
-        (promiseChain, key) =>
-          cache.hgetall(key).then(room => {
-            const newRoom = Object.assign({}, room);
-            newRoom.roomNumber = key.split(':')[2];
-            return rooms.push(newRoom);
-          }),
-        Promise.resolve()
-      )
-      .then(() => {
-        respond(rooms);
-      });
-  });
+  Stay.findAll({
+    attributes: [
+      'id',
+      'customerId',
+      'status',
+      'bookingTime',
+      'checkInTime',
+      'roomNumber',
+    ],
+    where: {
+      hotelId,
+      status: {
+        $or: ['AVAILABLE', 'BOOKED', 'CHECKED_IN'],
+      },
+    },
+    include: [
+      {
+        model: Customer,
+        attributes: ['firstName', 'lastName'],
+      },
+    ],
+  }).then(stays => respond(stays));
 };
 
 module.exports = client =>

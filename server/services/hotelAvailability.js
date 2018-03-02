@@ -1,9 +1,12 @@
-const cache = require('../cache');
+const { Stay } = require('../db/models');
 
 const getHotelAvailability = hotelId =>
-  cache
-    .smembers(`${hotelId}:available`)
-    .then(rooms => !!rooms && rooms.length > 0);
+  Stay.count({
+    where: {
+      hotelId,
+      status: 'AVAILABLE',
+    },
+  }).then(availableRooms => !!availableRooms && availableRooms > 0);
 
 module.exports = {
   getHotelAvailability,

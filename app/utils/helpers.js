@@ -38,3 +38,12 @@ export function getNavIconColor(currentPath, pathNames) {
   }
   return 'rgba(255, 255, 255, 0.5)';
 }
+
+export function mapToRoomStatus(status) {
+  const dictionary = {
+    AVAILABLE: 'available',
+    BOOKED: 'reserved',
+    CHECKED_IN: 'occupied',
+  };
+  return dictionary[status];
+}

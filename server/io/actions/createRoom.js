@@ -1,51 +1,15 @@
-const cache = require('../../cache');
 const { reply } = require('../helpers');
+const { Stay } = require('../../db/models');
 
 const createRoom = (hotelId, roomNumber, respond) => {
-  /* create new room in redis. we'll be temporarily using a fake hotelId of "111", so all rooms in the cache will be part of rooms key 111.
-
-  redis rooms cache should look like this:
-    {
-      111:room:roomNumber: {
-        roomType,
-        employeeId,
-        status,
-        bookingTime,
-        checkInTime,
-        checkOutTime,
-        guestId,
-      },
-      // for faster access in mobile app.
-      111:available: Set of roomNumbers,
-    } */
-
-  if (!roomNumber) return respond('enter roomNumber');
-
-  const key = `${hotelId}:room:${roomNumber}`;
-  // THIS IS TEMPORARILY HARDCODED
-  const employeeId = '123';
-  // First, make sure the room does not exist
-  return cache.exists(key).then(exists => {
-    if (exists * 1) {
-      return respond('exists');
-    }
-    // Second, add room to the available rooms set
-    cache.sadd(`${hotelId}:available`, roomNumber);
-    // Third, create new hash in Redis for the room
-    return cache
-      .hmset(key, 'status', 'available', 'employeeId', employeeId)
-      .then(() =>
-        respond(null, {
-          roomNumber,
-          employeeId,
-          customerName: null,
-          status: 'available',
-        })
-      )
-      .catch(error => {
-        respond(error);
-      });
-  });
+  if (!roomNumber) {
+    return respond('enter roomNumber');
+  }
+  return Stay.create({
+    hotelId,
+    roomNumber,
+    status: 'AVAILABLE',
+  }).then(newStay => respond(null, newStay));
 };
 
 module.exports = (client, action) =>

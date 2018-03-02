@@ -1,23 +1,16 @@
-const cache = require('../../cache');
+const { Stay } = require('../../db/models');
 const { reply } = require('../helpers');
 
-const deleteRoom = (hotelId, roomNumber, respond) => {
-  const key = `${hotelId}:room:${roomNumber}`;
-  return cache
-    .srem(`${hotelId}:available`, roomNumber)
-    .then(() =>
-      cache
-        .del(key)
-        .then(() => respond(null, roomNumber))
-        .catch(delHashErr => respond(delHashErr))
-    )
-    .catch(delFromSetErr => respond(delFromSetErr));
+const deleteRoom = (id, respond) => {
+  Stay.destroy({
+    where: { id },
+  }).then(() => respond(null, id));
 };
 
 module.exports = (client, action) =>
   // hotelId obtained from socket token.
   // for now, pass in fake hotelId of 1
-  deleteRoom(1, action.roomNumber, (err, roomNumber) => {
+  deleteRoom(action.stayId, (err, id) => {
     if (err) {
       return reply(client, {
         type: 'app/FrontDesk/DELETE_ROOM_ERROR',
@@ -26,6 +19,6 @@ module.exports = (client, action) =>
     }
     return reply(client, {
       type: 'app/FrontDesk/DELETE_ROOM_SUCCESS',
-      roomNumber,
+      id,
     });
   });

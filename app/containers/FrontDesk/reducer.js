@@ -4,12 +4,11 @@
  *
  */
 
-import { fromJS, Map } from 'immutable';
+import { fromJS } from 'immutable';
+import { mapToRoomStatus } from 'utils/helpers';
 import {
   FETCH_ROOMS_SUCCESS,
   FETCH_ROOMS_ERROR,
-  MAKE_AVAILABLE_SUCCESS,
-  MAKE_AVAILABLE_ERROR,
   DELETE_ROOM_ERROR,
   DELETE_ROOM_SUCCESS,
   CHECK_IN_SUCCESS,
@@ -33,30 +32,28 @@ const initialState = fromJS({
   activeRoomGuest: '',
   activeRoomNumber: '',
   activeRoomIndex: '',
+  activeStayId: '',
 });
 
 function frontDeskReducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_ROOMS_ERROR:
       return state;
-    case FETCH_ROOMS_SUCCESS:
-      return state.merge({ rooms: action.rooms, hasLoaded: true });
-    case MAKE_AVAILABLE_ERROR:
-      return state;
-    case MAKE_AVAILABLE_SUCCESS:
-      return state.setIn(
-        ['rooms', action.key],
-        Map({
-          roomNumber: action.roomNumber,
-          employeeId: 123,
-          status: 'available',
-        })
-      );
+    case FETCH_ROOMS_SUCCESS: {
+      const rooms = action.rooms.map(room => ({
+        ...room,
+        customerName: room.customer
+          ? `${room.customer.firstName} ${room.customer.lastName}`
+          : null,
+        status: mapToRoomStatus(room.status),
+      }));
+      return state.merge({ rooms, hasLoaded: true });
+    }
     case DELETE_ROOM_ERROR:
       return state;
     case DELETE_ROOM_SUCCESS:
       return state.update('rooms', rooms =>
-        rooms.filter(room => room.get('roomNumber') !== action.roomNumber)
+        rooms.filter(room => room.get('id') !== action.id)
       );
     case CHECK_IN_ERROR:
       return state;
@@ -85,6 +82,7 @@ function frontDeskReducer(state = initialState, action) {
         activeRoomGuest: action.guest,
         activeRoomNumber: action.room,
         activeRoomIndex: action.index,
+        activeStayId: action.stayId,
         shouldDisplayRoomOptionsModal: true,
       });
 
@@ -93,7 +91,11 @@ function frontDeskReducer(state = initialState, action) {
 
     case CREATE_ROOM_SUCCESS: {
       const rooms = state.get('rooms').toJS();
-      rooms.push(action.room);
+      const newRoom = {
+        ...action.room,
+        status: mapToRoomStatus(action.room.status),
+      };
+      rooms.push(newRoom);
       return state.merge({
         addRoomInput: '',
         shouldDisplayAddRoomModal: false,

@@ -21,7 +21,7 @@ const routeHandler = (io, client) =>
 module.exports = server => {
   const io = socketIO.listen(server);
   io.on('connection', client => {
-    console.log('io connected.');
+    console.log('conencted: ');
     routeHandler(io, client);
   });
   return io;

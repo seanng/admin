@@ -74,7 +74,7 @@ const Stay = sequelize.define('stay', {
     primaryKey: true,
     autoIncrement: true,
   },
-  status: Sequelize.STRING,
+  status: Sequelize.STRING, // AVAILABLE, BOOKED, CANCELLED?, CHECKED IN, CHECKED OUT,
   bookingTime: Sequelize.DATE,
   checkInTime: Sequelize.DATE, // Update on check in
   checkOutTime: Sequelize.DATE, // Update on check out
@@ -91,8 +91,6 @@ const Surcharge = sequelize.define('surcharge', {
 });
 
 /* Relationships */
-Customer.belongsToMany(Hotel, { through: Stay });
-Hotel.belongsToMany(Customer, { through: Stay });
 
 Customer.hasMany(Stay);
 Stay.belongsTo(Customer);

@@ -243,10 +243,9 @@ const fakeData = {
   ],
   stays: [
     {
-      id: 1,
       hotelId: 1,
       customerId: 1,
-      status: 'Checked Out',
+      status: 'CHECKED_OUT',
       roomNumber: 410,
       bookingTime: 1491015600000,
       checkInTime: 1491019200000,
@@ -255,10 +254,9 @@ const fakeData = {
       totalCharge: 850.05,
     },
     {
-      id: 2,
       hotelId: 1,
       customerId: 2,
-      status: 'Checked Out',
+      status: 'CHECKED_OUT',
       roomNumber: 1029,
       bookingTime: 1491026400000,
       checkInTime: 1491031800000,
@@ -267,16 +265,44 @@ const fakeData = {
       totalCharge: 1338.0,
     },
     {
-      id: 3,
       hotelId: 1,
       customerId: 3,
-      status: 'Checked Out',
+      status: 'CHECKED_OUT',
       roomNumber: 1023,
       bookingTime: 1491129000000,
       checkInTime: 1491131700000,
       checkOutTime: 1491138900000,
       roomCharge: 800.0,
       totalCharge: 900.18,
+    },
+    {
+      hotelId: 1,
+      status: 'AVAILABLE',
+      roomNumber: 1023,
+    },
+    {
+      hotelId: 1,
+      customerId: 1,
+      status: 'BOOKED',
+      roomNumber: 1013,
+      bookingTime: 1489381804189,
+    },
+    {
+      hotelId: 1,
+      customerId: 2,
+      status: 'CHECKED_IN',
+      roomNumber: 1023,
+      bookingTime: 1489381804189,
+      checkInTime: 1489381904189,
+    },
+    {
+      hotelId: 1,
+      customerId: 3,
+      status: 'CHECKED_OUT',
+      roomNumber: 1923,
+      bookingTime: 1489381804189,
+      checkInTime: 1489381904189,
+      checkOutTime: 1489381904189,
     },
   ],
   surcharges: [
@@ -321,7 +347,9 @@ const fakeData = {
 
 module.exports = () =>
   sequelize
-    .sync({ force: true })
+    .sync({
+      force: true,
+    })
     .then(() =>
       fakeData.customers
         .reduce(
@@ -355,4 +383,5 @@ module.exports = () =>
                 )
             )
         )
-    );
+    )
+    .catch(err => console.log(err));

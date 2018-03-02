@@ -1,7 +1,7 @@
 const { Stay, Hotel, Customer } = require('../../db/models');
 const { reply } = require('../helpers');
 
-const fetchStays = (hotelId, respond) => {
+const fetchPastStays = (hotelId, respond) => {
   Stay.findAll({
     attributes: [
       'id',
@@ -33,7 +33,7 @@ const fetchStays = (hotelId, respond) => {
 };
 
 module.exports = client =>
-  fetchStays(1, (err, stays) => {
+  fetchPastStays(1, (err, stays) => {
     if (err) {
       return reply(client, {
         type: 'app/PastStays/FETCH_STAYS_ERROR',

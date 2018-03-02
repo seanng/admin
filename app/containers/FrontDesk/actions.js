@@ -6,7 +6,6 @@
 
 import {
   FETCH_ROOMS,
-  MAKE_AVAILABLE,
   DELETE_ROOM,
   CHECK_IN,
   SET_FILTER,
@@ -23,18 +22,10 @@ export function fetchRooms() {
   };
 }
 
-export function makeAvailable(roomNumber, key) {
-  return {
-    type: MAKE_AVAILABLE,
-    roomNumber,
-    key,
-  };
-}
-
-export function deleteRoom(roomNumber) {
+export function deleteRoom(stayId) {
   return {
     type: DELETE_ROOM,
-    roomNumber,
+    stayId,
   };
 }
 
@@ -81,9 +72,10 @@ export function handleInputChange(key, value) {
   };
 }
 
-export function openRoomOptionsModal(status, room, guest, index) {
+export function openRoomOptionsModal(stayId, status, room, guest, index) {
   return {
     type: OPEN_ROOM_OPTIONS_MODAL,
+    stayId,
     status,
     room,
     guest,

@@ -57,6 +57,11 @@ export const selectActiveRoomIndex = () =>
     substate.get('activeRoomIndex')
   );
 
+export const selectActiveStayId = () =>
+  createSelector(selectFrontDeskDomain(), substate =>
+    substate.get('activeStayId')
+  );
+
 /**
  * Default selector used by FrontDesk
  */

@@ -29,24 +29,26 @@ module.exports = (req, res) => {
   const splittedUrlPath = req.url.split('?')[0].split('/').slice(1);
   const { route, params } = mapUrl(routes, splittedUrlPath);
   if (route) {
-    route(req, params).then(
-      result => {
-        if (result instanceof Function) {
-          result(res);
-        } else {
-          res.json(result);
+    route(req, params)
+      .then(
+        result => {
+          if (result instanceof Function) {
+            result(res);
+          } else {
+            res.json(result);
+          }
+        },
+        reason => {
+          if (reason && reason.redirect) {
+            res.redirect(reason.redirect);
+          } else {
+            console.error('API ERROR:', pretty.render(reason));
+            res.status(reason.status || 500).json(reason);
+          }
         }
-      },
-      reason => {
-        if (reason && reason.redirect) {
-          res.redirect(reason.redirect);
-        } else {
-          console.error('API ERROR:', pretty.render(reason));
-          res.status(reason.status || 500).json(reason);
-        }
-      }
-    );
+      )
+      .catch(e => res.status(400).send(e));
   } else {
-    res.status(404).end('NOT FOUND');
+    res.status(404).send('NOT FOUND');
   }
 };

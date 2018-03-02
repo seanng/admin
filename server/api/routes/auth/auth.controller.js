@@ -11,11 +11,11 @@ controller.postAuth = (res, rej, req) => {
   return Customer.findOne({ where: { email } }).then(user =>
     user.comparePassword(password, (err, isMatch) => {
       if (err) {
-        return res({ error: 'DB error' });
+        return rej({ error: 'DB error' });
       } else if (isMatch) {
         return res({ token: signToken(user.id), user });
       }
-      return res({ error: 'Invalid password' });
+      return rej({ error: 'Invalid password' });
     })
   );
 };
@@ -24,7 +24,7 @@ controller.validateToken = function validate(res, rej, req) {
   const { token } = req.body;
   validateToken(token, (err, decoded) => {
     if (err) {
-      return res({ error: 'Decoding token error' });
+      return rej({ error: 'Decoding token error' });
     } else if (decoded) {
       return Customer.findOne({ where: { id: decoded.userId } }).then(user => {
         if (user) {

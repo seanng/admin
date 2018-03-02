@@ -282,6 +282,37 @@ const fakeData = {
     },
     {
       hotelId: 1,
+      status: 'AVAILABLE',
+      roomNumber: 1232131,
+    },
+    {
+      hotelId: 1,
+      status: 'AVAILABLE',
+      roomNumber: 1025,
+    },
+    {
+      hotelId: 1,
+      status: 'AVAILABLE',
+      roomNumber: 1024,
+    },
+    {
+      hotelId: 1,
+      status: 'AVAILABLE',
+      roomNumber: 1111,
+    },
+    {
+      hotelId: 1,
+      status: 'AVAILABLE',
+      roomNumber: 12321,
+    },
+    {
+      hotelId: 1,
+      status: 'AVAILABLE',
+      roomNumber: 123213,
+    },
+
+    {
+      hotelId: 1,
       customerId: 1,
       status: 'BOOKED',
       roomNumber: 1013,

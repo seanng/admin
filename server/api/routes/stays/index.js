@@ -9,8 +9,8 @@ const controller = require('./controller');
 module.exports = (req, params) =>
   new Promise((resolve, reject) => {
     if (req.method === 'PUT') {
-      if (req.body.action === 'booked') {
-        return controller.booked(resolve, reject, req, params);
+      if (req.body.action === 'createBooking') {
+        return controller.createBooking(resolve, reject, req, params);
       }
     }
   });

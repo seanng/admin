@@ -126,25 +126,27 @@ export class FrontDesk extends React.PureComponent {
         <Body>
           <TableContainer>
             <TableHeaderRow mb="10px">
-              <TableHeaderCol width="60px">#</TableHeaderCol>
-              <TableHeaderCol width="120px">
+              <TableHeaderCol width="80px" ml="20px">
+                #
+              </TableHeaderCol>
+              <TableHeaderCol width="140px">
                 <FormattedMessage {...messages.room} />
               </TableHeaderCol>
-              <TableHeaderCol width="120px">
+              <TableHeaderCol width="140px">
                 <FormattedMessage {...messages.status} />
               </TableHeaderCol>
-              <TableHeaderCol width="220px">
+              <TableHeaderCol width="300px">
                 <FormattedMessage {...messages.guest} />
               </TableHeaderCol>
               <TableHeaderCol width="120px" mr="50px">
                 <FormattedMessage {...messages.booked} />
               </TableHeaderCol>
-              <TableHeaderCol width="120px" mr="64px">
+              <TableHeaderCol width="120px">
                 <FormattedMessage {...messages.checkedIn} />
               </TableHeaderCol>
-              <TableHeaderCol width="120px">
+              {/* <TableHeaderCol width="120px">
                 <FormattedMessage {...messages.checkedOut} />
-              </TableHeaderCol>
+              </TableHeaderCol> */}
             </TableHeaderRow>
             {filteredRooms.map(
               (
@@ -170,31 +172,31 @@ export class FrontDesk extends React.PureComponent {
                       index
                     )}
                 >
-                  <TableBodyCol width="60px">
+                  <TableBodyCol width="80px" ml="20px">
                     {index + 1}
                   </TableBodyCol>
-                  <TableBodyCol width="120px" color={colors.primary}>
+                  <TableBodyCol width="140px" color={colors.primary}>
                     {roomNumber}
                   </TableBodyCol>
-                  <TableBodyCol width="120px">
+                  <TableBodyCol width="140px">
                     <FormattedMessage {...messages[status]} />
                   </TableBodyCol>
-                  <TableBodyCol width="220px">
+                  <TableBodyCol width="300px">
                     {customerName !== null ? customerName : '-'}
                   </TableBodyCol>
                   <TableBodyCol width="120px" mr="50px">
                     {(bookingTime && format(new Date(bookingTime), 'h:mm a')) ||
                       '-'}
                   </TableBodyCol>
-                  <TableBodyCol width="120px" mr="64px">
+                  <TableBodyCol width="120px">
                     {(checkInTime && format(new Date(checkInTime), 'h:mm a')) ||
                       '-'}
                   </TableBodyCol>
-                  <TableBodyCol width="120px">
+                  {/* <TableBodyCol width="120px">
                     {(checkOutTime &&
                       format(new Date(checkOutTime), 'h:mm a')) ||
                       '-'}
-                  </TableBodyCol>
+                  </TableBodyCol> */}
                 </TableBodyRow>
             )}
           </TableContainer>

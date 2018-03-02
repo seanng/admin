@@ -40,7 +40,6 @@ export function getNavIconColor(currentPath, pathNames) {
 }
 
 export function mapToRoomStatus(status) {
-  console.log('the status: ', status);
   const dictionary = {
     AVAILABLE: 'available',
     BOOKED: 'reserved',

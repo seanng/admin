@@ -12,7 +12,10 @@ const fetchPastStays = (hotelId, respond) => {
       'roomCharge',
       'totalCharge',
     ],
-    where: { hotelId },
+    where: {
+      hotelId,
+      status: 'CHECKED_OUT',
+    },
     include: [Customer, Hotel],
   })
     .then(stays => {
@@ -35,6 +38,7 @@ const fetchPastStays = (hotelId, respond) => {
 module.exports = client =>
   fetchPastStays(1, (err, stays) => {
     if (err) {
+      console.log('the err? ', err);
       return reply(client, {
         type: 'app/PastStays/FETCH_STAYS_ERROR',
       });

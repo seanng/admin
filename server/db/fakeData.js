@@ -303,6 +303,8 @@ const fakeData = {
       bookingTime: 1489381804189,
       checkInTime: 1489381904189,
       checkOutTime: 1489381904189,
+      roomCharge: 800.0,
+      totalCharge: 900.18,
     },
   ],
   surcharges: [

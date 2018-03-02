@@ -9,7 +9,6 @@ controller.getHotels = resolve =>
     attributes: { exclude: [] },
     raw: true,
   }).then(hotels => {
-    console.log('the hotels? ', hotels);
     const hotelsAvailabilityPromise = Promise.map(
       R.map(R.prop('id'), hotels),
       getHotelAvailability

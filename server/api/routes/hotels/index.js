@@ -8,7 +8,6 @@ const controller = require('./hotels.controller');
 
 module.exports = (req, params) =>
   new Promise((resolve, reject) => {
-    console.log('www');
     if (req.method === 'GET') {
       return controller.getHotels(resolve, reject, req, params);
     }

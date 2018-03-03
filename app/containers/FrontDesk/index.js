@@ -36,7 +36,8 @@ import {
   selectShouldDisplayRoomOptionsModal,
   selectActiveRoomStatus,
   selectActiveRoomNumber,
-  selectActiveRoomGuest,
+  selectActiveRoomCustomerId,
+  selectActiveRoomCustomerName,
   selectActiveRoomIndex,
   selectActiveStayId,
   selectAddRoomInput,
@@ -82,6 +83,11 @@ export class FrontDesk extends React.PureComponent {
     addRoom(addRoomInput);
   };
 
+  handleCheckIn = () => {
+    const { dispatchCheckIn, activeStayId, activeRoomCustomerId } = this.props;
+    dispatchCheckIn(activeStayId, activeRoomCustomerId);
+  };
+
   render() {
     const {
       hasLoaded,
@@ -94,7 +100,7 @@ export class FrontDesk extends React.PureComponent {
       closeRoomOptionsModal,
       activeRoomStatus,
       activeRoomNumber,
-      activeRoomGuest,
+      activeRoomCustomerName,
       viewRoomOptions,
     } = this.props;
     if (!hasLoaded) {
@@ -153,6 +159,7 @@ export class FrontDesk extends React.PureComponent {
                 {
                   roomNumber,
                   status,
+                  customerId,
                   customerName,
                   bookingTime,
                   checkInTime,
@@ -168,6 +175,7 @@ export class FrontDesk extends React.PureComponent {
                       id,
                       status,
                       roomNumber,
+                      customerId,
                       customerName,
                       index
                     )}
@@ -192,11 +200,6 @@ export class FrontDesk extends React.PureComponent {
                     {(checkInTime && format(new Date(checkInTime), 'h:mm a')) ||
                       '-'}
                   </TableBodyCol>
-                  {/* <TableBodyCol width="120px">
-                    {(checkOutTime &&
-                      format(new Date(checkOutTime), 'h:mm a')) ||
-                      '-'}
-                  </TableBodyCol> */}
                 </TableBodyRow>
             )}
           </TableContainer>
@@ -211,10 +214,11 @@ export class FrontDesk extends React.PureComponent {
         <RoomOptionsModal
           roomStatus={activeRoomStatus}
           roomNumber={activeRoomNumber}
-          guestName={activeRoomGuest}
+          guestName={activeRoomCustomerName}
           isOpen={shouldDisplayRoomOptionsModal}
           closeModal={closeRoomOptionsModal}
           removeRoom={this.handleRemoveRoom}
+          checkIn={this.handleCheckIn}
         />
       </Container>
     );
@@ -230,7 +234,8 @@ const mapStateToProps = createStructuredSelector({
   addRoomInput: selectAddRoomInput(),
   activeRoomStatus: selectActiveRoomStatus(),
   activeRoomNumber: selectActiveRoomNumber(),
-  activeRoomGuest: selectActiveRoomGuest(),
+  activeRoomCustomerId: selectActiveRoomCustomerId(),
+  activeRoomCustomerName: selectActiveRoomCustomerName(),
   activeRoomIndex: selectActiveRoomIndex(),
   activeStayId: selectActiveStayId(),
 });
@@ -238,15 +243,15 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = {
   fetchRooms,
   removeRoom: stayId => deleteRoom(stayId),
-  checkIn: roomNumber => checkIn(roomNumber),
+  dispatchCheckIn: (stayId, customerId) => checkIn(stayId, customerId),
   setFilter: filter => setFilter(filter),
   openAddRoomModal: () => displayAddRoomModal(true),
   closeAddRoomModal: () => displayAddRoomModal(false),
   closeRoomOptionsModal: () => displayRoomOptionsModal(false),
   addRoom: room => createRoom(room),
   handleInputChange: (key, value) => handleInputChange(key, value),
-  viewRoomOptions: (stayId, status, room, guest, index) =>
-    openRoomOptionsModal(stayId, status, room, guest, index),
+  viewRoomOptions: (stayId, status, room, customerId, customerName, index) =>
+    openRoomOptionsModal(stayId, status, room, customerId, customerName, index),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FrontDesk);

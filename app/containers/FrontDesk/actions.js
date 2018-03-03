@@ -29,10 +29,11 @@ export function deleteRoom(stayId) {
   };
 }
 
-export function checkIn(roomNumber) {
+export function checkIn(stayId, customerId) {
   return {
     type: CHECK_IN,
-    roomNumber,
+    stayId,
+    customerId,
   };
 }
 
@@ -72,13 +73,21 @@ export function handleInputChange(key, value) {
   };
 }
 
-export function openRoomOptionsModal(stayId, status, room, guest, index) {
+export function openRoomOptionsModal(
+  stayId,
+  status,
+  room,
+  customerId,
+  customerName,
+  index
+) {
   return {
     type: OPEN_ROOM_OPTIONS_MODAL,
     stayId,
     status,
     room,
-    guest,
+    customerId,
+    customerName,
     index,
   };
 }

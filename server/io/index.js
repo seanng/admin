@@ -1,7 +1,7 @@
 const socketIO = require('socket.io');
-// const actions = require('./actions');
+const { removeSocket, getDirectory } = require('./directory');
 
-const routeHandler = (io, client) =>
+const clientHandler = (io, client) => {
   client.on('action', action => {
     if (action.type && action.type.split('server/')[1]) {
       const actionInSnake = action.type.split('server/')[1];
@@ -18,11 +18,19 @@ const routeHandler = (io, client) =>
     }
   });
 
+  client.on('disconnect', () => {
+    console.log(client.id, ' has disconnected.');
+    removeSocket(client.id, () =>
+      console.log('new directory: ', getDirectory())
+    );
+  });
+};
+
 module.exports = server => {
   const io = socketIO.listen(server);
   io.on('connection', client => {
-    console.log('conencted: ');
-    routeHandler(io, client);
+    console.log(client.id, ' has connected. new directory: ', getDirectory());
+    clientHandler(io, client);
   });
   return io;
 };

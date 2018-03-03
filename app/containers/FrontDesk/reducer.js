@@ -29,7 +29,8 @@ const initialState = fromJS({
   shouldDisplayAddRoomModal: false,
   shouldDisplayRoomOptionsModal: false,
   activeRoomStatus: '',
-  activeRoomGuest: '',
+  activeRoomCustomerId: '',
+  activeRoomCustomerName: '',
   activeRoomNumber: '',
   activeRoomIndex: '',
   activeStayId: '',
@@ -58,13 +59,14 @@ function frontDeskReducer(state = initialState, action) {
     case CHECK_IN_ERROR:
       return state;
     case CHECK_IN_SUCCESS: {
-      const { roomNumber, status, checkInTime } = action.roomData;
-      return state.update('rooms', rooms =>
-        rooms.update(
-          rooms.findIndex(room => room.get('roomNumber') === roomNumber),
-          room => room.set('status', status).set('checkInTime', checkInTime)
+      const { id, checkInTime, status } = action.data;
+      return state
+        .update('rooms', rooms =>
+          rooms.update(rooms.findIndex(room => room.get('id') === id), room =>
+            room.set('status', status).set('checkInTime', checkInTime)
+          )
         )
-      );
+        .set('shouldDisplayRoomOptionsModal', false);
     }
 
     case SET_FILTER:
@@ -79,7 +81,8 @@ function frontDeskReducer(state = initialState, action) {
     case OPEN_ROOM_OPTIONS_MODAL:
       return state.merge({
         activeRoomStatus: action.status,
-        activeRoomGuest: action.guest,
+        activeRoomCustomerId: action.customerId,
+        activeRoomCustomerName: action.customerName,
         activeRoomNumber: action.room,
         activeRoomIndex: action.index,
         activeStayId: action.stayId,

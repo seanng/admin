@@ -14,6 +14,10 @@ export default defineMessages({
     id: 'app.components.RoomOptionsModal.cancel',
     defaultMessage: 'CANCEL',
   },
+  checkIn: {
+    id: 'app.components.RoomOptionsModal.checkIn',
+    defaultMessage: 'CHECK IN',
+  },
   checkOut: {
     id: 'app.components.RoomOptionsModal.checkOut',
     defaultMessage: 'CHECK OUT',

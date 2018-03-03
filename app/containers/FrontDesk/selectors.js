@@ -47,9 +47,14 @@ export const selectActiveRoomNumber = () =>
     substate.get('activeRoomNumber')
   );
 
-export const selectActiveRoomGuest = () =>
+export const selectActiveRoomCustomerId = () =>
   createSelector(selectFrontDeskDomain(), substate =>
-    substate.get('activeRoomGuest')
+    substate.get('activeRoomCustomerId')
+  );
+
+export const selectActiveRoomCustomerName = () =>
+  createSelector(selectFrontDeskDomain(), substate =>
+    substate.get('activeRoomCustomerName')
   );
 
 export const selectActiveRoomIndex = () =>

@@ -28,6 +28,8 @@ controller.validateToken = function validate(res, rej, req) {
     } else if (decoded) {
       return Customer.findOne({ where: { id: decoded.userId } }).then(user => {
         if (user) {
+          // TO DO: move addsocket to ON BOOKING ACTION instead of login/checked auth.
+          // TO DO: check if any stay with customerId is 'BOOKED' or 'CHECKED_IN'
           res({ token, user });
         } else {
           res({ error: 'User does not exist' });

@@ -7,6 +7,9 @@ module.exports = (req, params) =>
       if (req.url === '/auth/verify_token') {
         return controller.validateToken(resolve, reject, req, params);
       }
+      if (req.url === '/auth/facebook_authentication') {
+        return controller.facebook_authenticate(resolve, reject, req, params);
+      }
       return controller.postAuth(resolve, reject, req, params);
     }
   });

@@ -16,6 +16,7 @@ const Customer = sequelize.define('customer', {
   regDate: Sequelize.DATE,
   username: { type: Sequelize.STRING, unique: true },
   password: Sequelize.STRING,
+  facebookId: Sequelize.STRING,
   firstName: Sequelize.STRING,
   lastName: Sequelize.STRING,
   email: { type: Sequelize.STRING, unique: true },

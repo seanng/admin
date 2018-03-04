@@ -1,36 +1,40 @@
+const { reply } = require('./helpers');
 const socketIO = require('socket.io');
-const { removeSocket, getDirectory } = require('./directory');
 
-const clientHandler = (io, client) => {
+function routeActionToFile(action, folder, client, io) {
+  const actionInCamel = action.type
+    .split('_IO_')[1]
+    .toLowerCase()
+    .replace(/_\w/g, str => str[1].toUpperCase());
+
+  // eslint-disable-next-line global-require
+  const reducerFile = require(`./${folder}/${actionInCamel}`);
+  if (!reducerFile) {
+    return;
+  }
+  reducerFile(client, action, io);
+}
+
+function clientHandler(io, client) {
   client.on('action', action => {
-    if (action.type && action.type.split('server/')[1]) {
-      const actionInSnake = action.type.split('server/')[1];
-      const actionInCamel = actionInSnake
-        .toLowerCase()
-        .replace(/_\w/g, str => str[1].toUpperCase());
-
-      // eslint-disable-next-line global-require
-      const reducerFile = require(`./actions/${actionInCamel}`);
-      if (!reducerFile) {
-        return;
-      }
-      reducerFile(client, action);
+    if (action.type && action.type.split('_IO_').length > 1) {
+      const actionType = action.type.split('_IO_');
+      actionType[0] === 'H' &&
+        routeActionToFile(action, 'hotelActions', client, io);
+      actionType[0] === 'C' &&
+        routeActionToFile(action, 'customerActions', client, io);
     }
   });
-
-  client.on('disconnect', () => {
-    console.log(client.id, ' has disconnected.');
-    removeSocket(client.id, () =>
-      console.log('new directory: ', getDirectory())
-    );
-  });
-};
+}
 
 module.exports = server => {
   const io = socketIO.listen(server);
   io.on('connection', client => {
-    console.log(client.id, ' has connected. new directory: ', getDirectory());
+    console.log(client.id, ' has connected ');
+    reply(client, {
+      type: 'SOCKET_CONNECTION_ESTABLISHED',
+      socketId: client.id,
+    });
     clientHandler(io, client);
   });
-  return io;
 };

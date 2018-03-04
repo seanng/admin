@@ -1,6 +1,6 @@
 /* eslint consistent-return:0 */
 
-const controller = require('./employee.controller');
+const controller = require('./controller');
 
 module.exports = (req, params) =>
   new Promise((res, rej) => {

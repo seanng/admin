@@ -1,5 +1,5 @@
 /* eslint consistent-return:0 */
-const controller = require('./auth.controller');
+const controller = require('./controller');
 
 module.exports = (req, params) =>
   new Promise((resolve, reject) => {

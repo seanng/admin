@@ -47,7 +47,7 @@ module.exports = (req, res) => {
           }
         }
       )
-      .catch(e => res.status(400).send(e));
+      .catch(error => res.status(400).send(error));
   } else {
     res.status(404).send('NOT FOUND');
   }

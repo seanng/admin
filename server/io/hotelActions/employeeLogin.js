@@ -1,6 +1,6 @@
 const { Employee } = require('../../db/models');
 const { signToken } = require('../../db/helpers');
-const { addHotelSockets, getDirectory } = require('../directory');
+const { linkEmployeeToHotelSockets } = require('../helpers');
 const { reply } = require('../helpers');
 
 module.exports = (client, action) => {
@@ -15,8 +15,7 @@ module.exports = (client, action) => {
             msg: 'DB Error',
           });
         } else if (isMatch) {
-          addHotelSockets(user.hotelId, client.id);
-          console.log('get hotel sockets', getDirectory());
+          linkEmployeeToHotelSockets(client, user.hotelId);
           return reply(client, {
             type: 'app/Login/EMPLOYEE_LOGIN_SUCCESS',
             token: signToken(user.id),

@@ -1,26 +1,32 @@
 const Stay = require('../db/models/Stay');
-const book = (userId, hotelId) => {
-  const updateParams = {
-    status: 'BOOKED',
-    customerId: userId,
-    bookingTime: new Date(),
-  };
-  let stay;
-  return new Promise((resolve, reject) => {
-    Stay.findOne({ raw: true, where: { hotelId, status: 'AVAILABLE' } })
-      .then(stay_ => {
-        if (stay_ === null) {
+
+const book = (customerId, hotelId) =>
+  new Promise((resolve, reject) => {
+    let result;
+    const updatedParams = {
+      status: 'BOOKED',
+      customerId,
+      bookingTime: new Date().getTime(),
+    };
+    Stay.findOne({
+      raw: true,
+      where: {
+        hotelId,
+        status: 'AVAILABLE',
+      },
+    })
+      .then(stay => {
+        if (stay === null) {
           return reject(new Error('no stay is available for this hotel'));
         }
-        stay = stay_;
-        return Stay.update(updateParams, {
-          where: { id: stay_.id },
+        result = stay;
+        return Stay.update(updatedParams, {
+          where: { id: stay.id },
         });
       })
-      .then(() => resolve({ ...stay, ...updateParams }))
+      .then(() => resolve({ ...result, ...updatedParams }))
       .catch(reject);
   });
-};
 
 const checkin = () => {};
 const checkout = () => {};

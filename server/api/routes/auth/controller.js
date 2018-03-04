@@ -1,11 +1,12 @@
 /* eslint consistent-return:0 */
 const { Customer } = require('../../../db/models');
+const { setCustomerSocketId } = require('../../../io/helpers');
 const { signToken, validateToken } = require('../../../db/helpers');
 const rp = require('request-promise');
 const controller = {};
 
 controller.postAuth = (res, rej, req) => {
-  const { password } = req.body;
+  const { password, socketId } = req.body;
   let { email } = req.body;
   email = email.toLowerCase();
 
@@ -14,6 +15,7 @@ controller.postAuth = (res, rej, req) => {
       if (err) {
         return rej({ error: 'DB error' });
       } else if (isMatch) {
+        setCustomerSocketId(user.id, socketId);
         return res({ token: signToken(user.id), user });
       }
       return rej({ error: 'Invalid password' });
@@ -22,7 +24,7 @@ controller.postAuth = (res, rej, req) => {
 };
 
 controller.validateToken = function validate(res, rej, req) {
-  const { token } = req.body;
+  const { token, socketId } = req.body;
   validateToken(token, (err, decoded) => {
     if (err) {
       return rej({ error: 'Decoding token error' });
@@ -31,6 +33,7 @@ controller.validateToken = function validate(res, rej, req) {
         if (user) {
           // TO DO: move addsocket to ON BOOKING ACTION instead of login/checked auth.
           // TO DO: check if any stay with customerId is 'BOOKED' or 'CHECKED_IN'
+          setCustomerSocketId(user.id, socketId);
           res({ token, user });
         } else {
           res({ error: 'User does not exist' });
@@ -60,8 +63,9 @@ controller.facebook_authenticate = function facebookAuthenticate(
   rej,
   req
 ) {
-  getFbUser(req.body.accessToken).then(fbUser => {
-    if (fbUser.id === req.body.facebookId) {
+  const { accessToken, facebookId, socketId } = req.body;
+  getFbUser(accessToken).then(fbUser => {
+    if (fbUser.id === facebookId) {
       Customer.findOne({ where: { facebookId: fbUser.id } })
         .then(customer => {
           if (customer === null) {
@@ -70,9 +74,13 @@ controller.facebook_authenticate = function facebookAuthenticate(
               lastName: fbUser.last_name,
               email: fbUser.email,
               facebookId: fbUser.id,
-            }).then(newCustomer =>
-              res({ token: signToken(newCustomer.id), user: newCustomer })
-            );
+            }).then(newCustomer => {
+              setCustomerSocketId(newCustomer.id, socketId);
+              return res({
+                token: signToken(newCustomer.id),
+                user: newCustomer,
+              });
+            });
           } else {
             res({ token: signToken(customer.id), user: customer });
           }

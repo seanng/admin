@@ -1,6 +1,5 @@
 const { validateToken } = require('../../db/helpers');
-const { reply } = require('../helpers');
-const { addHotelSockets } = require('../directory');
+const { reply, linkEmployeeToHotelSockets } = require('../helpers');
 const { Employee } = require('../../db/models');
 
 const checkAuth = (token, respond) => {
@@ -26,7 +25,7 @@ module.exports = (client, action) => {
         token,
       });
     }
-    addHotelSockets(user.hotelId, client.id);
+    linkEmployeeToHotelSockets(client, user.hotelId);
     return reply(client, {
       type: 'app/Login/EMPLOYEE_LOGIN_SUCCESS',
       user,

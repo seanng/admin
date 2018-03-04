@@ -9,12 +9,13 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
-export const CHECK_AUTH = 'server/CHECK_AUTH';
-export const LOGOUT = 'server/EMPLOYEE_LOGOUT';
+export const CHECK_AUTH = 'H_IO_CHECK_AUTH';
 
 export const DEFAULT_LOCALE = 'en';
+
+export const SOCKET_CONNECTION_ESTABLISHED = 'SOCKET_CONNECTION_ESTABLISHED';
 
 export const VALIDATE_TOKEN = 'app/app/VALIDATE_TOKEN';
 export const INVALIDATE_TOKEN = 'app/app/INVALIDATE_TOKEN';
 export const SET_BOTTOM_NAV_ITEMS = 'app/app/SET_BOTTOM_NAV_ITEMS';
-export const LOGOUT_SUCCESS = 'app/app/EMPLOYEE_LOGOUT_SUCCESS';
+export const LOGOUT = 'app/app/LOGOUT';

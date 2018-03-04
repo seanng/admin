@@ -1,5 +1,5 @@
 /* eslint consistent-return:0 */
-const controller = require('./hotels.controller');
+const controller = require('./controller');
 // POST /api/hotels
 
 // PUT /api/hotels/:hotelId

@@ -19,6 +19,7 @@ import {
   HANDLE_INPUT_CHANGE,
   CREATE_ROOM_SUCCESS,
   OPEN_ROOM_OPTIONS_MODAL,
+  SOCKET_CREATE_BOOKING,
 } from './constants';
 
 const initialState = fromJS({
@@ -104,6 +105,10 @@ function frontDeskReducer(state = initialState, action) {
         shouldDisplayAddRoomModal: false,
         rooms,
       });
+    }
+
+    case SOCKET_CREATE_BOOKING: {
+      return console.log('the booking: ', action.booking);
     }
 
     default:

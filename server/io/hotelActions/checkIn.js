@@ -1,5 +1,4 @@
-const { getCustomerSocket } = require('../directory');
-const { reply, convey } = require('../helpers');
+const { reply, emitToCustomer } = require('../helpers');
 const { Stay } = require('../../db/models');
 
 const checkIn = (stayId, customerId, respond) =>
@@ -18,7 +17,7 @@ const checkIn = (stayId, customerId, respond) =>
     .then(result => respond(null, result[1]))
     .catch(err => respond(err));
 
-module.exports = (client, action) =>
+module.exports = (client, action, io) =>
   checkIn(action.stayId, action.customerId, (err, data) => {
     if (err) {
       return reply(client, {
@@ -26,10 +25,10 @@ module.exports = (client, action) =>
         err,
       });
     }
-    const receiverId = getCustomerSocket(action.customerId);
-    if (receiverId) {
-      convey(client, receiverId, data);
-    }
+    emitToCustomer(io, action.customerId, {
+      type: 'SOCKET_CHECKED_IN',
+      data,
+    });
     return reply(client, {
       type: 'app/FrontDesk/CHECK_IN_SUCCESS',
       data,

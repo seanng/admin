@@ -13,6 +13,7 @@ const ngrok =
     : false;
 const resolve = require('path').resolve;
 const app = require('express')();
+const io = require('./io');
 
 app.use(bodyParser.json());
 app.use(morgan());
@@ -50,8 +51,8 @@ const server = app.listen(port, host, err => {
   }
 
   // preload with fake data
-  // require('./db/fakeData')();
+  require('./db/fakeData')();
 });
 
 // initialize server-side sockets
-require('./io')(server);
+io(server);

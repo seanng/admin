@@ -20,6 +20,7 @@ import {
   CREATE_ROOM_SUCCESS,
   OPEN_ROOM_OPTIONS_MODAL,
   SOCKET_CREATE_BOOKING,
+  SOCKET_CANCEL_BOOKING,
 } from './constants';
 
 const initialState = fromJS({
@@ -41,6 +42,7 @@ function frontDeskReducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_ROOMS_ERROR:
       return state;
+
     case FETCH_ROOMS_SUCCESS: {
       const rooms = action.rooms.map(room => ({
         ...room,
@@ -51,6 +53,7 @@ function frontDeskReducer(state = initialState, action) {
       }));
       return state.merge({ rooms, hasLoaded: true });
     }
+
     case DELETE_ROOM_ERROR:
       return state;
     case DELETE_ROOM_SUCCESS:
@@ -107,8 +110,31 @@ function frontDeskReducer(state = initialState, action) {
       });
     }
 
-    case SOCKET_CREATE_BOOKING: {
-      return console.log('the booking: ', action.booking);
+    case SOCKET_CREATE_BOOKING:
+      return state.update('rooms', rooms =>
+        rooms.update(
+          rooms.findIndex(room => room.get('id') === action.booking.id),
+          () => ({
+            ...action.booking,
+            status: mapToRoomStatus(action.booking.status),
+          })
+        )
+      );
+
+    case SOCKET_CANCEL_BOOKING: {
+      console.log('cancelled booking!!', action.stayId);
+      return state.update('rooms', rooms =>
+        rooms.update(
+          rooms.findIndex(room => room.get('id') === action.stayId),
+          () => ({
+            customerName: null,
+            customerId: null,
+            customer: null,
+            bookingTime: null,
+            status: 'available',
+          })
+        )
+      );
     }
 
     default:

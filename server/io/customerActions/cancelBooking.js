@@ -2,20 +2,17 @@ const roomBooking = require('../../services/roomBooking');
 const { validateToken } = require('../../db/helpers');
 const { emitToHotel, reply } = require('../helpers');
 
-function createBooking(token, hotelId, profile, io, respond) {
+function cancelBooking(token, stayId, hotelId, io, respond) {
   validateToken(token, (err, tokenInfo) => {
     const customerId = tokenInfo.userId;
     roomBooking
-      .book(customerId, hotelId)
-      .then(booking => {
+      .cancel(customerId, stayId)
+      .then(() => {
         emitToHotel(io, hotelId, {
-          type: 'app/FrontDesk/SOCKET_CREATE_BOOKING',
-          booking: {
-            ...booking,
-            customerName: `${profile.firstName} ${profile.lastName}`,
-          },
+          type: 'app/FrontDesk/SOCKET_CANCEL_BOOKING',
+          stayId,
         });
-        respond(null, booking);
+        respond(null, 'success');
       })
       .catch(error => {
         console.log('what is error? ', error);
@@ -25,21 +22,21 @@ function createBooking(token, hotelId, profile, io, respond) {
 }
 
 module.exports = (client, action, io) =>
-  createBooking(
+  cancelBooking(
     action.token,
+    action.stayId,
     action.hotelId,
-    action.profile,
     io,
-    (errorMsg, data) => {
+    (errorMsg, msg) => {
       if (errorMsg) {
         return reply(client, {
-          type: 'CREATE_BOOKING_FAILURE',
+          type: 'CANCEL_BOOKING_FAILURE',
           errorMsg,
         });
       }
       return reply(client, {
-        type: 'CREATE_BOOKING_SUCCESS',
-        data,
+        type: 'CANCEL_BOOKING_SUCCESS',
+        msg,
       });
     }
   );

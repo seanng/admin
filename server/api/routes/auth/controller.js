@@ -1,7 +1,11 @@
 /* eslint consistent-return:0 */
 const { Customer } = require('../../../db/models');
 const { setCustomerSocketId } = require('../../../io/helpers');
-const { signToken, validateToken } = require('../../../db/helpers');
+const {
+  signToken,
+  validateToken,
+  getCustomerBookingStatus,
+} = require('../../../db/helpers');
 const rp = require('request-promise');
 const controller = {};
 
@@ -18,7 +22,7 @@ controller.postAuth = (res, rej, req) => {
         setCustomerSocketId(user.id, socketId);
         return res({ token: signToken(user.id), user });
       }
-      return rej({ error: 'Invalid password' });
+      return rej('Invalid password');
     })
   );
 };
@@ -29,16 +33,25 @@ controller.validateToken = function validate(res, rej, req) {
     if (err) {
       return rej({ error: 'Decoding token error' });
     } else if (decoded) {
-      return Customer.findOne({ where: { id: decoded.userId } }).then(user => {
-        if (user) {
-          // TO DO: move addsocket to ON BOOKING ACTION instead of login/checked auth.
-          // TO DO: check if any stay with customerId is 'BOOKED' or 'CHECKED_IN'
-          setCustomerSocketId(user.id, socketId);
-          res({ token, user });
-        } else {
-          res({ error: 'User does not exist' });
+      getCustomerBookingStatus(decoded.userId).then(data => {
+        setCustomerSocketId(decoded.userId, socketId);
+        if (data) {
+          return res(data);
         }
+        return Customer.findOne({
+          where: {
+            id: decoded.userId,
+          },
+        }).then(user => {
+          if (user) {
+            res(user);
+          } else {
+            rej('User does not exist!@! ');
+          }
+        });
       });
+    } else {
+      console.log('it aint decoded...', err, 'decoded : ', decoded);
     }
   });
 };

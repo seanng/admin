@@ -10,6 +10,7 @@ export const CHECK_IN = 'H_IO_CHECK_IN';
 export const CREATE_ROOM = 'H_IO_CREATE_ROOM';
 
 export const SOCKET_CREATE_BOOKING = 'app/FrontDesk/SOCKET_CREATE_BOOKING';
+export const SOCKET_CANCEL_BOOKING = 'app/FrontDesk/SOCKET_CANCEL_BOOKING';
 export const FETCH_ROOMS_SUCCESS = 'app/FrontDesk/FETCH_ROOMS_SUCCESS';
 export const FETCH_ROOMS_ERROR = 'app/FrontDesk/FETCH_ROOMS_ERROR';
 export const DELETE_ROOM_SUCCESS = 'app/FrontDesk/DELETE_ROOM_SUCCESS';

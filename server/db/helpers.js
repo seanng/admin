@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { Stay, Customer } = require('./schema');
+const { Stay, Customer, Hotel } = require('./schema');
 const secret = '19ajsadijmvz';
 
 function retrieveStays(hotelId, respond) {
@@ -21,6 +21,39 @@ function retrieveStays(hotelId, respond) {
     .catch(err => respond(err));
 }
 
+function getCustomerBookingStatus(customerId) {
+  return new Promise((resolve, reject) =>
+    Stay.findAll({
+      attributes: [
+        'id',
+        'status',
+        'bookingTime',
+        'checkInTime',
+        'roomNumber',
+        'roomType',
+      ],
+      raw: true,
+      where: {
+        customerId,
+        status: {
+          $or: ['BOOKED', 'CHECKED_IN'],
+        },
+      },
+      include: [
+        {
+          model: Customer,
+          attributes: { exclude: ['password'] },
+        },
+        {
+          model: Hotel,
+        },
+      ],
+    })
+      .then(data => resolve(data[0]))
+      .catch(error => reject(error))
+  );
+}
+
 function signToken(id) {
   return jwt.sign({ userId: id }, secret, { expiresIn: 94608000 });
 }
@@ -35,6 +68,7 @@ function parseToken(token) {
 
 module.exports = {
   retrieveStays,
+  getCustomerBookingStatus,
   signToken,
   validateToken,
   parseToken,

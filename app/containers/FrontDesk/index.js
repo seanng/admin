@@ -17,6 +17,7 @@ import TableHeaderRow from 'components/Table/HeaderRow';
 import TableHeaderCol from 'components/Table/HeaderCol';
 import TableBodyRow from 'components/Table/BodyRow';
 import TableBodyCol from 'components/Table/BodyCol';
+import { selectHotelId } from 'containers/App/selectors';
 import {
   fetchRooms,
   deleteRoom,
@@ -53,7 +54,7 @@ import AddRoomButton from './AddRoomButton';
 // eslint-disable-next-line react/prefer-stateless-function
 export class FrontDesk extends React.PureComponent {
   componentDidMount() {
-    this.props.fetchRooms();
+    this.props.fetchRooms(this.props.hotelId);
   }
 
   filterOptions = ['all', 'available', 'reserved', 'occupied'];
@@ -73,18 +74,26 @@ export class FrontDesk extends React.PureComponent {
   };
 
   handleRemoveRoom = () => {
-    const { activeStayId, closeRoomOptionsModal, removeRoom } = this.props;
+    const {
+      activeStayId,
+      closeRoomOptionsModal,
+      deleteRoom: removeRoom,
+    } = this.props;
     removeRoom(activeStayId);
     closeRoomOptionsModal();
   };
 
   handleAddRoom = () => {
-    const { addRoom, addRoomInput } = this.props;
-    addRoom(addRoomInput);
+    const { createRoom: addRoom, addRoomInput: input } = this.props;
+    addRoom(input);
   };
 
   handleCheckIn = () => {
-    const { dispatchCheckIn, activeStayId, activeRoomCustomerId } = this.props;
+    const {
+      checkIn: dispatchCheckIn,
+      activeStayId,
+      activeRoomCustomerId,
+    } = this.props;
     dispatchCheckIn(activeStayId, activeRoomCustomerId);
   };
 
@@ -101,7 +110,7 @@ export class FrontDesk extends React.PureComponent {
       activeRoomStatus,
       activeRoomNumber,
       activeRoomCustomerName,
-      viewRoomOptions,
+      openRoomOptionsModal: viewRoomOptions,
     } = this.props;
     if (!hasLoaded) {
       return <Container />;
@@ -238,20 +247,20 @@ const mapStateToProps = createStructuredSelector({
   activeRoomCustomerName: selectActiveRoomCustomerName(),
   activeRoomIndex: selectActiveRoomIndex(),
   activeStayId: selectActiveStayId(),
+  hotelId: selectHotelId(),
 });
 
 const mapDispatchToProps = {
   fetchRooms,
-  removeRoom: stayId => deleteRoom(stayId),
-  dispatchCheckIn: (stayId, customerId) => checkIn(stayId, customerId),
-  setFilter: filter => setFilter(filter),
+  createRoom,
+  setFilter,
+  checkIn,
+  deleteRoom,
+  openRoomOptionsModal,
+  handleInputChange,
   openAddRoomModal: () => displayAddRoomModal(true),
   closeAddRoomModal: () => displayAddRoomModal(false),
   closeRoomOptionsModal: () => displayRoomOptionsModal(false),
-  addRoom: room => createRoom(room),
-  handleInputChange: (key, value) => handleInputChange(key, value),
-  viewRoomOptions: (stayId, status, room, customerId, customerName, index) =>
-    openRoomOptionsModal(stayId, status, room, customerId, customerName, index),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FrontDesk);

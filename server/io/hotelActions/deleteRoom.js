@@ -1,24 +1,22 @@
-const { Stay } = require('../../db/models');
 const { reply } = require('../helpers');
-
-const deleteRoom = (id, respond) => {
-  Stay.destroy({
-    where: { id },
-  }).then(() => respond(null, id));
-};
+const room = require('../../services/room');
 
 module.exports = (client, action) =>
-  // hotelId obtained from socket token.
-  // for now, pass in fake hotelId of 1
-  deleteRoom(action.stayId, (err, id) => {
-    if (err) {
-      return reply(client, {
-        type: 'app/FrontDesk/DELETE_ROOM_ERROR',
-        err,
+  new Promise((resolve, reject) => {
+    room
+      .remove(action.stayId)
+      .then(() => {
+        reply(client, {
+          type: 'app/FrontDesk/DELETE_ROOM_SUCCESS',
+          id: action.stayId,
+        });
+        resolve();
+      })
+      .catch(err => {
+        reply(client, {
+          type: 'app/FrontDesk/DELETE_ROOM_ERROR',
+          err,
+        });
+        reject(err);
       });
-    }
-    return reply(client, {
-      type: 'app/FrontDesk/DELETE_ROOM_SUCCESS',
-      id,
-    });
   });

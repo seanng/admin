@@ -11,7 +11,7 @@ import {
   FETCH_STAYS_SUCCESS,
   FETCH_CHARGES_SUCCESS,
   CLOSE_MODAL,
-  CHANGE_INPUT,
+  HANDLE_INPUT_CHANGE,
   ADD_CHARGE,
   SAVE_CHARGES_SUCCESS,
 } from './constants';
@@ -28,11 +28,23 @@ const initialState = fromJS({
 
 function pastStaysReducer(state = initialState, action) {
   switch (action.type) {
-    case FETCH_STAYS_SUCCESS:
+    case FETCH_STAYS_SUCCESS: {
+      const stays = action.stays.map(stay => ({
+        id: stay.id,
+        bookingTime: stay.bookingTime,
+        checkInTime: stay.checkInTime,
+        checkOutTime: stay.checkOutTime,
+        costCurrency: stay.hotel.costCurrency,
+        customerName: `${stay.customer.firstName} ${stay.customer.lastName}`,
+        roomNumber: stay.roomNumber,
+        roomCharge: stay.roomCharge,
+        totalCharge: stay.totalCharge,
+      }));
       return state.merge({
         hasLoaded: true,
-        stays: action.stays,
+        stays,
       });
+    }
 
     case FETCH_CHARGES: {
       const stays = state.get('stays');
@@ -52,7 +64,7 @@ function pastStaysReducer(state = initialState, action) {
     case CLOSE_MODAL:
       return state.set('isModalOpen', false);
 
-    case CHANGE_INPUT:
+    case HANDLE_INPUT_CHANGE:
       return state.set(action.key, action.value);
 
     case ADD_CHARGE:

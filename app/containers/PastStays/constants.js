@@ -8,7 +8,7 @@ export const FETCH_STAYS = 'H_IO_FETCH_STAYS';
 export const FETCH_STAYS_SUCCESS = 'app/PastStays/FETCH_STAYS_SUCCESS';
 export const FETCH_STAYS_ERROR = 'app/PastStays/FETCH_STAYS_ERROR';
 export const CLOSE_MODAL = 'app/PastStays/CLOSE_MODAL';
-export const CHANGE_INPUT = 'app/PastStays/CHANGE_INPUT';
+export const HANDLE_INPUT_CHANGE = 'app/PastStays/HANDLE_INPUT_CHANGE';
 export const ADD_CHARGE = 'app/PastStays/ADD_CHARGE';
 
 export const FETCH_CHARGES = 'H_IO_FETCH_CHARGES';

@@ -1,40 +1,23 @@
+const stays = require('../../services/stays');
 const { reply } = require('../helpers');
-const { Stay, Customer } = require('../../db/models');
 
-const fetchRooms = (hotelId, respond) => {
-  Stay.findAll({
-    attributes: [
-      'id',
-      'customerId',
-      'status',
-      'bookingTime',
-      'checkInTime',
-      'roomNumber',
-    ],
-    where: {
-      hotelId,
-      status: {
-        $or: ['AVAILABLE', 'BOOKED', 'CHECKED_IN'],
-      },
-    },
-    include: [
-      {
-        model: Customer,
-        attributes: ['firstName', 'lastName'],
-      },
-    ],
-  }).then(stays => respond(stays));
-};
-
-module.exports = client =>
-  fetchRooms(1, rooms => {
-    if (!rooms) {
-      return reply(client, {
-        type: 'app/FrontDesk/FETCH_ROOMS_ERROR',
+module.exports = (client, action) =>
+  new Promise((resolve, reject) => {
+    stays
+      .fetchActive(action.hotelId)
+      .then(rooms =>
+        resolve(
+          reply(client, {
+            type: 'app/FrontDesk/FETCH_ROOMS_SUCCESS',
+            rooms,
+          })
+        )
+      )
+      .catch(error => {
+        reply(client, {
+          type: 'app/FrontDesk/FETCH_ROOMS_ERROR',
+          error,
+        });
+        reject(error);
       });
-    }
-    return reply(client, {
-      type: 'app/FrontDesk/FETCH_ROOMS_SUCCESS',
-      rooms,
-    });
   });

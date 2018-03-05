@@ -8,14 +8,15 @@ import {
   FETCH_STAYS,
   FETCH_CHARGES,
   CLOSE_MODAL,
-  CHANGE_INPUT,
+  HANDLE_INPUT_CHANGE,
   ADD_CHARGE,
   SAVE_CHARGES,
 } from './constants';
 
-export function fetchStays() {
+export function fetchStays(hotelId) {
   return {
     type: FETCH_STAYS,
+    hotelId,
   };
 }
 
@@ -32,9 +33,9 @@ export function closeModal() {
   };
 }
 
-export function changeInput(key, value) {
+export function handleInputChange(key, value) {
   return {
-    type: CHANGE_INPUT,
+    type: HANDLE_INPUT_CHANGE,
     key,
     value,
   };

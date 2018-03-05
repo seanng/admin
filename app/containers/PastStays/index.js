@@ -10,6 +10,7 @@ import format from 'date-fns/format';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { getFormattedDate, getFormattedDuration } from 'utils/helpers';
+import { selectHotelId } from 'containers/App/selectors';
 import colors from 'themes/colors';
 import TableContainer from 'components/Table/Container';
 import HeaderRow from 'components/Table/HeaderRow';
@@ -21,7 +22,7 @@ import {
   fetchStays,
   fetchCharges,
   closeModal,
-  changeInput,
+  handleInputChange,
   addCharge,
   saveCharges,
 } from './actions';
@@ -41,7 +42,8 @@ import SearchContainer from './SearchContainer';
 // eslint-disable-next-line react/prefer-stateless-function
 export class PastStays extends React.PureComponent {
   componentDidMount() {
-    this.props.fetchStays();
+    console.log('the hotel id?? ', this.props.hotelId);
+    this.props.fetchStays(this.props.hotelId);
   }
 
   onModalClose = () => {
@@ -56,13 +58,7 @@ export class PastStays extends React.PureComponent {
   };
 
   handleAddCharge = () => {
-    const {
-      selectedStay,
-      serviceInput,
-      priceInput,
-      addNewCharge,
-      handleInputChange,
-    } = this.props;
+    const { selectedStay, serviceInput, priceInput } = this.props;
     const charge = {
       stayId: selectedStay.get('id'),
       service: serviceInput,
@@ -70,9 +66,9 @@ export class PastStays extends React.PureComponent {
       status: 'Unsettled',
       updated: false,
     };
-    addNewCharge(charge);
-    handleInputChange('serviceInput', '');
-    handleInputChange('priceInput', '');
+    this.props.addCharge(charge);
+    this.props.handleInputChange('serviceInput', '');
+    this.props.handleInputChange('priceInput', '');
   };
 
   handleUpdateCharges = () => {
@@ -84,7 +80,7 @@ export class PastStays extends React.PureComponent {
       this.props.selectedStay.get('totalCharge') * 1
     );
     const stayId = this.props.selectedStay.get('id');
-    this.props.updateCharges(newCharges, newTotal, stayId);
+    this.props.saveCharges(newCharges, newTotal, stayId);
   };
 
   render() {
@@ -93,7 +89,6 @@ export class PastStays extends React.PureComponent {
       stays,
       selectedStay,
       isModalOpen,
-      getCharges,
       charges,
       serviceInput,
       priceInput,
@@ -135,7 +130,10 @@ export class PastStays extends React.PureComponent {
             </HeaderCol>
           </HeaderRow>
           {stays.toJS().map(stay =>
-            <BodyRow key={stay.id} onClick={() => getCharges(stay.id)}>
+            <BodyRow
+              key={stay.id}
+              onClick={() => this.props.fetchCharges(stay.id)}
+            >
               <BodyCol>
                 {getFormattedDate(
                   new Date(stay.checkInTime),
@@ -189,6 +187,7 @@ export class PastStays extends React.PureComponent {
 }
 
 const mapStateToProps = createStructuredSelector({
+  hotelId: selectHotelId(),
   hasLoaded: selectHasLoaded(),
   isModalOpen: selectIsModalOpen(),
   selectedStay: selectStay(),
@@ -198,17 +197,13 @@ const mapStateToProps = createStructuredSelector({
   priceInput: selectPriceInput(),
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-    fetchStays: () => dispatch(fetchStays()),
-    getCharges: stayId => dispatch(fetchCharges(stayId)),
-    closeModal: () => dispatch(closeModal()),
-    addNewCharge: charge => dispatch(addCharge(charge)),
-    updateCharges: (newCharges, newTotal, stayId) =>
-      dispatch(saveCharges(newCharges, newTotal, stayId)),
-    handleInputChange: (key, value) => dispatch(changeInput(key, value)),
-  };
-}
+const mapDispatchToProps = {
+  fetchStays,
+  closeModal,
+  handleInputChange,
+  fetchCharges,
+  addCharge,
+  saveCharges,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(PastStays);

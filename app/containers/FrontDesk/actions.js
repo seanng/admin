@@ -16,9 +16,10 @@ import {
   OPEN_ROOM_OPTIONS_MODAL,
 } from './constants';
 
-export function fetchRooms() {
+export function fetchRooms(hotelId) {
   return {
     type: FETCH_ROOMS,
+    hotelId,
   };
 }
 

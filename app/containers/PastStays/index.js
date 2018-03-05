@@ -161,13 +161,13 @@ export class PastStays extends React.PureComponent {
                 )}
               </BodyCol>
               <BodyCol>
-                $ {stay.roomCharge}
+                $ {(stay.roomCharge ? stay.roomCharge * 1 : 0).toFixed(2)}
               </BodyCol>
               <BodyCol color={colors.primary}>
                 $ {(stay.totalCharge * 1 - stay.roomCharge * 1).toFixed(2)}
               </BodyCol>
               <BodyCol>
-                $ {stay.totalCharge}
+                $ {(stay.totalCharge ? stay.totalCharge * 1 : 0).toFixed(2)}
               </BodyCol>
             </BodyRow>
           )}

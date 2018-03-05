@@ -21,6 +21,7 @@ import {
   OPEN_ROOM_OPTIONS_MODAL,
   SOCKET_CREATE_BOOKING,
   SOCKET_CANCEL_BOOKING,
+  SOCKET_CHECK_OUT,
 } from './constants';
 
 const initialState = fromJS({
@@ -56,12 +57,15 @@ function frontDeskReducer(state = initialState, action) {
 
     case DELETE_ROOM_ERROR:
       return state;
+
     case DELETE_ROOM_SUCCESS:
       return state.update('rooms', rooms =>
         rooms.filter(room => room.get('id') !== action.id)
       );
+
     case CHECK_IN_ERROR:
       return state;
+
     case CHECK_IN_SUCCESS: {
       const { id, checkInTime, status } = action.data;
       return state
@@ -144,6 +148,13 @@ function frontDeskReducer(state = initialState, action) {
           }
         )
       );
+    }
+
+    case SOCKET_CHECK_OUT: {
+      const rooms = state.get('rooms').toJS();
+      const roomIndex = rooms.findIndex(room => room.id === action.stayId);
+      rooms.splice(roomIndex, 1);
+      return state.merge({ rooms });
     }
 
     default:

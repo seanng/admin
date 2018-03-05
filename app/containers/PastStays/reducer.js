@@ -5,6 +5,7 @@
  */
 
 import { fromJS, Map } from 'immutable';
+import { SOCKET_CHECK_OUT } from 'containers/FrontDesk/constants';
 import {
   FETCH_CHARGES,
   FETCH_STAYS_SUCCESS,
@@ -69,6 +70,11 @@ function pastStaysReducer(state = initialState, action) {
       stays[idx].totalCharge = action.newTotal;
       return state.merge({ charges, stays, isModalOpen: false });
     }
+
+    case SOCKET_CHECK_OUT:
+      return state.update('stays', stays =>
+        stays.set(stays.size, Map(action.data))
+      );
 
     default:
       return state;

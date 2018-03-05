@@ -18,7 +18,7 @@ export function getFormattedDate(start, end) {
 
 export function getFormattedDuration(start, end) {
   const totalMinutes = differenceInMinutes(end, start);
-  const hours = totalMinutes / 60;
+  const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
   return minutes < 10 ? `${hours} h 0${minutes} m` : `${hours} h ${minutes} m`;
 }

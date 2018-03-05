@@ -53,7 +53,7 @@ const server = app.listen(port, host, err => {
   }
 
   // preload with fake data
-  // require('./db/fakeData')();
+  require('./db/fakeData')();
 });
 // initialize server-side sockets
 io.attach(server);

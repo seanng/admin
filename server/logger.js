@@ -34,15 +34,11 @@ ${chalk.blue(`Press ${chalk.italic('CTRL-C')} to stop`)}
     `);
   },
 
-  onSocketConnection: client => {
-    console.log(
-      `${chalk.bold('Socket connected!')} ID: ${chalk.green(client.id)}`
-    );
-  },
+  onSocketConnection: client =>
+    console.log(chalk.green(`SOCKET CONNECTED: ${client.id}`)),
 
-  onSocketAction: (client, action) => {
-    console.log(`SOCKET ACTION: ${chalk.yellow(action.type)}`);
-  },
+  onSocketAction: (client, action) =>
+    console.log(chalk.yellow(`SOCKET ACTION: ${action.type}`)),
 };
 
 module.exports = logger;

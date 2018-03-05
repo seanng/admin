@@ -67,7 +67,9 @@ function frontDeskReducer(state = initialState, action) {
       return state
         .update('rooms', rooms =>
           rooms.update(rooms.findIndex(room => room.get('id') === id), room =>
-            room.set('status', status).set('checkInTime', checkInTime)
+            room
+              .set('status', mapToRoomStatus(status))
+              .set('checkInTime', checkInTime)
           )
         )
         .set('shouldDisplayRoomOptionsModal', false);
@@ -114,25 +116,32 @@ function frontDeskReducer(state = initialState, action) {
       return state.update('rooms', rooms =>
         rooms.update(
           rooms.findIndex(room => room.get('id') === action.booking.id),
-          () => ({
-            ...action.booking,
-            status: mapToRoomStatus(action.booking.status),
-          })
+          () =>
+            fromJS({
+              ...action.booking,
+              status: mapToRoomStatus(action.booking.status),
+            })
         )
       );
 
     case SOCKET_CANCEL_BOOKING: {
-      console.log('cancelled booking!!', action.stayId);
       return state.update('rooms', rooms =>
         rooms.update(
-          rooms.findIndex(room => room.get('id') === action.stayId),
-          () => ({
-            customerName: null,
-            customerId: null,
-            customer: null,
-            bookingTime: null,
-            status: 'available',
-          })
+          rooms.findIndex(room => {
+            console.log('room??? 1 ', room);
+            return room.get('id') === action.stayId;
+          }),
+          room => {
+            console.log('room is:: ', room);
+            return fromJS({
+              ...room.toJS(),
+              customerName: null,
+              customerId: null,
+              customer: null,
+              bookingTime: null,
+              status: 'available',
+            });
+          }
         )
       );
     }

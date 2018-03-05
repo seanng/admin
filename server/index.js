@@ -16,7 +16,9 @@ const app = require('express')();
 const io = require('./io');
 
 app.use(bodyParser.json());
-app.use(morgan());
+app.use(
+  morgan(':method :url :status :response-time ms - :res[content-length]')
+);
 app.use('/api', api);
 
 // In production we need to pass these values in instead of relying on webpack
@@ -53,6 +55,5 @@ const server = app.listen(port, host, err => {
   // preload with fake data
   // require('./db/fakeData')();
 });
-
 // initialize server-side sockets
-io(server);
+io.attach(server);

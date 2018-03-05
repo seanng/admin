@@ -1,5 +1,6 @@
 const { reply } = require('./helpers');
 const socketIO = require('socket.io');
+const logger = require('../logger');
 
 function routeActionToFile(action, folder, client, io) {
   const actionInCamel = action.type
@@ -15,8 +16,9 @@ function routeActionToFile(action, folder, client, io) {
   reducerFile(client, action, io);
 }
 
-function clientHandler(io, client) {
+function handleSocketAction(client) {
   client.on('action', action => {
+    logger.onSocketAction(client, action);
     if (action.type && action.type.split('_IO_').length > 1) {
       const actionType = action.type.split('_IO_');
       actionType[0] === 'H' &&
@@ -27,14 +29,16 @@ function clientHandler(io, client) {
   });
 }
 
-module.exports = server => {
-  const io = socketIO.listen(server);
-  io.on('connection', client => {
-    console.log(client.id, ' has connected ');
-    reply(client, {
-      type: 'SOCKET_CONNECTION_ESTABLISHED',
-      socketId: client.id,
-    });
-    clientHandler(io, client);
+function handleSocketConnection(socket) {
+  logger.onSocketConnection(socket);
+  reply(socket, {
+    type: 'SOCKET_CONNECTION_ESTABLISHED',
+    socketId: socket.id,
   });
-};
+  handleSocketAction(socket);
+}
+
+const io = socketIO();
+io.on('connection', handleSocketConnection);
+
+module.exports = io;

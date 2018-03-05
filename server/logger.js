@@ -33,6 +33,16 @@ Localhost: ${chalk.magenta(`http://${host}:${port}`)}
 ${chalk.blue(`Press ${chalk.italic('CTRL-C')} to stop`)}
     `);
   },
+
+  onSocketConnection: client => {
+    console.log(
+      `${chalk.bold('Socket connected!')} ID: ${chalk.green(client.id)}`
+    );
+  },
+
+  onSocketAction: (client, action) => {
+    console.log(`SOCKET ACTION: ${chalk.yellow(action.type)}`);
+  },
 };
 
 module.exports = logger;

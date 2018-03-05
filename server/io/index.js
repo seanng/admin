@@ -18,7 +18,7 @@ function routeActionToFile(action, folder, client, io) {
 
 function handleSocketAction(client) {
   client.on('action', action => {
-    logger.onSocketAction(client, action);
+    logger.socket.onAction(client, action);
     if (action.type && action.type.split('_IO_').length > 1) {
       const actionType = action.type.split('_IO_');
       actionType[0] === 'H' &&
@@ -30,12 +30,17 @@ function handleSocketAction(client) {
 }
 
 function handleSocketConnection(socket) {
-  logger.onSocketConnection(socket);
+  logger.socket.onConnection(socket);
   reply(socket, {
     type: 'SOCKET_CONNECTION_ESTABLISHED',
     socketId: socket.id,
   });
   handleSocketAction(socket);
+  socket.on('disconnect', handleSocketDisconnect.bind(null, socket.id));
+}
+
+function handleSocketDisconnect(socket) {
+  logger.socket.onDisconnect(socket);
 }
 
 const io = socketIO();

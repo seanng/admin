@@ -34,11 +34,16 @@ ${chalk.blue(`Press ${chalk.italic('CTRL-C')} to stop`)}
     `);
   },
 
-  onSocketConnection: client =>
-    console.log(chalk.green(`SOCKET CONNECTED: ${client.id}`)),
-
-  onSocketAction: (client, action) =>
-    console.log(chalk.yellow(`SOCKET ACTION: ${action.type}`)),
+  socket: {
+    onConnection: client =>
+      console.log(chalk.green(`SOCKET CONNECTED: ${client.id}`)),
+    onAction: (client, action) =>
+      console.log(chalk.cyan(`INCOMING ACTION: ${action.type}`)),
+    onEmission: action =>
+      console.log(chalk.yellow(`OUTGOING ACTION: ${action.type}`)),
+    onDisconnect: clientId =>
+      console.log(chalk.red(`SOCKET DISCONNECTED: ${clientId}`)),
+  },
 };
 
 module.exports = logger;

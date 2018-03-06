@@ -1,21 +1,24 @@
-const { Hotel } = require('../../db/models');
+const hotel = require('../../services/hotel');
 const { reply } = require('../helpers');
 
-const reducer = (id, respond) => {
-  Hotel.findOne({ where: { id } })
-    .then(hotel => respond(null, hotel))
-    .catch(err => respond(err));
-};
-
 module.exports = (client, action) =>
-  reducer(action.id, (err, info) => {
-    if (err) {
-      return reply(client, {
-        type: 'GET_HOTEL_INFO_ERROR',
-      });
-    }
-    return reply(client, {
-      type: 'app/HotelProfile/GET_HOTEL_INFO_SUCCESS',
-      info,
-    });
+  new Promise((resolve, reject) => {
+    hotel
+      .fetchOne(action.id)
+      .then(info =>
+        resolve(
+          reply(client, {
+            type: 'app/HotelProfile/GET_HOTEL_INFO_SUCCESS',
+            info,
+          })
+        )
+      )
+      .catch(err =>
+        reject(
+          reply(client, {
+            type: 'GET_HOTEL_INFO_ERROR',
+            err,
+          })
+        )
+      );
   });

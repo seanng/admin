@@ -1,35 +1,34 @@
 const { validateToken } = require('../../db/helpers');
 const { reply, linkEmployeeToHotelSockets } = require('../helpers');
-const { Employee } = require('../../db/models');
+const employee = require('../../services/employee');
 
-const checkAuth = (token, respond) => {
-  validateToken(token, (err, decoded) => {
-    if (err) {
-      return respond(err);
-    }
-    return Employee.findOne({ where: { id: decoded.userId } }).then(user => {
-      if (user) {
-        respond(null, user);
+module.exports = (client, action) =>
+  new Promise((resolve, reject) => {
+    const { token } = action;
+    return validateToken(token, (validationErr, decoded) => {
+      if (validationErr) {
+        return reject(validationErr);
       }
+      return employee
+        .fetchOne(decoded.userId)
+        .then(user => {
+          linkEmployeeToHotelSockets(client, user.hotelId);
+          resolve(
+            reply(client, {
+              type: 'app/Login/EMPLOYEE_LOGIN_SUCCESS',
+              user,
+              token,
+            })
+          );
+        })
+        .catch(err => {
+          reject(
+            reply(client, {
+              type: 'app/app/INVALIDATE_TOKEN',
+              err,
+              token,
+            })
+          );
+        });
     });
   });
-};
-
-module.exports = (client, action) => {
-  const { token } = action;
-  return checkAuth(token, (err, user) => {
-    if (err) {
-      return reply(client, {
-        type: 'app/app/INVALIDATE_TOKEN',
-        err,
-        token,
-      });
-    }
-    linkEmployeeToHotelSockets(client, user.hotelId);
-    return reply(client, {
-      type: 'app/Login/EMPLOYEE_LOGIN_SUCCESS',
-      user,
-      token,
-    });
-  });
-};

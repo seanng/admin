@@ -9,38 +9,36 @@ const create = (hotelId, roomNumber) =>
 
 const remove = id => Stay.destroy({ where: { id } });
 
-const book = (customerId, hotelId) =>
-  new Promise((resolve, reject) => {
-    let result;
-    const updatedParams = {
-      status: 'BOOKED',
-      customerId,
-      bookingTime: new Date().getTime(),
-    };
-    Stay.findOne({
-      raw: true,
-      where: {
-        hotelId,
-        status: 'AVAILABLE',
+const book = (customerId, hotelId) => {
+  let result;
+  const updatedParams = {
+    status: 'BOOKED',
+    customerId,
+    bookingTime: new Date().getTime(),
+  };
+  return Stay.findOne({
+    raw: true,
+    where: {
+      hotelId,
+      status: 'AVAILABLE',
+    },
+    include: [
+      {
+        model: Hotel,
       },
-      include: [
-        {
-          model: Hotel,
-        },
-      ],
+    ],
+  })
+    .then(stay => {
+      if (stay === null) {
+        throw new Error('no stay is available for this hotel');
+      }
+      result = stay;
+      return Stay.update(updatedParams, {
+        where: { id: stay.id },
+      });
     })
-      .then(stay => {
-        if (stay === null) {
-          return reject(new Error('no stay is available for this hotel'));
-        }
-        result = stay;
-        return Stay.update(updatedParams, {
-          where: { id: stay.id },
-        });
-      })
-      .then(() => resolve({ ...result, ...updatedParams }))
-      .catch(reject);
-  });
+    .then(() => ({ ...result, ...updatedParams }));
+};
 
 const checkIn = id =>
   Stay.update(

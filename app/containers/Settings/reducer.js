@@ -9,7 +9,7 @@ import {
   INIT,
   EDIT_USER,
   RESET_USER_TEMPORARY,
-  DISPLAY_CONFIRM_DISCARD,
+  DISPLAY_CONFIRM_UNDO,
 } from './constants';
 
 const initialState = fromJS({
@@ -24,14 +24,18 @@ function settingsReducer(state = initialState, action) {
     case INIT:
       return state.merge({
         hasLoaded: true,
-        userTemporary: action.user,
+        userTemporary: {
+          ...action.user.toJS(),
+          oldPassword: '',
+          newPassword: '',
+        },
       });
 
     case EDIT_USER:
-      return state.merge({
-        userTemporary: action.options,
-        isDirty: true,
-      });
+      console.log('action? ', action.key, action.value);
+      return state
+        .set('isDirty', true)
+        .setIn(['userTemporary', action.key], action.value);
 
     case RESET_USER_TEMPORARY:
       return state.merge({
@@ -40,7 +44,7 @@ function settingsReducer(state = initialState, action) {
         isDirty: false,
       });
 
-    case DISPLAY_CONFIRM_DISCARD:
+    case DISPLAY_CONFIRM_UNDO:
       return state.merge({
         shouldDisplayConfirmationModal: action.bool,
       });

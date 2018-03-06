@@ -13,12 +13,13 @@ import CrosshairIcon from 'react-icons/lib/md/add';
 import AddPhotoCard from 'components/AddPhotoCard';
 import ImageFile from 'components/ImageFile';
 import ConfirmationModal from 'components/ConfirmationModal';
+import Input from 'components/Input';
 import colors from 'themes/colors';
 import {
   init,
   editUser,
   resetUserTemporary,
-  displayConfirmDiscard,
+  displayConfirmUndo,
 } from './actions';
 import {
   selectUserTemporary,
@@ -35,6 +36,10 @@ import HeadButton from './HeadButton';
 import Body from './Body';
 import OpacityLayer from './OpacityLayer';
 import Details from './Details';
+import FormRow from './FormRow';
+import FormLabel from './FormLabel';
+import ContactSupportContainer from './ContactSupportContainer';
+import ContactLabel from './ContactLabel';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class Settings extends React.PureComponent {
@@ -43,33 +48,30 @@ export class Settings extends React.PureComponent {
   }
 
   handlePhotoRemove = () => {
-    const options = { ...this.props.userTemporary.toJS() };
-    delete options.photoUrl;
-    this.props.editUser(options);
+    this.props.editUser('photoUrl', null);
   };
 
   handlePhotoChange = e => {
     e.preventDefault();
     const reader = new FileReader();
     const file = e.target.files[0];
-    const options = { ...this.props.userTemporary.toJS() };
-    reader.onloadend = () => {
-      options.photoUrl = reader.result;
-      this.props.editUser(options);
-    };
+    reader.onloadend = () => this.props.editUser('photoUrl', reader.result);
     reader.readAsDataURL(file);
   };
 
-  handleConfirmDiscardClose = () => {
-    this.props.displayConfirmDiscard(false);
+  handleConfirmUndoClose = () => {
+    this.props.displayConfirmUndo(false);
   };
 
-  handleConfirmDiscardClick = () => {
+  handleConfirmUndoClick = () => {
     this.props.resetUserTemporary(this.props.userPermanent);
   };
 
-  handleDiscardClick = () => {
-    this.props.displayConfirmDiscard(true);
+  handleInputChange = ({ target: { name: key, value } }) =>
+    this.props.editUser(key, value);
+
+  handleUndoClick = () => {
+    this.props.displayConfirmUndo(true);
   };
 
   handleSaveClick = () => {};
@@ -88,8 +90,8 @@ export class Settings extends React.PureComponent {
             {fullName}
           </Heading>
           {this.props.isDirty &&
-            <HeadButton onClick={this.handleDiscardClick}>
-              <FormattedMessage {...messages.discard} />
+            <HeadButton onClick={this.handleUndoClick}>
+              <FormattedMessage {...messages.undo} />
             </HeadButton>}
           {this.props.isDirty &&
             <HeadButton
@@ -120,21 +122,106 @@ export class Settings extends React.PureComponent {
                   accept="image/png,image/gif,image/jpeg"
                 />
               </AddPhotoCard>}
-          <Details />
+          <div>
+            <Details>
+              <FormRow>
+                <FormLabel>
+                  <FormattedMessage {...messages.firstName} />
+                </FormLabel>
+                <Input
+                  name="firstName"
+                  type="text"
+                  placeholder="eg. John"
+                  onChange={this.handleInputChange}
+                  value={this.props.userTemporary.get('firstName')}
+                  width="548px"
+                />
+              </FormRow>
+              <FormRow>
+                <FormLabel>
+                  <FormattedMessage {...messages.lastName} />
+                </FormLabel>
+                <Input
+                  name="lastName"
+                  type="text"
+                  placeholder="eg. Doe"
+                  onChange={this.handleInputChange}
+                  value={this.props.userTemporary.get('lastName')}
+                  width="548px"
+                />
+              </FormRow>
+              <FormRow>
+                <FormLabel>
+                  <FormattedMessage {...messages.email} />
+                </FormLabel>
+                <Input
+                  name="email"
+                  type="text"
+                  placeholder="eg. john@doe.com"
+                  onChange={this.handleInputChange}
+                  value={this.props.userTemporary.get('email')}
+                  width="548px"
+                />
+              </FormRow>
+              <FormRow>
+                <FormLabel>
+                  <FormattedMessage {...messages.contactNumber} />
+                </FormLabel>
+                <Input
+                  name="phoneNumber"
+                  type="text"
+                  placeholder="eg. 6464 6464"
+                  onChange={this.handleInputChange}
+                  value={this.props.userTemporary.get('phoneNumber')}
+                  width="548px"
+                />
+              </FormRow>
+              <FormRow>
+                <FormLabel>
+                  <FormattedMessage {...messages.oldPassword} />
+                </FormLabel>
+                <Input
+                  name="oldPassword"
+                  type="password"
+                  placeholder="Enter to confirm changes"
+                  onChange={this.handleInputChange}
+                  value={this.props.userTemporary.get('oldPassword')}
+                  width="548px"
+                />
+              </FormRow>
+              <FormRow>
+                <FormLabel>
+                  <FormattedMessage {...messages.newPassword} />
+                </FormLabel>
+                <Input
+                  name="newPassword"
+                  type="password"
+                  placeholder="Enter a new password"
+                  onChange={this.handleInputChange}
+                  value={this.props.userTemporary.get('newPassword')}
+                  width="548px"
+                />
+              </FormRow>
+            </Details>
+            <ContactSupportContainer>
+              <ContactLabel>
+                <FormattedMessage {...messages.contactSupport} />
+              </ContactLabel>
+              <ContactLabel regular>
+                +808 3456 2121 | support@havenapp.co
+              </ContactLabel>
+            </ContactSupportContainer>
+          </div>
         </Body>
         <ConfirmationModal
-          isOpen={this.props.shouldDisplayConfirmDiscard}
-          closeModal={this.handleConfirmDiscardClose}
-          headerMessage={
-            <FormattedMessage {...messages.confirmDiscardHeader} />
-          }
+          isOpen={this.props.shouldDisplayConfirmUndo}
+          closeModal={this.handleConfirmUndoClose}
+          headerMessage={<FormattedMessage {...messages.confirmUndoHeader} />}
           confirmationMessage={
-            <FormattedMessage {...messages.confirmDiscardBody} />
+            <FormattedMessage {...messages.confirmUndoBody} />
           }
-          actionMessage={
-            <FormattedMessage {...messages.confirmDiscardAction} />
-          }
-          onConfirmClick={this.handleConfirmDiscardClick}
+          actionMessage={<FormattedMessage {...messages.confirmUndoAction} />}
+          onConfirmClick={this.handleConfirmUndoClick}
         />
       </Container>
     );
@@ -146,17 +233,14 @@ const mapStateToProps = createStructuredSelector({
   userTemporary: selectUserTemporary(),
   hasLoaded: selectHasLoaded(),
   isDirty: selectIsDirty(),
-  shouldDisplayConfirmDiscard: selectShouldDisplayConfirmationModal(),
+  shouldDisplayConfirmUndo: selectShouldDisplayConfirmationModal(),
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-    init: user => dispatch(init(user)),
-    editUser: options => dispatch(editUser(options)),
-    resetUserTemporary: userPerm => dispatch(resetUserTemporary(userPerm)),
-    displayConfirmDiscard: bool => dispatch(displayConfirmDiscard(bool)),
-  };
-}
+const mapDispatchToProps = {
+  init,
+  editUser,
+  resetUserTemporary,
+  displayConfirmUndo,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);

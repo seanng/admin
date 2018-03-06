@@ -8,7 +8,7 @@ import {
   INIT,
   EDIT_USER,
   RESET_USER_TEMPORARY,
-  DISPLAY_CONFIRM_DISCARD,
+  DISPLAY_CONFIRM_UNDO,
 } from './constants';
 
 export function init(user) {
@@ -18,10 +18,11 @@ export function init(user) {
   };
 }
 
-export function editUser(options) {
+export function editUser(key, value) {
   return {
     type: EDIT_USER,
-    options,
+    key,
+    value,
   };
 }
 
@@ -32,9 +33,9 @@ export function resetUserTemporary(user) {
   };
 }
 
-export function displayConfirmDiscard(bool) {
+export function displayConfirmUndo(bool) {
   return {
-    type: DISPLAY_CONFIRM_DISCARD,
+    type: DISPLAY_CONFIRM_UNDO,
     bool,
   };
 }

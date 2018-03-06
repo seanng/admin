@@ -6,24 +6,52 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  confirmDiscardBody: {
-    id: 'app.containers.Settings.confirmDiscardBody',
-    defaultMessage: 'Are you sure you want to discard your changes?',
+  confirmUndoBody: {
+    id: 'app.containers.Settings.confirmUndoBody',
+    defaultMessage: 'Are you sure you want to undo your changes?',
   },
-  confirmDiscardHeader: {
-    id: 'app.containers.Settings.confirmDiscardHeader',
-    defaultMessage: 'DISCARD CHANGES',
+  confirmUndoHeader: {
+    id: 'app.containers.Settings.confirmUndoHeader',
+    defaultMessage: 'UNDO CHANGES',
   },
-  confirmDiscardAction: {
-    id: 'app.containers.Settings.confirmDiscardAction',
-    defaultMessage: 'YES, DISCARD CHANGES',
+  confirmUndoAction: {
+    id: 'app.containers.Settings.confirmUndoAction',
+    defaultMessage: 'YES, UNDO CHANGES',
   },
-  discard: {
-    id: 'app.containers.Settings.discard',
-    defaultMessage: 'DISCARD',
+  contactNumber: {
+    id: 'app.containers.Settings.contactNumber',
+    defaultMessage: 'CONTACT NUMBER',
+  },
+  contactSupport: {
+    id: 'app.containers.Settings.contactSupport',
+    defaultMessage: 'CONTACT SUPPORT',
+  },
+  email: {
+    id: 'app.containers.Settings.email',
+    defaultMessage: 'EMAIL ADDRESS',
+  },
+  firstName: {
+    id: 'app.containers.Settings.firstName',
+    defaultMessage: 'FIRST NAME',
+  },
+  lastName: {
+    id: 'app.containers.Settings.lastName',
+    defaultMessage: 'LAST NAME',
+  },
+  newPassword: {
+    id: 'app.containers.Settings.newPassword',
+    defaultMessage: 'NEW PASSWORD',
+  },
+  oldPassword: {
+    id: 'app.containers.Settings.oldPassword',
+    defaultMessage: 'OLD PASSWORD',
   },
   save: {
     id: 'app.containers.Settings.save',
     defaultMessage: 'SAVE',
+  },
+  undo: {
+    id: 'app.containers.Settings.undo',
+    defaultMessage: 'UNDO',
   },
 });

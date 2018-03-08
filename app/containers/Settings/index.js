@@ -13,7 +13,6 @@ import CrosshairIcon from 'react-icons/lib/md/add';
 import AddPhotoCard from 'components/AddPhotoCard';
 import ImageFile from 'components/ImageFile';
 import ConfirmationModal from 'components/ConfirmationModal';
-import Input from 'components/Input';
 import colors from 'themes/colors';
 import {
   init,
@@ -35,9 +34,7 @@ import Heading from './Heading';
 import HeadButton from './HeadButton';
 import Body from './Body';
 import OpacityLayer from './OpacityLayer';
-import Details from './Details';
-import FormRow from './FormRow';
-import FormLabel from './FormLabel';
+import DetailsForm from './DetailsForm';
 import ContactSupportContainer from './ContactSupportContainer';
 import ContactLabel from './ContactLabel';
 
@@ -123,86 +120,7 @@ export class Settings extends React.PureComponent {
                 />
               </AddPhotoCard>}
           <div>
-            <Details>
-              <FormRow>
-                <FormLabel>
-                  <FormattedMessage {...messages.firstName} />
-                </FormLabel>
-                <Input
-                  name="firstName"
-                  type="text"
-                  placeholder="eg. John"
-                  onChange={this.handleInputChange}
-                  value={this.props.userTemporary.get('firstName')}
-                  width="548px"
-                />
-              </FormRow>
-              <FormRow>
-                <FormLabel>
-                  <FormattedMessage {...messages.lastName} />
-                </FormLabel>
-                <Input
-                  name="lastName"
-                  type="text"
-                  placeholder="eg. Doe"
-                  onChange={this.handleInputChange}
-                  value={this.props.userTemporary.get('lastName')}
-                  width="548px"
-                />
-              </FormRow>
-              <FormRow>
-                <FormLabel>
-                  <FormattedMessage {...messages.email} />
-                </FormLabel>
-                <Input
-                  name="email"
-                  type="text"
-                  placeholder="eg. john@doe.com"
-                  onChange={this.handleInputChange}
-                  value={this.props.userTemporary.get('email')}
-                  width="548px"
-                />
-              </FormRow>
-              <FormRow>
-                <FormLabel>
-                  <FormattedMessage {...messages.contactNumber} />
-                </FormLabel>
-                <Input
-                  name="phoneNumber"
-                  type="text"
-                  placeholder="eg. 6464 6464"
-                  onChange={this.handleInputChange}
-                  value={this.props.userTemporary.get('phoneNumber')}
-                  width="548px"
-                />
-              </FormRow>
-              <FormRow>
-                <FormLabel>
-                  <FormattedMessage {...messages.oldPassword} />
-                </FormLabel>
-                <Input
-                  name="oldPassword"
-                  type="password"
-                  placeholder="Enter to confirm changes"
-                  onChange={this.handleInputChange}
-                  value={this.props.userTemporary.get('oldPassword')}
-                  width="548px"
-                />
-              </FormRow>
-              <FormRow>
-                <FormLabel>
-                  <FormattedMessage {...messages.newPassword} />
-                </FormLabel>
-                <Input
-                  name="newPassword"
-                  type="password"
-                  placeholder="Enter a new password"
-                  onChange={this.handleInputChange}
-                  value={this.props.userTemporary.get('newPassword')}
-                  width="548px"
-                />
-              </FormRow>
-            </Details>
+            <DetailsForm initialValues={this.props.userPermanent.toJS()} />
             <ContactSupportContainer>
               <ContactLabel>
                 <FormattedMessage {...messages.contactSupport} />

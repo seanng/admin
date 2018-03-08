@@ -13,7 +13,6 @@ const sequelize = new Sequelize(
 
 /* Schema Definitions */
 const Customer = sequelize.define('customer', {
-  regDate: Sequelize.DATE,
   username: { type: Sequelize.STRING, unique: true },
   password: Sequelize.STRING,
   facebookId: Sequelize.STRING,
@@ -29,7 +28,6 @@ const Customer = sequelize.define('customer', {
 });
 
 const Employee = sequelize.define('employee', {
-  regDate: Sequelize.DATE,
   username: { type: Sequelize.STRING, unique: true },
   password: Sequelize.STRING,
   verified: {
@@ -52,7 +50,6 @@ const Employee = sequelize.define('employee', {
 });
 
 const Hotel = sequelize.define('hotel', {
-  regDate: Sequelize.DATE,
   name: Sequelize.STRING,
   locationAddress: Sequelize.STRING,
   locationLatitude: Sequelize.STRING,

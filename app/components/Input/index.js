@@ -23,6 +23,7 @@ const StyledInput = styled.input`
 `;
 
 function Input({ type, value, onChange, name, placeholder, width, styles }) {
+  console.log('the new value came in: ', value);
   return (
     <StyledInput
       type={type}

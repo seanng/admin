@@ -256,6 +256,7 @@
     "react-select": "^1.0.0-rc.5",
     "recompose": "^0.26.0",
     "redux": "3.6.0",
+    "redux-form": "^7.3.0",
     "redux-immutable": "3.0.8",
     "redux-logger": "^3.0.6",
     "redux-saga": "0.14.0",

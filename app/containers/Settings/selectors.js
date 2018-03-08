@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { isDirty } from 'redux-form/immutable';
 
 /**
  * Direct selector to the settings state domain
@@ -6,14 +7,16 @@ import { createSelector } from 'reselect';
 const selectSettingsDomain = () => state => state.get('settings');
 
 /**
- * Other specific selectors
+ * Direct selector to the form state domain
  */
 
-export const selectHasLoaded = () =>
-  createSelector(selectSettingsDomain(), substate => substate.get('hasLoaded'));
+export const selectIsFormDirty = () => state => isDirty('settings')(state);
 
-export const selectIsDirty = () =>
-  createSelector(selectSettingsDomain(), substate => substate.get('isDirty'));
+export const selectFormDomain = () => state => state.get('form');
+
+/**
+ * Other specific selectors
+ */
 
 export const selectShouldDisplayConfirmationModal = () =>
   createSelector(selectSettingsDomain(), substate =>

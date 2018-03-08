@@ -8,22 +8,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
+import { reduxForm, Field, change, reset } from 'redux-form/immutable';
 import TrashIcon from 'react-icons/lib/md/delete';
 import CrosshairIcon from 'react-icons/lib/md/add';
 import AddPhotoCard from 'components/AddPhotoCard';
 import ImageFile from 'components/ImageFile';
 import ConfirmationModal from 'components/ConfirmationModal';
 import colors from 'themes/colors';
+import { displayConfirmUndo } from './actions';
 import {
-  init,
-  editUser,
-  resetUserTemporary,
-  displayConfirmUndo,
-} from './actions';
-import {
-  selectUserTemporary,
-  selectHasLoaded,
-  selectIsDirty,
+  selectIsFormDirty,
+  selectFormDomain,
   selectShouldDisplayConfirmationModal,
 } from './selectors';
 import { selectUser as selectUserPermanent } from '../App/selectors';
@@ -34,25 +29,22 @@ import Heading from './Heading';
 import HeadButton from './HeadButton';
 import Body from './Body';
 import OpacityLayer from './OpacityLayer';
-import DetailsForm from './DetailsForm';
+import Details from './Details';
+import InputFieldRow from './InputFieldRow';
 import ContactSupportContainer from './ContactSupportContainer';
 import ContactLabel from './ContactLabel';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class Settings extends React.PureComponent {
-  componentDidMount() {
-    this.props.init(this.props.userPermanent);
-  }
-
-  handlePhotoRemove = () => {
-    this.props.editUser('photoUrl', null);
-  };
+  handlePhotoRemove = () =>
+    this.props.dispatch(change('settings', 'photoUrl', null));
 
   handlePhotoChange = e => {
     e.preventDefault();
     const reader = new FileReader();
     const file = e.target.files[0];
-    reader.onloadend = () => this.props.editUser('photoUrl', reader.result);
+    reader.onloadend = () =>
+      this.props.dispatch(change('settings', 'photoUrl', reader.result));
     reader.readAsDataURL(file);
   };
 
@@ -61,11 +53,9 @@ export class Settings extends React.PureComponent {
   };
 
   handleConfirmUndoClick = () => {
-    this.props.resetUserTemporary(this.props.userPermanent);
+    this.props.dispatch(reset('settings'));
+    this.props.displayConfirmUndo(false);
   };
-
-  handleInputChange = ({ target: { name: key, value } }) =>
-    this.props.editUser(key, value);
 
   handleUndoClick = () => {
     this.props.displayConfirmUndo(true);
@@ -74,12 +64,17 @@ export class Settings extends React.PureComponent {
   handleSaveClick = () => {};
 
   render() {
-    if (!this.props.hasLoaded) {
+    if (this.props.formState.size === 0) {
       return <Container />;
     }
-    const fullName = `${this.props.userPermanent.get(
+    const photoUrl = this.props.formState.getIn([
+      'settings',
+      'values',
+      'photoUrl',
+    ]);
+    const fullName = `${this.props.initialValues.get(
       'firstName'
-    )} ${this.props.userPermanent.get('lastName')}`;
+    )} ${this.props.initialValues.get('lastName')}`;
     return (
       <Container>
         <Head>
@@ -100,8 +95,8 @@ export class Settings extends React.PureComponent {
             </HeadButton>}
         </Head>
         <Body>
-          {this.props.userTemporary.get('photoUrl')
-            ? <AddPhotoCard src={this.props.userTemporary.get('photoUrl')}>
+          {photoUrl
+            ? <AddPhotoCard src={photoUrl}>
                 <OpacityLayer>
                   <TrashIcon
                     color={colors.danger}
@@ -111,7 +106,7 @@ export class Settings extends React.PureComponent {
                   />
                 </OpacityLayer>
               </AddPhotoCard>
-            : <AddPhotoCard src={this.props.userTemporary.get('photoUrl')}>
+            : <AddPhotoCard src={photoUrl}>
                 <CrosshairIcon size={20} color={colors.primary} />
                 <ImageFile
                   onChange={this.handlePhotoChange}
@@ -120,7 +115,56 @@ export class Settings extends React.PureComponent {
                 />
               </AddPhotoCard>}
           <div>
-            <DetailsForm initialValues={this.props.userPermanent.toJS()} />
+            <Details>
+              <Field
+                name="firstName"
+                component={InputFieldRow}
+                placeholder="eg. John"
+                labelMessage={<FormattedMessage {...messages.firstName} />}
+                width="548px"
+                type="text"
+              />
+              <Field
+                name="lastName"
+                component={InputFieldRow}
+                placeholder="eg. Doe"
+                labelMessage={<FormattedMessage {...messages.lastName} />}
+                width="548px"
+                type="text"
+              />
+              <Field
+                name="email"
+                component={InputFieldRow}
+                placeholder="eg. johndoe@email.com"
+                labelMessage={<FormattedMessage {...messages.email} />}
+                width="548px"
+                type="text"
+              />
+              <Field
+                name="phoneNumber"
+                component={InputFieldRow}
+                placeholder="eg. 6464 6464"
+                labelMessage={<FormattedMessage {...messages.contactNumber} />}
+                width="548px"
+                type="text"
+              />
+              <Field
+                name="oldPassword"
+                component={InputFieldRow}
+                placeholder="Enter to confirm changes"
+                labelMessage={<FormattedMessage {...messages.oldPassword} />}
+                width="548px"
+                type="password"
+              />
+              <Field
+                name="newPassword"
+                component={InputFieldRow}
+                placeholder="Enter a new password"
+                labelMessage={<FormattedMessage {...messages.newPassword} />}
+                width="548px"
+                type="password"
+              />
+            </Details>
             <ContactSupportContainer>
               <ContactLabel>
                 <FormattedMessage {...messages.contactSupport} />
@@ -147,18 +191,18 @@ export class Settings extends React.PureComponent {
 }
 
 const mapStateToProps = createStructuredSelector({
-  userPermanent: selectUserPermanent(),
-  userTemporary: selectUserTemporary(),
-  hasLoaded: selectHasLoaded(),
-  isDirty: selectIsDirty(),
+  initialValues: selectUserPermanent(),
+  isDirty: selectIsFormDirty(),
   shouldDisplayConfirmUndo: selectShouldDisplayConfirmationModal(),
+  formState: selectFormDomain(),
 });
 
 const mapDispatchToProps = {
-  init,
-  editUser,
-  resetUserTemporary,
   displayConfirmUndo,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  reduxForm({
+    form: 'settings',
+  })(Settings)
+);

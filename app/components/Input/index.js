@@ -4,11 +4,10 @@
 *
 */
 
-import React from 'react';
 import styled from 'styled-components';
 import colors from 'themes/colors';
 
-const StyledInput = styled.input`
+export default styled.input`
   font-size: 14px;
   font-weight: 300;
   color: ${colors.base2};
@@ -17,24 +16,8 @@ const StyledInput = styled.input`
   height: 40px;
   border: 1px solid ${colors.base4};
   padding-left: 10px;
-  ${props => props.styles && props.styles} &:focus {
+  ${({ error }) => error && `border: 1px solid ${colors.danger};`} ${props =>
+      props.styles && props.styles} &:focus {
     outline: none;
   }
 `;
-
-function Input({ type, value, onChange, name, placeholder, width, styles }) {
-  console.log('the new value came in: ', value);
-  return (
-    <StyledInput
-      type={type}
-      value={value}
-      onChange={onChange}
-      name={name}
-      placeholder={placeholder}
-      width={width}
-      styles={styles}
-    />
-  );
-}
-
-export default Input;

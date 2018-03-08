@@ -15,6 +15,7 @@ import AddPhotoCard from 'components/AddPhotoCard';
 import ImageFile from 'components/ImageFile';
 import ConfirmationModal from 'components/ConfirmationModal';
 import colors from 'themes/colors';
+import { required, email } from 'utils/validators';
 import { displayConfirmUndo } from './actions';
 import {
   selectIsFormDirty,
@@ -36,6 +37,9 @@ import ContactLabel from './ContactLabel';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class Settings extends React.PureComponent {
+  shouldDisableSaveButton = () =>
+    !this.props.formState.getIn(['settings', 'values', 'photoUrl']);
+
   handlePhotoRemove = () =>
     this.props.dispatch(change('settings', 'photoUrl', null));
 
@@ -88,7 +92,7 @@ export class Settings extends React.PureComponent {
           {this.props.isDirty &&
             <HeadButton
               primary
-              disabled={!this.props.isDirty}
+              disabled={this.shouldDisableSaveButton}
               onClick={this.props.handleSaveClick}
             >
               <FormattedMessage {...messages.save} />
@@ -123,6 +127,7 @@ export class Settings extends React.PureComponent {
                 labelMessage={<FormattedMessage {...messages.firstName} />}
                 width="548px"
                 type="text"
+                validate={required}
               />
               <Field
                 name="lastName"
@@ -131,6 +136,7 @@ export class Settings extends React.PureComponent {
                 labelMessage={<FormattedMessage {...messages.lastName} />}
                 width="548px"
                 type="text"
+                validate={required}
               />
               <Field
                 name="email"
@@ -139,6 +145,7 @@ export class Settings extends React.PureComponent {
                 labelMessage={<FormattedMessage {...messages.email} />}
                 width="548px"
                 type="text"
+                validate={[required, email]}
               />
               <Field
                 name="phoneNumber"
@@ -151,10 +158,10 @@ export class Settings extends React.PureComponent {
               <Field
                 name="oldPassword"
                 component={InputFieldRow}
-                placeholder="Enter to confirm changes"
-                labelMessage={<FormattedMessage {...messages.oldPassword} />}
+                placeholder="Enter password to save changes"
+                labelMessage={<FormattedMessage {...messages.password} />}
                 width="548px"
-                type="password"
+                validate={required}
               />
               <Field
                 name="newPassword"

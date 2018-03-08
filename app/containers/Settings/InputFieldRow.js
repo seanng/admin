@@ -1,15 +1,36 @@
 import React from 'react';
+import styled from 'styled-components';
+import { FormattedMessage } from 'react-intl';
 import Input from 'components/Input';
 import FormRow from './FormRow';
 import FormLabel from './FormLabel';
+import messages from './messages';
 
-export default function InputFieldRow({ input, labelMessage, ...otherProps }) {
+const ValidationErrorMessage = styled.div`
+  font-size: 12px;
+  font-weight: 300px;
+  color: red;
+`;
+
+export default function InputFieldRow({
+  input,
+  meta,
+  labelMessage,
+  ...otherProps
+}) {
   return (
     <FormRow>
       <FormLabel>
         {labelMessage}
       </FormLabel>
-      <Input {...input} {...otherProps} />
+      <div>
+        <Input {...input} {...otherProps} error={meta.touched && meta.error} />
+        {meta.touched &&
+          meta.error &&
+          <ValidationErrorMessage>
+            <FormattedMessage {...messages[meta.error]} />
+          </ValidationErrorMessage>}
+      </div>
     </FormRow>
   );
 }

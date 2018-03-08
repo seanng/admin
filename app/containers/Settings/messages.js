@@ -42,9 +42,9 @@ export default defineMessages({
     id: 'app.containers.Settings.newPassword',
     defaultMessage: 'NEW PASSWORD',
   },
-  oldPassword: {
-    id: 'app.containers.Settings.oldPassword',
-    defaultMessage: 'OLD PASSWORD',
+  password: {
+    id: 'app.containers.Settings.password',
+    defaultMessage: 'PASSWORD',
   },
   save: {
     id: 'app.containers.Settings.save',
@@ -53,5 +53,13 @@ export default defineMessages({
   undo: {
     id: 'app.containers.Settings.undo',
     defaultMessage: 'UNDO',
+  },
+  validateRequiredField: {
+    id: 'app.containers.Settings.validateRequiredField',
+    defaultMessage: 'This field is required',
+  },
+  validateInvalidEmail: {
+    id: 'app.containers.Settings.validateInvalidEmail',
+    defaultMessage: 'Enter a valid email address',
   },
 });

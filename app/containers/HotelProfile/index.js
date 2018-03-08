@@ -70,21 +70,24 @@ import messages from './messages';
 // eslint-disable-next-line react/prefer-stateless-function
 export class HotelProfile extends React.PureComponent {
   componentDidMount() {
-    const { fetchHotelInfo, hotelId } = this.props;
-    fetchHotelInfo(hotelId);
+    const { getHotelInfo: fetch, hotelId } = this.props;
+    fetch(hotelId);
   }
 
   handleSaveHotelProfile = () => {
     // 1. handle validation checks
-    // 2. if pass, save hotel profile
-    this.props.saveHotelProfile(this.props.editedHotelInfo);
+    // 2. if pass, save hotel profile;
+    const data = this.props.editedHotelInfo.toJS();
+    Object.keys(data).forEach(key => {
+      if (data[key] === '') {
+        data[key] = null;
+      }
+    });
+    this.props.saveHotelProfile(data);
   };
 
-  handleInputChange = event => {
-    const key = event.target.name.slice(0, -5);
-    const value = event.target.value;
-    this.props.editHotelInfo(key, value);
-  };
+  handleInputChange = ({ target: { name, value } }) =>
+    this.props.editHotelInfo(name, value);
 
   handleAutocompleteChange = input => {
     this.props.editHotelInfo('address', input);
@@ -166,7 +169,7 @@ export class HotelProfile extends React.PureComponent {
               <FormattedMessage {...messages.hotelName} />
             </Label>
             <Input
-              name="nameInput"
+              name="name"
               type="text"
               placeholder="Your Hotel Name Here"
               onChange={this.handleInputChange}
@@ -179,7 +182,7 @@ export class HotelProfile extends React.PureComponent {
               <FormattedMessage {...messages.ratePerHour} />
             </Label>
             <Input
-              name="costPerHourInput"
+              name="costPerHour"
               type="number"
               placeholder="Input Desired Hourly Rate"
               onChange={this.handleInputChange}
@@ -192,11 +195,11 @@ export class HotelProfile extends React.PureComponent {
               <FormattedMessage {...messages.minimum} />
             </Label>
             <Input
-              name="minChargeInput"
+              name="costMinCharge"
               type="number"
               placeholder="Input Desired Minimum Charge"
               onChange={this.handleInputChange}
-              value={this.props.editedHotelInfo.get('minCharge')}
+              value={this.props.editedHotelInfo.get('costMinCharge')}
               width="380px"
             />
           </RowWrapper>
@@ -205,7 +208,7 @@ export class HotelProfile extends React.PureComponent {
               <FormattedMessage {...messages.roomType} />
             </Label>
             <Input
-              name="roomTypeInput"
+              name="roomType"
               type="text"
               placeholder="Input Room Type"
               onChange={this.handleInputChange}
@@ -448,25 +451,21 @@ const mapStateToProps = createStructuredSelector({
   selectedAmenities: selectSelectedAmenities(),
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-    setEditingMode: () => dispatch(setEditingMode()),
-    cancelEditingMode: () => dispatch(cancelEditingMode()),
-    saveHotelProfile: hotelInfo => dispatch(saveHotelProfile(hotelInfo)),
-    fetchHotelInfo: id => dispatch(getHotelInfo(id)),
-    rearrangePhotos: (dragIndex, hoverIndex, dragPhoto) =>
-      dispatch(rearrangePhotos(dragIndex, hoverIndex, dragPhoto)),
-    deletePhoto: index => dispatch(deletePhoto(index)),
-    editHotelInfo: (key, value) => dispatch(editHotelInfo(key, value)),
-    removeAmenity: index => dispatch(removeAmenity(index)),
-    selectAmenity: amenity => dispatch(selectAmenity(amenity)),
-    openAmenitiesModal: () => dispatch(openAmenitiesModal()),
-    closeAmenitiesModal: () => dispatch(closeAmenitiesModal()),
-    saveSelectedAmenities: () => dispatch(saveSelectedAmenities()),
-    setLatLng: (lat, lng) => dispatch(setLatLng(lat, lng)),
-    addPhoto: imagePreviewUrl => dispatch(addPhoto(imagePreviewUrl)),
-  };
-}
+const mapDispatchToProps = {
+  setEditingMode,
+  cancelEditingMode,
+  saveHotelProfile,
+  getHotelInfo,
+  rearrangePhotos,
+  deletePhoto,
+  editHotelInfo,
+  removeAmenity,
+  selectAmenity,
+  openAmenitiesModal,
+  closeAmenitiesModal,
+  saveSelectedAmenities,
+  setLatLng,
+  addPhoto,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(HotelProfile);

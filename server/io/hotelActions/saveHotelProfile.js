@@ -13,12 +13,13 @@ module.exports = (client, action) =>
           })
         )
       )
-      .catch(err =>
+      .catch(err => {
+        console.log('what is the err?? ', err);
         reject(
           reply(client, {
             type: 'app/HotelProfile/SAVE_HOTEL_PROFILE_ERROR',
             err,
           })
-        )
-      );
+        );
+      });
   });

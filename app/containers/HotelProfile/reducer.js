@@ -35,15 +35,9 @@ const initialState = fromJS({
 function hotelProfileReducer(state = initialState, action) {
   switch (action.type) {
     case GET_HOTEL_INFO_SUCCESS: {
-      const hotelInfo = { ...action.info };
-      Object.keys(hotelInfo).forEach(key => {
-        if (hotelInfo[key] === null) {
-          hotelInfo[key] = '';
-        }
-      });
       return state.merge({
         isEditingMode: false,
-        hotelInfo,
+        hotelInfo: action.info,
         hasLoaded: true,
       });
     }
@@ -88,7 +82,6 @@ function hotelProfileReducer(state = initialState, action) {
     case SAVE_HOTEL_PROFILE_SUCCESS:
       return state.merge({
         isEditingMode: false,
-        hotelInfo: action.hotelInfo,
         hasLoaded: true,
       });
 

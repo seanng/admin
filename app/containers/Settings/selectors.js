@@ -7,7 +7,7 @@ import { isDirty } from 'redux-form/immutable';
 const selectSettingsDomain = () => state => state.get('settings');
 
 /**
- * Direct selector to the form state domain
+ * Form selectors
  */
 
 export const selectIsFormDirty = () => state => isDirty('settings')(state);
@@ -21,11 +21,6 @@ export const selectFormDomain = () => state => state.get('form');
 export const selectShouldDisplayConfirmationModal = () =>
   createSelector(selectSettingsDomain(), substate =>
     substate.get('shouldDisplayConfirmationModal')
-  );
-
-export const selectUserTemporary = () =>
-  createSelector(selectSettingsDomain(), substate =>
-    substate.get('userTemporary')
   );
 
 /**

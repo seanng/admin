@@ -16,6 +16,7 @@ import ImageFile from 'components/ImageFile';
 import ConfirmationModal from 'components/ConfirmationModal';
 import colors from 'themes/colors';
 import { required, email } from 'utils/validators';
+import { formNotReady } from 'utils/helpers';
 import { displayConfirmUndo } from './actions';
 import {
   selectIsFormDirty,
@@ -68,7 +69,7 @@ export class Settings extends React.PureComponent {
   handleSaveClick = () => {};
 
   render() {
-    if (this.props.formState.size === 0) {
+    if (formNotReady(this.props.formState, 'settings')) {
       return <Container />;
     }
     const photoUrl = this.props.formState.getIn([

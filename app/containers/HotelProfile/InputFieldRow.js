@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import Input from 'components/Input';
 import messages from 'containers/App/messages';
-import FormRow from './FormRow';
-import FormLabel from './FormLabel';
+import RowWrapper from './RowWrapper';
+import Label from './Label';
 
 const ValidationErrorMessage = styled.div`
   font-size: 12px;
@@ -13,16 +13,17 @@ const ValidationErrorMessage = styled.div`
 `;
 
 export default function InputFieldRow({
-  input,
-  meta,
   labelMessage,
+  meta,
+  input,
+  next,
   ...otherProps
 }) {
   return (
-    <FormRow>
-      <FormLabel>
+    <RowWrapper next={next}>
+      <Label>
         {labelMessage}
-      </FormLabel>
+      </Label>
       <div>
         <Input {...input} {...otherProps} error={meta.touched && meta.error} />
         {meta.touched &&
@@ -31,6 +32,6 @@ export default function InputFieldRow({
             <FormattedMessage {...messages[meta.error]} />
           </ValidationErrorMessage>}
       </div>
-    </FormRow>
+    </RowWrapper>
   );
 }

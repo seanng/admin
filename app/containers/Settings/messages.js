@@ -54,12 +54,4 @@ export default defineMessages({
     id: 'app.containers.Settings.undo',
     defaultMessage: 'UNDO',
   },
-  validateRequiredField: {
-    id: 'app.containers.Settings.validateRequiredField',
-    defaultMessage: 'This field is required',
-  },
-  validateInvalidEmail: {
-    id: 'app.containers.Settings.validateInvalidEmail',
-    defaultMessage: 'Enter a valid email address',
-  },
 });

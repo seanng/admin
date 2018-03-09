@@ -47,3 +47,7 @@ export function mapToRoomStatus(status) {
   };
   return dictionary[status];
 }
+
+export function formNotReady(formReducer, key) {
+  return formReducer.size === 0 || !formReducer.get(key);
+}

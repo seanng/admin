@@ -8,40 +8,36 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
+import { reduxForm, Field, change } from 'redux-form/immutable';
 import PlacesAutocomplete, {
   geocodeByPlaceId,
   getLatLng,
 } from 'react-places-autocomplete';
+import { required } from 'utils/validators';
 import { selectHotelId } from 'containers/App/selectors';
 import TrashIcon from 'react-icons/lib/md/delete';
 import CrosshairIcon from 'react-icons/lib/md/add';
 import colors from 'themes/colors';
-import Input from 'components/Input';
 import ImageFile from 'components/ImageFile';
 import AmenitiesModal from 'components/AmenitiesModal';
 import {
   getHotelInfo,
   setEditingMode,
-  rearrangePhotos,
   cancelEditingMode,
   saveHotelProfile,
-  addPhoto,
-  deletePhoto,
-  editHotelInfo,
   selectAmenity,
-  removeAmenity,
-  openAmenitiesModal,
-  closeAmenitiesModal,
-  saveSelectedAmenities,
-  setLatLng,
+  toggleAmenitiesModal,
 } from './actions';
 import {
+  selectFormDomain,
   selectHotelInfo,
   selectEditedHotelInfo,
   selectHasLoaded,
   selectIsEditingMode,
   selectIsAmenitiesModalOpen,
   selectSelectedAmenities,
+  selectIsFormDirty,
+  selectIsFormValid,
 } from './selectors';
 import Container from './Container';
 import Head from './Head';
@@ -65,6 +61,7 @@ import Amenity from './Amenity';
 import Placeholder from './Placeholder';
 import CrosshairWrapper from './CrosshairWrapper';
 import LocationMap from './LocationMap';
+import InputFieldRow from './InputFieldRow';
 import messages from './messages';
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -74,38 +71,42 @@ export class HotelProfile extends React.PureComponent {
     fetch(hotelId);
   }
 
+  getFormValueOf = key =>
+    this.props.formState.getIn(['hotelProfile', 'values', key]);
+
+  updateForm = (key, value) =>
+    this.props.dispatch(change('hotelProfile', key, value));
+
   handleSaveHotelProfile = () => {
     // 1. handle validation checks
     // 2. if pass, save hotel profile;
-    const data = this.props.editedHotelInfo.toJS();
-    Object.keys(data).forEach(key => {
-      if (data[key] === '') {
-        data[key] = null;
-      }
-    });
+    const data = this.props.formState
+      .getIn(['hotelProfile', 'values'])
+      .map(el => (el === '' ? null : el));
     this.props.saveHotelProfile(data);
   };
 
-  handleInputChange = ({ target: { name, value } }) =>
-    this.props.editHotelInfo(name, value);
-
   handleAutocompleteChange = input => {
-    this.props.editHotelInfo('address', input);
+    this.updateForm('locationAddress', input);
   };
 
   handleAutocompleteSelect = (address, placeId) => {
-    this.props.editHotelInfo('address', address);
+    this.updateForm('locationAddress', address);
     geocodeByPlaceId(placeId)
       .then(results => getLatLng(results[0]))
-      .then(({ lat, lng }) => this.props.setLatLng(lat, lng));
+      .then(({ lat, lng }) => {
+        this.updateForm('locationLatitude', lat);
+        this.updateForm('locationLongitude', lng);
+      });
   };
 
   handleAddPhoto = e => {
     e.preventDefault();
     const reader = new FileReader();
     const file = e.target.files[0];
+    const photos = this.getFormValueOf('photos');
     reader.onloadend = () => {
-      this.props.addPhoto(reader.result);
+      this.updateForm('photos', photos.push(reader.result));
     };
     reader.readAsDataURL(file);
   };
@@ -113,24 +114,43 @@ export class HotelProfile extends React.PureComponent {
   handleDeletePhoto = index => {
     // 1. TODO: confirmation - are you sure you want to delete?
     // 2. if okay, delete photo.
-    this.props.deletePhoto(index);
+    const photos = this.getFormValueOf('photos');
+    this.updateForm('photos', photos.delete(index));
   };
+
+  handleOpenAmenitiesModal = () =>
+    this.props.toggleAmenitiesModal(true, this.getFormValueOf('amenities'));
 
   handleRemoveAmenity = index => {
-    this.props.removeAmenity(index);
+    const amenities = this.getFormValueOf('amenities');
+    this.updateForm('amenities', amenities.delete(index));
   };
 
+  handleSaveSelectedAmenities = () => {
+    this.updateForm('amenities', this.props.selectedAmenities);
+    this.handleCloseAmenitiesModal();
+  };
+
+  handleCloseAmenitiesModal = () => this.props.toggleAmenitiesModal(false, []);
+
   movePhoto = (dragIndex, hoverIndex) => {
-    const dragPhoto = this.props.editedHotelInfo.getIn(['photos', dragIndex]);
-    this.props.rearrangePhotos(dragIndex, hoverIndex, dragPhoto);
+    const photos = this.getFormValueOf('photos');
+    const newPhotos = photos.update(oldPhotos => {
+      const dragPhoto = oldPhotos.get(dragIndex);
+      const updatedPhotos = oldPhotos
+        .splice(dragIndex, 1)
+        .splice(hoverIndex, 0, dragPhoto);
+      return updatedPhotos;
+    });
+    this.updateForm('photos', newPhotos);
   };
 
   renderDetailsEditing() {
     const autocompleteInput = {
       type: 'text',
-      value: this.props.editedHotelInfo.get('address'),
+      value: this.getFormValueOf('locationAddress'),
       onChange: this.handleAutocompleteChange,
-      name: 'addressInput',
+      name: 'locationAddress',
     };
     const autocompleteStyles = {
       root: {
@@ -164,58 +184,42 @@ export class HotelProfile extends React.PureComponent {
     return (
       <div>
         <DetailsCard>
-          <RowWrapper>
-            <Label>
-              <FormattedMessage {...messages.hotelName} />
-            </Label>
-            <Input
-              name="name"
-              type="text"
-              placeholder="Your Hotel Name Here"
-              onChange={this.handleInputChange}
-              value={this.props.editedHotelInfo.get('name')}
-              width="380px"
-            />
-          </RowWrapper>
-          <RowWrapper next>
-            <Label>
-              <FormattedMessage {...messages.ratePerHour} />
-            </Label>
-            <Input
-              name="costPerHour"
-              type="number"
-              placeholder="Input Desired Hourly Rate"
-              onChange={this.handleInputChange}
-              value={this.props.editedHotelInfo.get('costPerHour')}
-              width="380px"
-            />
-          </RowWrapper>
-          <RowWrapper next>
-            <Label>
-              <FormattedMessage {...messages.minimum} />
-            </Label>
-            <Input
-              name="costMinCharge"
-              type="number"
-              placeholder="Input Desired Minimum Charge"
-              onChange={this.handleInputChange}
-              value={this.props.editedHotelInfo.get('costMinCharge')}
-              width="380px"
-            />
-          </RowWrapper>
-          <RowWrapper next>
-            <Label>
-              <FormattedMessage {...messages.roomType} />
-            </Label>
-            <Input
-              name="roomType"
-              type="text"
-              placeholder="Input Room Type"
-              onChange={this.handleInputChange}
-              value={this.props.editedHotelInfo.get('roomType')}
-              width="380px"
-            />
-          </RowWrapper>
+          <Field
+            name="costPerHour"
+            component={InputFieldRow}
+            labelMessage={<FormattedMessage {...messages.ratePerHour} />}
+            placeholder="Input Desired Hourly Charge"
+            type="number"
+            width="380px"
+          />
+          <Field
+            name="costPerMinute"
+            component={InputFieldRow}
+            labelMessage={<FormattedMessage {...messages.ratePerMinute} />}
+            placeholder="Input Desired Charge Per Minute"
+            type="number"
+            width="380px"
+            next
+          />
+          <Field
+            component={InputFieldRow}
+            labelMessage={<FormattedMessage {...messages.minimum} />}
+            name="costMinCharge"
+            type="number"
+            placeholder="Input Desired Minimum Charge"
+            width="380px"
+            next
+          />
+          <Field
+            component={InputFieldRow}
+            labelMessage={<FormattedMessage {...messages.roomType} />}
+            name="roomType"
+            type="text"
+            placeholder="Input Room Type"
+            width="380px"
+            validate={required}
+            next
+          />
           <RowWrapper next>
             <Label>
               <FormattedMessage {...messages.description} />
@@ -230,22 +234,20 @@ export class HotelProfile extends React.PureComponent {
               size={20}
               color={colors.primary}
               style={{ cursor: 'pointer' }}
-              onClick={this.props.openAmenitiesModal}
+              onClick={this.handleOpenAmenitiesModal}
             />
           </RowWrapper>
           <Amenities>
-            {this.props.editedHotelInfo
-              .get('amenities')
-              .map((amenity, i) =>
-                <Amenity
-                  isEditing
-                  key={i}
-                  index={i}
-                  amenity={amenity}
-                  removeAmenity={this.handleRemoveAmenity}
-                />
-              )}
-            {this.props.editedHotelInfo.get('amenities').size === 0 &&
+            {this.getFormValueOf('amenities').map((amenity, i) =>
+              <Amenity
+                isEditing
+                key={i}
+                index={i}
+                amenity={amenity}
+                removeAmenity={this.handleRemoveAmenity}
+              />
+            )}
+            {this.getFormValueOf('amenities').length === 0 &&
               <Placeholder>
                 <FormattedMessage {...messages.addAmenities} />
               </Placeholder>}
@@ -263,8 +265,8 @@ export class HotelProfile extends React.PureComponent {
             highlightFirstSuggestion
           />
           <LocationMap
-            lat={this.props.editedHotelInfo.get('locationLatitude') * 1}
-            lng={this.props.editedHotelInfo.get('locationLongitude') * 1}
+            lat={this.getFormValueOf('locationLatitude') * 1}
+            lng={this.getFormValueOf('locationLongitude') * 1}
           />
         </DetailsCard>
       </div>
@@ -281,14 +283,16 @@ export class HotelProfile extends React.PureComponent {
             </Label>
             <RatesWrapper>
               <div>
-                {this.props.hotelInfo.get('costCurrency')}{' '}
-                {Number(this.props.hotelInfo.get('costPerHour')).toFixed()} /{' '}
-                <FormattedMessage {...messages.hour} />
+                {this.props.initialValues.get('costCurrency')}{' '}
+                {Number(
+                  this.props.initialValues.get('costPerHour')
+                ).toFixed()}{' '}
+                / <FormattedMessage {...messages.hour} />
               </div>
               <div>
-                {this.props.hotelInfo.get('costCurrency')}{' '}
+                {this.props.initialValues.get('costCurrency')}{' '}
                 {Number(
-                  this.props.hotelInfo.get('costPerHour') / 60
+                  this.props.initialValues.get('costPerHour') / 60
                 ).toFixed()}{' '}
                 / <FormattedMessage {...messages.minute} />
               </div>
@@ -299,8 +303,8 @@ export class HotelProfile extends React.PureComponent {
               <FormattedMessage {...messages.minimum} />
             </Label>
             <div>
-              {this.props.hotelInfo.get('costCurrency')}{' '}
-              {this.props.hotelInfo.get('costMinCharge')}
+              {this.props.initialValues.get('costCurrency')}{' '}
+              {this.props.initialValues.get('costMinCharge')}
             </div>
           </RowWrapper>
         </DetailsCard>
@@ -310,7 +314,7 @@ export class HotelProfile extends React.PureComponent {
               <FormattedMessage {...messages.roomType} />
             </Label>
             <div>
-              {this.props.hotelInfo.get('roomType')}
+              {this.props.initialValues.get('roomType')}
             </div>
           </RowWrapper>
         </DetailsCard>
@@ -319,7 +323,7 @@ export class HotelProfile extends React.PureComponent {
             <FormattedMessage {...messages.description} />
           </Label>
           <Description>
-            {this.props.hotelInfo.get('description')}
+            {this.props.initialValues.get('description')}
           </Description>
         </DetailsCard>
         <DetailsCard>
@@ -327,12 +331,12 @@ export class HotelProfile extends React.PureComponent {
             <FormattedMessage {...messages.amenities} />
           </Label>
           <Amenities>
-            {this.props.hotelInfo
+            {this.props.initialValues
               .get('amenities')
               .map((amenity, i) =>
                 <Amenity key={i} index={i} amenity={amenity} />
               )}
-            {this.props.hotelInfo.get('amenities').size === 0 &&
+            {this.props.initialValues.get('amenities').size === 0 &&
               <Placeholder>
                 <FormattedMessage {...messages.addAmenities} />
               </Placeholder>}
@@ -343,11 +347,11 @@ export class HotelProfile extends React.PureComponent {
             <FormattedMessage {...messages.location} />
           </Label>
           <Description>
-            {this.props.hotelInfo.get('address')}
+            {this.props.initialValues.get('address')}
           </Description>
           <LocationMap
-            lat={this.props.hotelInfo.get('locationLatitude') * 1}
-            lng={this.props.hotelInfo.get('locationLongitude') * 1}
+            lat={this.props.initialValues.get('locationLatitude') * 1}
+            lng={this.props.initialValues.get('locationLongitude') * 1}
           />
         </DetailsCard>
       </div>
@@ -358,21 +362,27 @@ export class HotelProfile extends React.PureComponent {
     if (!this.props.hasLoaded) {
       return <div>loading...</div>;
     }
+
     const hotelPhotos = this.props.isEditingMode
-      ? this.props.editedHotelInfo.get('photos')
-      : this.props.hotelInfo.get('photos');
+      ? this.getFormValueOf('photos')
+      : this.props.initialValues.get('photos');
+
     return (
       <Container>
         <Head>
           <HotelName isEditingMode={this.props.isEditingMode}>
-            {this.props.hotelInfo.get('name')}
+            {this.props.initialValues.get('name')}
           </HotelName>
           {this.props.isEditingMode &&
             <HeadButton onClick={this.props.cancelEditingMode}>
               <FormattedMessage {...messages.cancel} />
             </HeadButton>}
           {this.props.isEditingMode &&
-            <HeadButton primary onClick={this.handleSaveHotelProfile}>
+            <HeadButton
+              primary
+              onClick={this.handleSaveHotelProfile}
+              disabled={!this.props.isFormDirty || !this.props.isFormValid}
+            >
               <FormattedMessage {...messages.save} />
             </HeadButton>}
           {!this.props.isEditingMode &&
@@ -431,8 +441,8 @@ export class HotelProfile extends React.PureComponent {
         </Body>
         <AmenitiesModal
           isOpen={this.props.isAmenitiesModalOpen}
-          closeModal={this.props.closeAmenitiesModal}
-          saveAmenities={this.props.saveSelectedAmenities}
+          closeModal={this.handleCloseAmenitiesModal}
+          saveAmenities={this.handleSaveSelectedAmenities}
           selectedAmenities={this.props.selectedAmenities}
           selectAmenity={this.props.selectAmenity}
         />
@@ -442,13 +452,16 @@ export class HotelProfile extends React.PureComponent {
 }
 
 const mapStateToProps = createStructuredSelector({
-  hotelInfo: selectHotelInfo(),
+  initialValues: selectHotelInfo(),
   editedHotelInfo: selectEditedHotelInfo(),
   hotelId: selectHotelId(),
   hasLoaded: selectHasLoaded(),
   isEditingMode: selectIsEditingMode(),
   isAmenitiesModalOpen: selectIsAmenitiesModalOpen(),
+  formState: selectFormDomain(),
   selectedAmenities: selectSelectedAmenities(),
+  isFormDirty: selectIsFormDirty(),
+  isFormValid: selectIsFormValid(),
 });
 
 const mapDispatchToProps = {
@@ -456,16 +469,13 @@ const mapDispatchToProps = {
   cancelEditingMode,
   saveHotelProfile,
   getHotelInfo,
-  rearrangePhotos,
-  deletePhoto,
-  editHotelInfo,
-  removeAmenity,
   selectAmenity,
-  openAmenitiesModal,
-  closeAmenitiesModal,
-  saveSelectedAmenities,
-  setLatLng,
-  addPhoto,
+  toggleAmenitiesModal,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HotelProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  reduxForm({
+    form: 'hotelProfile',
+    enableReinitialize: true,
+  })(HotelProfile)
+);

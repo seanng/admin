@@ -1,9 +1,18 @@
 import { createSelector } from 'reselect';
+import { isDirty, isValid } from 'redux-form/immutable';
 
 /**
  * Direct selector to the hotelProfile state domain
  */
 const selectHotelProfileDomain = () => state => state.get('hotelProfile');
+
+/**
+ * Form selectors
+ */
+
+export const selectIsFormDirty = () => state => isDirty('hotelProfile')(state);
+export const selectIsFormValid = () => state => isValid('hotelProfile')(state);
+export const selectFormDomain = () => state => state.get('form');
 
 /**
  * Other specific selectors

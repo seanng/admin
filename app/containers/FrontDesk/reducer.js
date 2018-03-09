@@ -68,14 +68,13 @@ function frontDeskReducer(state = initialState, action) {
 
     case CHECK_IN_SUCCESS: {
       const { id, checkInTime, status } = action.data;
+      const rooms = state.get('rooms');
+      const getRoomIndex = room => room.get('id') === id;
       return state
-        .update('rooms', rooms =>
-          rooms.update(rooms.findIndex(room => room.get('id') === id), room =>
-            room
-              .set('status', mapToRoomStatus(status))
-              .set('checkInTime', checkInTime)
-          )
-        )
+        .mergeIn(['rooms', rooms.findIndex(getRoomIndex)], {
+          status: mapToRoomStatus(status),
+          checkInTime,
+        })
         .set('shouldDisplayRoomOptionsModal', false);
     }
 
@@ -116,45 +115,34 @@ function frontDeskReducer(state = initialState, action) {
       });
     }
 
-    case SOCKET_CREATE_BOOKING:
-      return state.update('rooms', rooms =>
-        rooms.update(
-          rooms.findIndex(room => room.get('id') === action.booking.id),
-          () =>
-            fromJS({
-              ...action.booking,
-              status: mapToRoomStatus(action.booking.status),
-            })
-        )
-      );
+    case SOCKET_CREATE_BOOKING: {
+      const rooms = state.get('rooms');
+      const getRoomIndex = room => room.get('id') === action.booking.id;
+      return state.mergeIn(['rooms', rooms.findIndex(getRoomIndex)], {
+        status: mapToRoomStatus(action.booking.status),
+      });
+    }
 
     case SOCKET_CANCEL_BOOKING: {
-      return state.update('rooms', rooms =>
-        rooms.update(
-          rooms.findIndex(room => {
-            console.log('room??? 1 ', room);
-            return room.get('id') === action.stayId;
-          }),
-          room => {
-            console.log('room is:: ', room);
-            return fromJS({
-              ...room.toJS(),
-              customerName: null,
-              customerId: null,
-              customer: null,
-              bookingTime: null,
-              status: 'available',
-            });
-          }
-        )
+      const rooms = state.get('rooms');
+      const getRoomIndex = room => room.get('id') === action.stayId;
+      const updatedParams = {
+        customerName: null,
+        customerId: null,
+        customer: null,
+        bookingTime: null,
+        status: 'available',
+      };
+      return state.mergeIn(
+        ['rooms', rooms.findIndex(getRoomIndex)],
+        updatedParams
       );
     }
 
     case SOCKET_CHECK_OUT: {
-      const rooms = state.get('rooms').toJS();
-      const roomIndex = rooms.findIndex(room => room.id === action.stayId);
-      rooms.splice(roomIndex, 1);
-      return state.merge({ rooms });
+      const rooms = state.get('rooms');
+      const getRoomIndex = room => room.get('id') === action.stayId;
+      return state.deleteIn(['rooms', rooms.findIndex(getRoomIndex)]);
     }
 
     default:

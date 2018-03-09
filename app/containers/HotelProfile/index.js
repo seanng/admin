@@ -292,7 +292,7 @@ export class HotelProfile extends React.PureComponent {
               <div>
                 {this.props.initialValues.get('costCurrency')}{' '}
                 {Number(
-                  this.props.initialValues.get('costPerHour') / 60
+                  this.props.initialValues.get('costPerMinute')
                 ).toFixed()}{' '}
                 / <FormattedMessage {...messages.minute} />
               </div>

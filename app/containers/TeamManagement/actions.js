@@ -9,7 +9,7 @@ import {
   SET_MEMBER_TO_PREVIEW,
   SET_ADMIN,
   SET_CONFIRMATION_OPTIONS,
-  SET_ADD_MEMBER_OPTIONS,
+  TOGGLE_ADD_MEMBER_MODAL,
   DELETE_EMPLOYEE,
   ADD_EMPLOYEE,
 } from './constants';
@@ -49,10 +49,10 @@ export function setConfirmationOptions(options) {
   };
 }
 
-export function setAddMemberOptions(options) {
+export function toggleAddMemberModal(shouldDisplay) {
   return {
-    type: SET_ADD_MEMBER_OPTIONS,
-    options,
+    type: TOGGLE_ADD_MEMBER_MODAL,
+    shouldDisplay,
   };
 }
 

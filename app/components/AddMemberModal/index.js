@@ -8,10 +8,11 @@ import React from 'react';
 import Modal from 'react-modal';
 import colors from 'themes/colors';
 import { FormattedMessage } from 'react-intl';
+import { reduxForm, Field } from 'redux-form/immutable';
 import CrosshairIcon from 'react-icons/lib/md/add';
 import TrashIcon from 'react-icons/lib/md/delete';
-import Input from 'components/Input';
 import ImageFile from 'components/ImageFile';
+import { required } from 'utils/validators';
 import Header from './Header';
 import Body from './Body';
 import AddPhotoCard from '../AddPhotoCard';
@@ -25,17 +26,18 @@ import messages from './messages';
 
 function AddMemberModal({
   closeModal,
-  handleInputChange,
-  modalConfig,
+  isOpen,
   handleAddMember,
-  shouldDisableButton,
   handlePhotoChange,
   handlePhotoRemove,
+  photoUrl,
+  dispatch,
+  isValid,
 }) {
   return (
     <Modal
       contentLabel="addMemberModal"
-      isOpen={modalConfig.get('shouldDisplay')}
+      isOpen={isOpen}
       style={modalStyle}
       onRequestClose={closeModal}
       shouldCloseOnOverlayClick
@@ -44,81 +46,68 @@ function AddMemberModal({
         <FormattedMessage {...messages.header} />
       </Header>
       <Body>
-        {modalConfig.get('imagePreviewUrl')
-          ? <AddPhotoCard src={modalConfig.get('imagePreviewUrl')}>
+        {photoUrl
+          ? <AddPhotoCard src={photoUrl}>
               <OpacityLayer>
                 <TrashIcon
                   color={colors.danger}
                   size={20}
                   style={{ cursor: 'pointer' }}
-                  onClick={handlePhotoRemove}
+                  onClick={() => handlePhotoRemove(dispatch)}
                 />
               </OpacityLayer>
             </AddPhotoCard>
-          : <AddPhotoCard src={modalConfig.get('imagePreviewUrl')}>
+          : <AddPhotoCard src={photoUrl}>
               <CrosshairIcon size={20} color={colors.primary} />
               <ImageFile
-                onChange={handlePhotoChange}
+                onChange={e => handlePhotoChange(e, dispatch)}
                 type="file"
                 accept="image/png,image/gif,image/jpeg"
               />
             </AddPhotoCard>}
         <AddMemberDetails>
-          <AddMemberRow>
-            <FormattedMessage {...messages.firstName} />
-            <Input
-              name="firstName"
-              type="text"
-              placeholder="eg. Jack"
-              value={modalConfig.get('firstName')}
-              onChange={handleInputChange}
-              width="265px"
-            />
-          </AddMemberRow>
-          <AddMemberRow>
-            <FormattedMessage {...messages.lastName} />
-            <Input
-              name="lastName"
-              type="text"
-              placeholder="eg. Johnson"
-              value={modalConfig.get('lastName')}
-              onChange={handleInputChange}
-              width="265px"
-            />
-          </AddMemberRow>
-          <AddMemberRow>
-            <FormattedMessage {...messages.emailAddress} />
-            <Input
-              name="email"
-              type="text"
-              placeholder="eg. me@hotelname.com"
-              value={modalConfig.get('email')}
-              onChange={handleInputChange}
-              width="265px"
-            />
-          </AddMemberRow>
-          <AddMemberRow>
-            <FormattedMessage {...messages.contactNumber} />
-            <Input
-              name="phoneNumber"
-              type="text"
-              placeholder="+852 9429 1029"
-              value={modalConfig.get('phoneNumber')}
-              onChange={handleInputChange}
-              width="265px"
-            />
-          </AddMemberRow>
+          <Field
+            component={AddMemberRow}
+            labelMessage={<FormattedMessage {...messages.firstName} />}
+            name="firstName"
+            type="text"
+            placeholder="eg. Jack"
+            width="265px"
+            validate={required}
+          />
+          <Field
+            component={AddMemberRow}
+            labelMessage={<FormattedMessage {...messages.lastName} />}
+            name="lastName"
+            type="text"
+            placeholder="eg. Bauer"
+            width="265px"
+            validate={required}
+          />
+          <Field
+            component={AddMemberRow}
+            labelMessage={<FormattedMessage {...messages.emailAddress} />}
+            name="email"
+            type="text"
+            placeholder="eg. me@hotelname.com"
+            width="265px"
+            validate={required}
+          />
+          <Field
+            component={AddMemberRow}
+            labelMessage={<FormattedMessage {...messages.contactNumber} />}
+            name="phoneNumber"
+            type="text"
+            placeholder="(optional)"
+            width="265px"
+          />
         </AddMemberDetails>
       </Body>
       <Footer>
-        <Button onClick={closeModal}>
+        <Button onClick={() => closeModal(dispatch)}>
           <FormattedMessage {...messages.cancel} />
         </Button>
-        <Button
-          primary
-          onClick={handleAddMember}
-          disabled={shouldDisableButton()}
-        >
+        <Button primary onClick={handleAddMember} disabled={!isValid}>
           <FormattedMessage {...messages.sendInvite} />
         </Button>
       </Footer>
@@ -126,4 +115,6 @@ function AddMemberModal({
   );
 }
 
-export default AddMemberModal;
+export default reduxForm({
+  form: 'addMember',
+})(AddMemberModal);

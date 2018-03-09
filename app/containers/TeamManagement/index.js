@@ -12,12 +12,13 @@ import { selectHotelId, selectUserId } from 'containers/App/selectors';
 import colors from 'themes/colors';
 import ConfirmationModal from 'components/ConfirmationModal';
 import AddMemberModal from 'components/AddMemberModal';
+import { change, reset } from 'redux-form/immutable';
 import {
   getEmployees,
   setMemberToPreview,
   setAdmin,
   setConfirmationOptions,
-  setAddMemberOptions,
+  toggleAddMemberModal,
   deleteEmployee,
   addEmployee,
 } from './actions';
@@ -26,7 +27,9 @@ import {
   selectMembersList,
   selectPreviewedMember,
   selectConfirmationModalOptions,
-  selectAddMemberModalOptions,
+  selectIsFormValid,
+  selectShouldDisplayAddMemberModal,
+  selectFormDomain,
 } from './selectors';
 import messages from './messages';
 import Container from './Container';
@@ -47,13 +50,17 @@ import Label from './Label';
 // eslint-disable-next-line react/prefer-stateless-function
 export class TeamManagement extends React.PureComponent {
   componentDidMount() {
-    const { fetchEmployees, hotelId } = this.props;
-    fetchEmployees(hotelId);
+    const { hotelId } = this.props;
+    this.props.getEmployees(hotelId);
   }
 
+  setFormPhoto = (value, dispatch) => {
+    dispatch(change('addMember', 'photoUrl', value));
+  };
+
   mapPromptIdToAction = {
-    upgradeToAdmin: () => this.upgradeToAdmin(),
-    deleteAccount: () => this.deleteAccount(),
+    upgradeToAdmin: () => this.handleUpgradeToAdmin(),
+    deleteAccount: () => this.handleDeleteAccount(),
   };
 
   parseAdminLevel = adminLevel => ['member', 'admin'][adminLevel - 1];
@@ -65,32 +72,18 @@ export class TeamManagement extends React.PureComponent {
     });
   };
 
-  handleModalInputChange = e => {
-    const options = { ...this.props.addMemberModalOptions.toJS() };
-    options[e.target.name] = e.target.value;
-    this.props.setAddMemberOptions(options);
-  };
-
-  handleModalPhotoChange = e => {
+  handleModalPhotoChange = (e, dispatch) => {
     e.preventDefault();
     const reader = new FileReader();
     const file = e.target.files[0];
-    const options = { ...this.props.addMemberModalOptions.toJS() };
-    reader.onloadend = () => {
-      options.imagePreviewUrl = reader.result;
-      this.props.setAddMemberOptions(options);
-    };
+    reader.onloadend = () => this.setFormPhoto(reader.result, dispatch);
     reader.readAsDataURL(file);
   };
 
-  handleModalPhotoRemove = () => {
-    const options = { ...this.props.addMemberModalOptions.toJS() };
-    delete options.imagePreviewUrl;
-    this.props.setAddMemberOptions(options);
-  };
+  handleModalPhotoRemove = dispatch => this.setFormPhoto(null, dispatch);
 
   handleAddMember = () => {
-    const { addMemberModalOptions, addMember, hotelId, userId } = this.props;
+    const { addMemberModalOptions, hotelId, userId } = this.props;
     const {
       firstName,
       lastName,
@@ -99,7 +92,7 @@ export class TeamManagement extends React.PureComponent {
       imagePreviewUrl,
     } = addMemberModalOptions.toJS();
     // check if all fields have been filled
-    addMember(
+    this.props.addEmployee(
       { firstName, lastName, email, contactNumber, imagePreviewUrl },
       hotelId,
       userId
@@ -113,16 +106,13 @@ export class TeamManagement extends React.PureComponent {
     this.mapPromptIdToAction[modalPromptId]();
   };
 
-  handleAddMemberModalClose = () => {
-    this.props.setAddMemberOptions({
-      shouldDisplay: false,
-    });
+  handleAddMemberModalClose = dispatch => {
+    dispatch(reset('addMember'));
+    this.props.toggleAddMemberModal(false);
   };
 
   handleSendInviteClick = () => {
-    this.props.setAddMemberOptions({
-      shouldDisplay: true,
-    });
+    this.props.toggleAddMemberModal(true);
   };
 
   promptUpgradeToAdmin = () => {
@@ -132,9 +122,9 @@ export class TeamManagement extends React.PureComponent {
     });
   };
 
-  upgradeToAdmin = () => {
-    const { upgradeToAdmin, previewedMember } = this.props;
-    upgradeToAdmin(previewedMember.get('id'));
+  handleUpgradeToAdmin = () => {
+    const { previewedMember } = this.props;
+    this.props.setAdmin(previewedMember.get('id'));
   };
 
   promptDeleteAccount = () => {
@@ -144,17 +134,9 @@ export class TeamManagement extends React.PureComponent {
     });
   };
 
-  deleteAccount = () => {
-    const { deleteAccount, previewedMember } = this.props;
-    deleteAccount(previewedMember.get('id'));
-  };
-
-  shouldDisableAddMemberButton = () => {
-    // need to do validation here.
-    if (!this.props.addMemberModalOptions.get('lastName')) {
-      return true;
-    }
-    return false;
+  handleDeleteAccount = () => {
+    const { previewedMember } = this.props;
+    this.props.deleteEmployee(previewedMember.get('id'));
   };
 
   render() {
@@ -163,8 +145,6 @@ export class TeamManagement extends React.PureComponent {
       membersList,
       previewedMember,
       confirmationModalOptions,
-      addMemberModalOptions,
-      setPreviewMember,
     } = this.props;
     const members = membersList.toJS();
     const previewedMemberJS = previewedMember ? previewedMember.toJS() : null;
@@ -223,7 +203,7 @@ export class TeamManagement extends React.PureComponent {
               <TeamMemberCard
                 key={member.id}
                 src={member.photoUrl}
-                onClick={() => setPreviewMember(index)}
+                onClick={() => this.props.setMemberToPreview(index)}
               >
                 <OpacityLayer
                   isHighlighted={previewedMemberJS.id === member.id}
@@ -243,6 +223,7 @@ export class TeamManagement extends React.PureComponent {
           isOpen={confirmationModalOptions.get('shouldDisplay')}
           closeModal={this.handleConfirmationModalClose}
           headerMessage={
+            confirmationModalOptions.get('modalPromptId') &&
             <FormattedMessage
               {...messages[
                 `${confirmationModalOptions.get('modalPromptId')}Header`
@@ -250,6 +231,7 @@ export class TeamManagement extends React.PureComponent {
             />
           }
           confirmationMessage={
+            confirmationModalOptions.get('modalPromptId') &&
             <FormattedMessage
               {...messages[
                 `${confirmationModalOptions.get('modalPromptId')}Prompt`
@@ -260,6 +242,7 @@ export class TeamManagement extends React.PureComponent {
             />
           }
           actionMessage={
+            confirmationModalOptions.get('modalPromptId') &&
             <FormattedMessage
               {...messages[
                 `${confirmationModalOptions.get('modalPromptId')}Action`
@@ -270,12 +253,16 @@ export class TeamManagement extends React.PureComponent {
         />
         <AddMemberModal
           closeModal={this.handleAddMemberModalClose}
-          handleInputChange={this.handleModalInputChange}
-          modalConfig={addMemberModalOptions}
+          isOpen={this.props.shouldDisplayAddMemberModal}
           handleAddMember={this.handleAddMember}
-          shouldDisableButton={this.shouldDisableAddMemberButton}
+          photoUrl={this.props.formState.getIn([
+            'addMember',
+            'values',
+            'photoUrl',
+          ])}
           handlePhotoChange={this.handleModalPhotoChange}
           handlePhotoRemove={this.handleModalPhotoRemove}
+          isValid={this.props.isFormValid}
         />
       </Container>
     );
@@ -289,18 +276,19 @@ const mapStateToProps = createStructuredSelector({
   membersList: selectMembersList(),
   previewedMember: selectPreviewedMember(),
   confirmationModalOptions: selectConfirmationModalOptions(),
-  addMemberModalOptions: selectAddMemberModalOptions(),
+  shouldDisplayAddMemberModal: selectShouldDisplayAddMemberModal(),
+  formState: selectFormDomain(),
+  isFormValid: selectIsFormValid(),
 });
 
-const mapDispatchToProps = dispatch => ({
-  fetchEmployees: hotelId => dispatch(getEmployees(hotelId)),
-  setPreviewMember: memberIndex => dispatch(setMemberToPreview(memberIndex)),
-  setConfirmationOptions: options => dispatch(setConfirmationOptions(options)),
-  setAddMemberOptions: options => dispatch(setAddMemberOptions(options)),
-  upgradeToAdmin: memberId => dispatch(setAdmin(memberId)),
-  deleteAccount: memberId => dispatch(deleteEmployee(memberId)),
-  addMember: (memberDetails, hotelId, userId) =>
-    dispatch(addEmployee(memberDetails, hotelId, userId)),
-});
+const mapDispatchToProps = {
+  addEmployee,
+  deleteEmployee,
+  setMemberToPreview,
+  setAdmin,
+  toggleAddMemberModal,
+  setConfirmationOptions,
+  getEmployees,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamManagement);

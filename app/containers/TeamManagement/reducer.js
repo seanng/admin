@@ -6,15 +6,14 @@
 
 import { fromJS } from 'immutable';
 import {
-  DEFAULT_ACTION,
   FETCH_EMPLOYEES,
   FETCH_EMPLOYEES_SUCCESS,
   SET_MEMBER_TO_PREVIEW,
   SET_ADMIN_SUCCESS,
   SET_CONFIRMATION_OPTIONS,
-  SET_ADD_MEMBER_OPTIONS,
   DELETE_EMPLOYEE_SUCCESS,
   ADD_EMPLOYEE_SUCCESS,
+  TOGGLE_ADD_MEMBER_MODAL,
 } from './constants';
 
 const initialState = fromJS({
@@ -26,22 +25,14 @@ const initialState = fromJS({
     shouldDisplay: false,
     modalPromptId: '',
   },
-  addMemberModalOptions: {
-    shouldDisplay: false,
-    firstName: '',
-    lastName: '',
-    email: '',
-    contactNumber: '',
-    imagePreviewUrl: null,
-  },
+  shouldDisplayAddMemberModal: false,
 });
 
 function teamManagementReducer(state = initialState, action) {
   switch (action.type) {
-    case DEFAULT_ACTION:
-      return state;
     case FETCH_EMPLOYEES:
       return state.set('hasLoaded', false);
+
     case FETCH_EMPLOYEES_SUCCESS:
       return state.merge({
         hasLoaded: true,
@@ -49,6 +40,7 @@ function teamManagementReducer(state = initialState, action) {
         previewedMemberIndex: 0,
         previewedMember: action.employees[0],
       });
+
     case SET_MEMBER_TO_PREVIEW: {
       if (state.get('previewedMemberIndex') === action.index) {
         return state
@@ -60,47 +52,45 @@ function teamManagementReducer(state = initialState, action) {
         .set('previewedMember', selectedMember)
         .set('previewedMemberIndex', action.index);
     }
+
     case SET_CONFIRMATION_OPTIONS:
       return state.merge({
         confirmationModalOptions: action.options,
       });
 
-    case SET_ADD_MEMBER_OPTIONS:
-      return state.merge({
-        addMemberModalOptions: action.options,
-      });
-
     case SET_ADMIN_SUCCESS: {
-      const membersList = state.get('membersList').toJS();
-      const memberIdx = membersList.findIndex(
-        member => member.id * 1 === action.employeeId
+      const oldMembersList = state.get('membersList');
+      const memberIdx = oldMembersList.findIndex(
+        member => member.get('id') === action.employeeId
       );
-      membersList[memberIdx].adminLevel = 2;
+      const membersList = oldMembersList.setIn([memberIdx, 'adminLevel'], 2);
       return state.merge({
         membersList,
         confirmationModalOptions: {
           shouldDisplay: false,
           modalPromptId: '',
         },
-        previewedMember: membersList[memberIdx],
+        previewedMember: membersList.get(memberIdx),
       });
     }
 
     case DELETE_EMPLOYEE_SUCCESS: {
-      const membersList = state.get('membersList').toJS();
-      const memberIdx = membersList.findIndex(
-        member => member.id * 1 === action.employeeId
-      );
-      membersList.splice(memberIdx, 1);
+      const oldMembersList = state.get('membersList');
+      const getIndexOfId = member => member.get('id') === action.employeeId;
+      const memberIdx = oldMembersList.findIndex(getIndexOfId);
+      const membersList = oldMembersList.delete(memberIdx);
       return state.merge({
         membersList,
         confirmationModalOptions: {
           shouldDisplay: false,
           modalPromptId: '',
         },
-        previewedMember: membersList[memberIdx],
+        previewedMember: membersList.get(memberIdx),
       });
     }
+
+    case TOGGLE_ADD_MEMBER_MODAL:
+      return state.set('shouldDisplayAddMemberModal', action.shouldDisplay);
 
     case ADD_EMPLOYEE_SUCCESS: {
       return state.merge({

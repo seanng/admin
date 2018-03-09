@@ -1,9 +1,13 @@
 import { createSelector } from 'reselect';
+import { isValid } from 'redux-form/immutable';
 
 /**
  * Direct selector to the teamManagement state domain
  */
 const selectTeamManagementDomain = () => state => state.get('teamManagement');
+
+export const selectFormDomain = () => state => state.get('form');
+export const selectIsFormValid = () => state => isValid('addMember')(state);
 
 /**
  * Other specific selectors
@@ -29,9 +33,9 @@ export const selectConfirmationModalOptions = () =>
     substate.get('confirmationModalOptions')
   );
 
-export const selectAddMemberModalOptions = () =>
+export const selectShouldDisplayAddMemberModal = () =>
   createSelector(selectTeamManagementDomain(), substate =>
-    substate.get('addMemberModalOptions')
+    substate.get('shouldDisplayAddMemberModal')
   );
 
 /**

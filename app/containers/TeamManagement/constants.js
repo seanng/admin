@@ -4,7 +4,6 @@
  *
  */
 
-export const DEFAULT_ACTION = 'app/TeamManagement/DEFAULT_ACTION';
 export const FETCH_EMPLOYEES = 'H_IO_FETCH_EMPLOYEES';
 export const SET_ADMIN = 'H_IO_SET_ADMIN';
 export const SET_ADMIN_SUCCESS = 'app/TeamManagement/SET_ADMIN_SUCCESS';
@@ -15,8 +14,8 @@ export const SET_MEMBER_TO_PREVIEW = 'app/TeamManagement/SET_MEMBER_TO_PREVIEW';
 export const SET_CONFIRMATION_OPTIONS =
   'app/TeamManagement/SET_CONFIRMATION_OPTIONS';
 
-export const SET_ADD_MEMBER_OPTIONS =
-  'app/TeamManagement/SET_ADD_MEMBER_OPTIONS';
+export const TOGGLE_ADD_MEMBER_MODAL =
+  'app/TeamManagement/TOGGLE_ADD_MEMBER_MODAL';
 
 export const DELETE_EMPLOYEE = 'H_IO_DELETE_EMPLOYEE';
 export const DELETE_EMPLOYEE_SUCCESS =

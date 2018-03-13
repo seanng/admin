@@ -24,7 +24,7 @@ const Customer = sequelize.define('customer', {
   accountStatus: Sequelize.INTEGER,
   paymentAuthStatus: Sequelize.INTEGER,
   stripeKey: Sequelize.STRING, // <-- this needs to be looked into further
-  rating: Sequelize.DECIMAL,
+  rating: Sequelize.FLOAT,
 });
 
 const Employee = sequelize.define('employee', {
@@ -55,9 +55,9 @@ const Hotel = sequelize.define('hotel', {
   locationLatitude: Sequelize.STRING,
   locationLongitude: Sequelize.STRING,
   costCurrency: Sequelize.STRING,
-  costMinCharge: Sequelize.DECIMAL(10, 2),
-  costPerHour: Sequelize.DECIMAL(10, 2),
-  costPerMinute: Sequelize.DECIMAL(10, 2),
+  costMinCharge: Sequelize.FLOAT,
+  costPerHour: Sequelize.FLOAT,
+  costPerMinute: Sequelize.FLOAT,
   photos: Sequelize.ARRAY(Sequelize.STRING), // array[0] would be the primary photoURL
   description: Sequelize.TEXT,
   amenities: Sequelize.ARRAY(Sequelize.STRING), // i.e. 'Free WiFi'
@@ -78,14 +78,14 @@ const Stay = sequelize.define('stay', {
   checkOutTime: Sequelize.DATE, // Update on check out
   roomNumber: Sequelize.STRING, // Update on create Room
   roomType: Sequelize.STRING,
-  roomCharge: Sequelize.DECIMAL(10, 2),
-  totalCharge: Sequelize.DECIMAL(10, 2),
+  roomCharge: Sequelize.FLOAT,
+  totalCharge: Sequelize.FLOAT,
 });
 
 const Surcharge = sequelize.define('surcharge', {
   service: Sequelize.STRING,
   status: Sequelize.STRING,
-  charge: Sequelize.DECIMAL(10, 2),
+  charge: Sequelize.FLOAT,
 });
 
 /* Relationships */

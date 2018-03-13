@@ -6,8 +6,7 @@
 
 import {
   GET_HOTEL_INFO,
-  SET_EDITING_MODE,
-  CANCEL_EDITING_MODE,
+  TOGGLE_EDITING_MODE,
   SAVE_HOTEL_PROFILE,
   SELECT_AMENITY,
   TOGGLE_AMENITIES_MODAL,
@@ -20,15 +19,10 @@ export function getHotelInfo(id) {
   };
 }
 
-export function setEditingMode() {
+export function toggleEditingMode(isEditingMode) {
   return {
-    type: SET_EDITING_MODE,
-  };
-}
-
-export function cancelEditingMode() {
-  return {
-    type: CANCEL_EDITING_MODE,
+    type: TOGGLE_EDITING_MODE,
+    isEditingMode,
   };
 }
 

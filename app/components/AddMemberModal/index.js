@@ -12,7 +12,13 @@ import { reduxForm, Field } from 'redux-form/immutable';
 import CrosshairIcon from 'react-icons/lib/md/add';
 import TrashIcon from 'react-icons/lib/md/delete';
 import ImageFile from 'components/ImageFile';
-import { required } from 'utils/validators';
+import {
+  validateRequired,
+  validateEmail,
+  validatePhoneLength,
+  validateMinLength,
+} from 'utils/validators';
+import { normalizePhone, normalizeName } from 'utils/normalizers';
 import Header from './Header';
 import Body from './Body';
 import AddPhotoCard from '../AddPhotoCard';
@@ -39,7 +45,7 @@ function AddMemberModal({
       contentLabel="addMemberModal"
       isOpen={isOpen}
       style={modalStyle}
-      onRequestClose={closeModal}
+      onRequestClose={() => closeModal(dispatch)}
       shouldCloseOnOverlayClick
     >
       <Header>
@@ -72,8 +78,9 @@ function AddMemberModal({
             name="firstName"
             type="text"
             placeholder="eg. Jack"
+            normalize={normalizeName}
             width="265px"
-            validate={required}
+            validate={[validateRequired, validateMinLength(2)]}
           />
           <Field
             component={AddMemberRow}
@@ -82,7 +89,8 @@ function AddMemberModal({
             type="text"
             placeholder="eg. Bauer"
             width="265px"
-            validate={required}
+            normalize={normalizeName}
+            validate={[validateRequired, validateMinLength(2)]}
           />
           <Field
             component={AddMemberRow}
@@ -91,13 +99,15 @@ function AddMemberModal({
             type="text"
             placeholder="eg. me@hotelname.com"
             width="265px"
-            validate={required}
+            validate={[validateRequired, validateEmail]}
           />
           <Field
             component={AddMemberRow}
             labelMessage={<FormattedMessage {...messages.contactNumber} />}
             name="phoneNumber"
             type="text"
+            normalize={normalizePhone}
+            validate={validatePhoneLength}
             placeholder="(optional)"
             width="265px"
           />

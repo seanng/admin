@@ -8,8 +8,7 @@ import { fromJS } from 'immutable';
 import {
   GET_HOTEL_INFO_SUCCESS,
   GET_HOTEL_INFO_FAIL,
-  SET_EDITING_MODE,
-  CANCEL_EDITING_MODE,
+  TOGGLE_EDITING_MODE,
   SAVE_HOTEL_PROFILE_SUCCESS,
   TOGGLE_AMENITIES_MODAL,
   SELECT_AMENITY,
@@ -35,14 +34,9 @@ function hotelProfileReducer(state = initialState, action) {
     case GET_HOTEL_INFO_FAIL:
       return state;
 
-    case SET_EDITING_MODE:
+    case TOGGLE_EDITING_MODE:
       return state.merge({
-        isEditingMode: true,
-      });
-
-    case CANCEL_EDITING_MODE:
-      return state.merge({
-        isEditingMode: false,
+        isEditingMode: action.isEditingMode,
       });
 
     case SAVE_HOTEL_PROFILE_SUCCESS: {

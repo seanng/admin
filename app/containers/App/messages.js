@@ -22,12 +22,20 @@ export default defineMessages({
     id: 'app.containers.App./settings',
     defaultMessage: 'Settings',
   },
-  validateRequiredField: {
-    id: 'app.Validation.validateRequiredField',
-    defaultMessage: 'This field is required',
-  },
   validateInvalidEmail: {
     id: 'app.Validation.validateInvalidEmail',
     defaultMessage: 'Enter a valid email address',
+  },
+  validateMinLength: {
+    id: 'app.Validation.validateMinLength',
+    defaultMessage: 'This input is far too short',
+  },
+  validatePhoneLength: {
+    id: 'app.Validation.validatePhoneLength',
+    defaultMessage: 'Enter a valid phone number',
+  },
+  validateRequiredField: {
+    id: 'app.Validation.validateRequiredField',
+    defaultMessage: 'This field is required',
   },
 });

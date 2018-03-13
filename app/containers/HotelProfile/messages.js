@@ -55,11 +55,7 @@ export default defineMessages({
   },
   ratePerHour: {
     id: 'app.containers.HotelProfile.ratePerHour',
-    defaultMessage: 'RATE (PER HOUR)',
-  },
-  ratePerMinute: {
-    id: 'app.containers.HotelProfile.ratePerMinute',
-    defaultMessage: 'RATE (PER MINUTE)',
+    defaultMessage: 'HOURLY RATE',
   },
   roomType: {
     id: 'app.containers.HotelProfile.roomType',

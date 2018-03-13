@@ -15,8 +15,13 @@ import AddPhotoCard from 'components/AddPhotoCard';
 import ImageFile from 'components/ImageFile';
 import ConfirmationModal from 'components/ConfirmationModal';
 import colors from 'themes/colors';
-import { required, email } from 'utils/validators';
-import { formNotReady } from 'utils/helpers';
+import {
+  validateRequired,
+  validateEmail,
+  validatePhoneLength,
+} from 'utils/validators';
+import { normalizePhone, normalizeName } from 'utils/normalizers';
+import { formNotReady, validateMinLength } from 'utils/helpers';
 import { displayConfirmUndo } from './actions';
 import {
   selectIsFormDirty,
@@ -128,7 +133,8 @@ export class Settings extends React.PureComponent {
                 labelMessage={<FormattedMessage {...messages.firstName} />}
                 width="548px"
                 type="text"
-                validate={required}
+                normalize={normalizeName}
+                validate={[validateRequired, validateMinLength]}
               />
               <Field
                 name="lastName"
@@ -137,7 +143,8 @@ export class Settings extends React.PureComponent {
                 labelMessage={<FormattedMessage {...messages.lastName} />}
                 width="548px"
                 type="text"
-                validate={required}
+                normalize={normalizeName}
+                validate={[validateRequired, validateMinLength]}
               />
               <Field
                 name="email"
@@ -146,7 +153,7 @@ export class Settings extends React.PureComponent {
                 labelMessage={<FormattedMessage {...messages.email} />}
                 width="548px"
                 type="text"
-                validate={[required, email]}
+                validate={[validateRequired, validateEmail]}
               />
               <Field
                 name="phoneNumber"
@@ -155,14 +162,17 @@ export class Settings extends React.PureComponent {
                 labelMessage={<FormattedMessage {...messages.contactNumber} />}
                 width="548px"
                 type="text"
+                normalize={normalizePhone}
+                validate={validatePhoneLength}
               />
               <Field
                 name="oldPassword"
+                type="password"
                 component={InputFieldRow}
                 placeholder="Enter password to save changes"
                 labelMessage={<FormattedMessage {...messages.password} />}
                 width="548px"
-                validate={required}
+                validate={validateRequired}
               />
               <Field
                 name="newPassword"

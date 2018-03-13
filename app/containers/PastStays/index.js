@@ -42,7 +42,6 @@ import SearchContainer from './SearchContainer';
 // eslint-disable-next-line react/prefer-stateless-function
 export class PastStays extends React.PureComponent {
   componentDidMount() {
-    console.log('the hotel id?? ', this.props.hotelId);
     this.props.fetchStays(this.props.hotelId);
   }
 

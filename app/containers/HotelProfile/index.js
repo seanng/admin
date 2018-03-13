@@ -8,12 +8,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-import { reduxForm, Field, change } from 'redux-form/immutable';
+import { reduxForm, Field, change, reset } from 'redux-form/immutable';
 import PlacesAutocomplete, {
   geocodeByPlaceId,
   getLatLng,
 } from 'react-places-autocomplete';
-import { required } from 'utils/validators';
+import { validateRequired } from 'utils/validators';
 import { selectHotelId } from 'containers/App/selectors';
 import TrashIcon from 'react-icons/lib/md/delete';
 import CrosshairIcon from 'react-icons/lib/md/add';
@@ -22,9 +22,8 @@ import ImageFile from 'components/ImageFile';
 import AmenitiesModal from 'components/AmenitiesModal';
 import {
   getHotelInfo,
-  setEditingMode,
-  cancelEditingMode,
   saveHotelProfile,
+  toggleEditingMode,
   selectAmenity,
   toggleAmenitiesModal,
 } from './actions';
@@ -80,9 +79,16 @@ export class HotelProfile extends React.PureComponent {
   handleSaveHotelProfile = () => {
     // 1. handle validation checks
     // 2. if pass, save hotel profile;
+    const costPerHour = this.props.formState.getIn([
+      'hotelProfile',
+      'values',
+      'costPerHour',
+    ]);
     const data = this.props.formState
+      .setIn(['hotelProfile', 'values', 'costPerMinute'], costPerHour / 60)
       .getIn(['hotelProfile', 'values'])
       .map(el => (el === '' ? null : el));
+    console.log('the data??? ', data);
     this.props.saveHotelProfile(data);
   };
 
@@ -132,6 +138,13 @@ export class HotelProfile extends React.PureComponent {
   };
 
   handleCloseAmenitiesModal = () => this.props.toggleAmenitiesModal(false, []);
+
+  handleSetEditingMode = () => this.props.toggleEditingMode(true);
+
+  handleCancelEditingMode = () => {
+    this.props.dispatch(reset('hotelProfile'));
+    this.props.toggleEditingMode(false);
+  };
 
   movePhoto = (dragIndex, hoverIndex) => {
     const photos = this.getFormValueOf('photos');
@@ -189,17 +202,9 @@ export class HotelProfile extends React.PureComponent {
             component={InputFieldRow}
             labelMessage={<FormattedMessage {...messages.ratePerHour} />}
             placeholder="Input Desired Hourly Charge"
+            validate={[validateRequired]}
             type="number"
             width="380px"
-          />
-          <Field
-            name="costPerMinute"
-            component={InputFieldRow}
-            labelMessage={<FormattedMessage {...messages.ratePerMinute} />}
-            placeholder="Input Desired Charge Per Minute"
-            type="number"
-            width="380px"
-            next
           />
           <Field
             component={InputFieldRow}
@@ -207,6 +212,7 @@ export class HotelProfile extends React.PureComponent {
             name="costMinCharge"
             type="number"
             placeholder="Input Desired Minimum Charge"
+            validate={validateRequired}
             width="380px"
             next
           />
@@ -217,7 +223,7 @@ export class HotelProfile extends React.PureComponent {
             type="text"
             placeholder="Input Room Type"
             width="380px"
-            validate={required}
+            validate={validateRequired}
             next
           />
           <RowWrapper next>
@@ -291,9 +297,9 @@ export class HotelProfile extends React.PureComponent {
               </div>
               <div>
                 {this.props.initialValues.get('costCurrency')}{' '}
-                {Number(
-                  this.props.initialValues.get('costPerMinute')
-                ).toFixed()}{' '}
+                {Number(this.props.initialValues.get('costPerMinute')).toFixed(
+                  2
+                )}{' '}
                 / <FormattedMessage {...messages.minute} />
               </div>
             </RatesWrapper>
@@ -374,7 +380,7 @@ export class HotelProfile extends React.PureComponent {
             {this.props.initialValues.get('name')}
           </HotelName>
           {this.props.isEditingMode &&
-            <HeadButton onClick={this.props.cancelEditingMode}>
+            <HeadButton onClick={this.handleCancelEditingMode}>
               <FormattedMessage {...messages.cancel} />
             </HeadButton>}
           {this.props.isEditingMode &&
@@ -386,7 +392,7 @@ export class HotelProfile extends React.PureComponent {
               <FormattedMessage {...messages.save} />
             </HeadButton>}
           {!this.props.isEditingMode &&
-            <HeadButton primary onClick={this.props.setEditingMode}>
+            <HeadButton primary onClick={this.handleSetEditingMode}>
               <FormattedMessage {...messages.edit} />
             </HeadButton>}
         </Head>
@@ -465,8 +471,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = {
-  setEditingMode,
-  cancelEditingMode,
+  toggleEditingMode,
   saveHotelProfile,
   getHotelInfo,
   selectAmenity,

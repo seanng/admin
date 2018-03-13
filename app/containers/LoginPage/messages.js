@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  contactSupport: {
+    id: 'app.components.LoginPage.contactSupport',
+    defaultMessage: 'Contact Support:',
+  },
   email: {
     id: 'app.components.LoginPage.email',
     defaultMessage: 'Email',

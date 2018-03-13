@@ -28,6 +28,8 @@ import FormGroup from './FormGroup';
 import ButtonRow from './ButtonRow';
 import Button from './Button';
 import Card from './Card';
+import ContactSupportWrapper from './ContactSupportWrapper';
+import ContactLabel from './ContactLabel';
 
 const validateMinLength8 = validateMinLength(8);
 
@@ -84,6 +86,11 @@ export class LoginPage extends React.PureComponent {
               {this.props.loginErrorMsg}
             </ValidationErrorMessage>}
         </Card>
+        <ContactSupportWrapper>
+          <ContactLabel regular>
+            +808 3456 2121 | support@havenapp.co
+          </ContactLabel>
+        </ContactSupportWrapper>
       </Container>
     );
   }

@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { isValid } from 'redux-form/immutable';
 
 /**
  * Direct selector to the loginPage state domain
@@ -6,15 +7,17 @@ import { createSelector } from 'reselect';
 const selectLoginPageDomain = () => state => state.get('loginPage');
 
 /**
- * Other specific selectors
+ * Form selectors
  */
+
+export const selectIsFormValid = () => state => isValid('login')(state);
+export const selectFormDomain = () => state => state.get('form');
 
 /**
  * Default selector used by LoginPage
  */
 
-const makeSelectLoginPage = () =>
-  createSelector(selectLoginPageDomain(), substate => substate.toJS());
+export const selectLoginErrorMsg = () =>
+  createSelector(selectLoginPageDomain(), substate => substate.get('error'));
 
-export default makeSelectLoginPage;
 export { selectLoginPageDomain };

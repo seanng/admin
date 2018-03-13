@@ -6,16 +6,30 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { reduxForm, Field } from 'redux-form/immutable';
 import { createStructuredSelector } from 'reselect';
-import colors from 'themes/colors';
-import Card from 'components/Card';
-import Button from 'components/Button';
+import { FormattedMessage } from 'react-intl';
 import H5 from 'components/fonts/H5';
+import {
+  validateEmail,
+  validateRequired,
+  validateMinLength,
+} from 'utils/validators';
+import messages from './messages';
 import { handleInputChange, logIn } from './actions';
-import makeSelectLoginPage from './selectors';
+import {
+  selectFormDomain,
+  selectIsFormValid,
+  selectLoginErrorMsg,
+} from './selectors';
+import ValidationErrorMessage from './ValidationErrorMessage';
 import Container from './Container';
 import FormGroup from './FormGroup';
 import ButtonRow from './ButtonRow';
+import Button from './Button';
+import Card from './Card';
+
+const validateMinLength8 = validateMinLength(8);
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class LoginPage extends React.PureComponent {
@@ -26,40 +40,49 @@ export class LoginPage extends React.PureComponent {
   };
 
   handleLogin = () => {
-    const { email, password } = this.props.LoginPage;
+    const email = this.props.formState.getIn(['login', 'values', 'email']);
+    const password = this.props.formState.getIn([
+      'login',
+      'values',
+      'password',
+    ]);
     this.props.logIn({ email, password });
   };
 
+  handleValidationCheck = () => !this.props.isFormValid;
+
   render() {
-    const { email, password } = this.props.LoginPage;
     return (
       <Container>
-        <Card maxWidth="28rem">
+        <Card>
           <H5 mb={2.5}>Sign in to continue</H5>
-          <FormGroup
-            label="Email"
-            inputType="text"
-            inputValue={email}
-            onInputChange={this.handleInputChange}
+          <Field
+            component={FormGroup}
+            labelMessage={<FormattedMessage {...messages.email} />}
+            validate={[validateRequired, validateEmail]}
+            type="text"
+            name="email"
           />
-          <FormGroup
-            label="Password"
-            inputType="password"
-            inputValue={password}
-            onInputChange={this.handleInputChange}
+          <Field
+            component={FormGroup}
+            labelMessage={<FormattedMessage {...messages.password} />}
+            validate={[validateMinLength8, validateRequired]}
+            type="password"
+            name="password"
           />
           <ButtonRow>
-            <Button bgColor={colors.base2} textColor={colors.lightGray} mr={1}>
-              Register
-            </Button>
             <Button
-              bgColor={colors.support}
-              textColor={colors.lightGray}
               onClick={this.handleLogin}
+              width="100%"
+              disabled={this.handleValidationCheck()}
             >
-              Sign In
+              <FormattedMessage {...messages.signIn} />
             </Button>
           </ButtonRow>
+          {this.props.loginErrorMsg &&
+            <ValidationErrorMessage big>
+              {this.props.loginErrorMsg}
+            </ValidationErrorMessage>}
         </Card>
       </Container>
     );
@@ -67,15 +90,18 @@ export class LoginPage extends React.PureComponent {
 }
 
 const mapStateToProps = createStructuredSelector({
-  LoginPage: makeSelectLoginPage(),
+  formState: selectFormDomain(),
+  isFormValid: selectIsFormValid(),
+  loginErrorMsg: selectLoginErrorMsg(),
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-    logIn: info => dispatch(logIn(info)),
-    handleInputChange: (key, value) => dispatch(handleInputChange(key, value)),
-  };
-}
+const mapDispatchToProps = {
+  logIn,
+  handleInputChange,
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  reduxForm({
+    form: 'login',
+  })(LoginPage)
+);

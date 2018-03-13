@@ -1,23 +1,28 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import Input from 'components/Input';
+import messages from '../App/messages';
+import ValidationErrorMessage from './ValidationErrorMessage';
 
 const Wrapper = styled.div`margin-bottom: 1.5rem;`;
 
 const Label = styled.div`margin-bottom: 0.5rem;`;
 
-function FormGroup({ label, inputType, inputValue, onInputChange }) {
+function FormGroup({ labelMessage, input, meta, ...props }) {
   return (
     <Wrapper>
       <Label>
-        {label}
+        {labelMessage}
       </Label>
-      <Input
-        type={inputType}
-        value={inputValue}
-        onChange={onInputChange}
-        name={label}
-      />
+      <div>
+        <Input {...input} {...props} />
+        {meta.touched &&
+          meta.error &&
+          <ValidationErrorMessage>
+            <FormattedMessage {...messages[meta.error]} />
+          </ValidationErrorMessage>}
+      </div>
     </Wrapper>
   );
 }

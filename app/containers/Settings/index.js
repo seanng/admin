@@ -19,9 +19,10 @@ import {
   validateRequired,
   validateEmail,
   validatePhoneLength,
+  validateMinLength,
 } from 'utils/validators';
 import { normalizePhone, normalizeName } from 'utils/normalizers';
-import { formNotReady, validateMinLength } from 'utils/helpers';
+import { formNotReady } from 'utils/helpers';
 import { displayConfirmUndo } from './actions';
 import {
   selectIsFormDirty,

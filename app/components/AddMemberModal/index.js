@@ -30,6 +30,8 @@ import OpacityLayer from './OpacityLayer';
 import modalStyle from './modalStyle';
 import messages from './messages';
 
+const validateMinLength2 = validateMinLength(2);
+
 function AddMemberModal({
   closeModal,
   isOpen,
@@ -80,7 +82,7 @@ function AddMemberModal({
             placeholder="eg. Jack"
             normalize={normalizeName}
             width="265px"
-            validate={[validateRequired, validateMinLength(2)]}
+            validate={[validateRequired, validateMinLength2]}
           />
           <Field
             component={AddMemberRow}
@@ -90,7 +92,7 @@ function AddMemberModal({
             placeholder="eg. Bauer"
             width="265px"
             normalize={normalizeName}
-            validate={[validateRequired, validateMinLength(2)]}
+            validate={[validateRequired, validateMinLength2]}
           />
           <Field
             component={AddMemberRow}

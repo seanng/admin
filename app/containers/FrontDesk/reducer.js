@@ -120,6 +120,9 @@ function frontDeskReducer(state = initialState, action) {
       const getRoomIndex = room => room.get('id') === action.booking.id;
       return state.mergeIn(['rooms', rooms.findIndex(getRoomIndex)], {
         status: mapToRoomStatus(action.booking.status),
+        customerId: action.booking.customerId,
+        customerName: action.booking.customerName,
+        bookingTime: action.booking.bookingTime,
       });
     }
 

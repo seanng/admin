@@ -5,17 +5,14 @@ const { validateToken } = require('../../db/helpers');
 
 module.exports = (client, action) =>
   new Promise((resolve, reject) => {
-    const { token, stayId, customerName } = action;
+    const { token, stayId } = action;
     validateToken(token, (err, tokenInfo) => {
       room
         .checkOut(stayId, tokenInfo.userId)
         .then(data => {
           emitToHotel(io, action.hotelId, {
             type: 'app/FrontDesk/SOCKET_CHECK_OUT',
-            data: {
-              ...data,
-              customerName,
-            },
+            stayId,
           });
           reply(client, {
             type: 'CHECK_OUT_BOOKING_SUCCESS',

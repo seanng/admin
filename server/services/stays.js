@@ -24,7 +24,7 @@ const fetchActive = hotelId =>
     ],
   });
 
-const fetchHistory = hotelId =>
+const fetchHotelHistory = hotelId =>
   Stay.findAll({
     attributes: [
       'id',
@@ -39,10 +39,30 @@ const fetchHistory = hotelId =>
       hotelId,
       status: 'CHECKED_OUT',
     },
-    include: [Customer, Hotel],
+    include: [Customer],
+  });
+
+const fetchCustomerHistory = customerId =>
+  Stay.findAll({
+    attributes: [
+      'id',
+      'bookingTime',
+      'checkInTime',
+      'checkOutTime',
+      'roomNumber',
+      'roomCharge',
+      'totalCharge',
+      'roomType',
+    ],
+    where: {
+      customerId,
+      status: 'CHECKED_OUT',
+    },
+    include: [Hotel],
   });
 
 module.exports = {
   fetchActive,
-  fetchHistory,
+  fetchHotelHistory,
+  fetchCustomerHistory,
 };

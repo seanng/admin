@@ -15,7 +15,7 @@ const resolve = require('path').resolve;
 const app = require('express')();
 const io = require('./io');
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(
   morgan(':method :url :status :response-time ms - :res[content-length]')
 );

@@ -217,7 +217,9 @@
     "testRegex": "tests/.*\\.test\\.js$"
   },
   "dependencies": {
+    "@google-cloud/storage": "^1.6.0",
     "@sendgrid/mail": "^6.1.2",
+    "b64-to-blob": "^1.2.19",
     "babel-polyfill": "6.20.0",
     "bcrypt-nodejs": "^0.0.3",
     "bluebird": "^3.5.0",

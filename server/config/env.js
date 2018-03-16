@@ -9,6 +9,9 @@ const config = {
     password: process.env.POSTGRES_PASSWORD,
     dbName: process.env.POSTGRES_DB_NAME,
   },
+  gcs: {
+    projectId: process.env.GCS_PROJECT_ID,
+  },
 };
 
 const getConfigurationValue = key => _.get(config, key);

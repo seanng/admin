@@ -17,3 +17,6 @@ npm-debug.log
 
 #vscode
 .vscode
+
+#googlecloudstorage-key
+GCS-key.json

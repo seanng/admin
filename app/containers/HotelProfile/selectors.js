@@ -27,11 +27,6 @@ export const selectHotelInfo = () =>
     substate.get('hotelInfo')
   );
 
-export const selectEditedHotelInfo = () =>
-  createSelector(selectHotelProfileDomain(), substate =>
-    substate.get('editedHotelInfo')
-  );
-
 export const selectHasLoaded = () =>
   createSelector(selectHotelProfileDomain(), substate =>
     substate.get('hasLoaded')
@@ -50,6 +45,11 @@ export const selectIsAmenitiesModalOpen = () =>
 export const selectSelectedAmenities = () =>
   createSelector(selectHotelProfileDomain(), substate =>
     substate.get('selectedAmenities')
+  );
+
+export const selectRemovedPhotos = () =>
+  createSelector(selectHotelProfileDomain(), substate =>
+    substate.get('removedPhotos')
   );
 
 const makeSelectHotelProfile = () =>

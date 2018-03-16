@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { reduxForm, Field, change, reset } from 'redux-form/immutable';
+import b64ToBlob from 'b64-to-blob';
 import PlacesAutocomplete, {
   geocodeByPlaceId,
   getLatLng,
@@ -26,17 +27,20 @@ import {
   toggleEditingMode,
   selectAmenity,
   toggleAmenitiesModal,
+  addRemovedPhoto,
+  restoreRemovedPhotos,
+  eraseRemovedPhotos,
 } from './actions';
 import {
   selectFormDomain,
   selectHotelInfo,
-  selectEditedHotelInfo,
   selectHasLoaded,
   selectIsEditingMode,
   selectIsAmenitiesModalOpen,
   selectSelectedAmenities,
   selectIsFormDirty,
   selectIsFormValid,
+  selectRemovedPhotos,
 } from './selectors';
 import Container from './Container';
 import Head from './Head';
@@ -76,20 +80,48 @@ export class HotelProfile extends React.PureComponent {
   updateForm = (key, value) =>
     this.props.dispatch(change('hotelProfile', key, value));
 
-  handleSaveHotelProfile = () => {
-    // 1. handle validation checks
-    // 2. if pass, save hotel profile;
-    const costPerHour = this.props.formState.getIn([
+  compileRequestData = formState => {
+    let shouldHandleImageBlobs = false;
+    const costPerHour = formState.getIn([
       'hotelProfile',
       'values',
       'costPerHour',
     ]);
-    const data = this.props.formState
+    const data = formState
       .setIn(['hotelProfile', 'values', 'costPerMinute'], costPerHour / 60)
       .getIn(['hotelProfile', 'values'])
-      .map(el => (el === '' ? null : el));
-    console.log('the data??? ', data);
-    this.props.saveHotelProfile(data);
+      .map(el => (el === '' ? null : el))
+      .update('photos', photos =>
+        photos.map(photo => {
+          if (photo.search('data:image') === -1) {
+            return photo;
+          }
+          const base64ImageContent = photo.replace(
+            /^data:image\/(png|jpg|jpeg);base64,/,
+            ''
+          );
+          shouldHandleImageBlobs = true;
+          return b64ToBlob(base64ImageContent, 'image/png');
+        })
+      );
+    return {
+      data,
+      shouldHandleImageBlobs,
+    };
+  };
+
+  handleSaveHotelProfile = () => {
+    // 1. handle validation checks
+    // 2. if pass, save hotel profile;
+    const {
+      formState,
+      saveHotelProfile: saveProfile,
+      removedPhotos,
+      eraseRemovedPhotos: erasePhotos,
+    } = this.props;
+    const { data, shouldHandleImageBlobs } = this.compileRequestData(formState);
+    removedPhotos.size > 0 && erasePhotos(removedPhotos);
+    saveProfile(data, shouldHandleImageBlobs);
   };
 
   handleAutocompleteChange = input => {
@@ -121,7 +153,9 @@ export class HotelProfile extends React.PureComponent {
     // 1. TODO: confirmation - are you sure you want to delete?
     // 2. if okay, delete photo.
     const photos = this.getFormValueOf('photos');
+    const photoUrl = photos.get(index);
     this.updateForm('photos', photos.delete(index));
+    this.props.addRemovedPhoto(photoUrl);
   };
 
   handleOpenAmenitiesModal = () =>
@@ -143,6 +177,7 @@ export class HotelProfile extends React.PureComponent {
 
   handleCancelEditingMode = () => {
     this.props.dispatch(reset('hotelProfile'));
+    this.props.restoreRemovedPhotos();
     this.props.toggleEditingMode(false);
   };
 
@@ -459,7 +494,6 @@ export class HotelProfile extends React.PureComponent {
 
 const mapStateToProps = createStructuredSelector({
   initialValues: selectHotelInfo(),
-  editedHotelInfo: selectEditedHotelInfo(),
   hotelId: selectHotelId(),
   hasLoaded: selectHasLoaded(),
   isEditingMode: selectIsEditingMode(),
@@ -468,6 +502,7 @@ const mapStateToProps = createStructuredSelector({
   selectedAmenities: selectSelectedAmenities(),
   isFormDirty: selectIsFormDirty(),
   isFormValid: selectIsFormValid(),
+  removedPhotos: selectRemovedPhotos(),
 });
 
 const mapDispatchToProps = {
@@ -476,6 +511,9 @@ const mapDispatchToProps = {
   getHotelInfo,
   selectAmenity,
   toggleAmenitiesModal,
+  addRemovedPhoto,
+  restoreRemovedPhotos,
+  eraseRemovedPhotos,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(

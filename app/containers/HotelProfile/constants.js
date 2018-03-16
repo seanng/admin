@@ -8,6 +8,8 @@
 
 export const GET_HOTEL_INFO = 'H_IO_GET_HOTEL_INFO';
 export const SAVE_HOTEL_PROFILE = 'H_IO_SAVE_HOTEL_PROFILE';
+export const ERASE_REMOVED_PHOTOS = 'H_IO_ERASE_REMOVED_PHOTOS';
+
 export const SAVE_HOTEL_PROFILE_SUCCESS =
   'app/HotelProfile/SAVE_HOTEL_PROFILE_SUCCESS';
 
@@ -18,3 +20,5 @@ export const EDIT_HOTEL_INFO = 'app/HotelProfile/EDIT_HOTEL_INFO';
 export const TOGGLE_EDITING_MODE = 'app/HotelProfile/TOGGLE_EDITING_MODE';
 export const SELECT_AMENITY = 'app/HotelProfile/SELECT_AMENITY';
 export const TOGGLE_AMENITIES_MODAL = 'app/HotelProfile/TOGGLE_AMENITIES_MODAL';
+export const ADD_REMOVED_PHOTO = 'app/HotelProfile/ADD_REMOVED_PHOTO';
+export const RESTORE_REMOVED_PHOTOS = 'app/HotelProfile/RESTORE_REMOVED_PHOTOS';

@@ -12,6 +12,8 @@ import {
   SAVE_HOTEL_PROFILE_SUCCESS,
   TOGGLE_AMENITIES_MODAL,
   SELECT_AMENITY,
+  ADD_REMOVED_PHOTO,
+  RESTORE_REMOVED_PHOTOS,
 } from './constants';
 
 const initialState = fromJS({
@@ -20,6 +22,7 @@ const initialState = fromJS({
   hotelInfo: {},
   selectedAmenities: [],
   isAmenitiesModalOpen: false,
+  removedPhotos: [],
 });
 
 function hotelProfileReducer(state = initialState, action) {
@@ -62,6 +65,14 @@ function hotelProfileReducer(state = initialState, action) {
         isAmenitiesModalOpen: action.shouldDisplay,
         selectedAmenities: action.amenities,
       });
+
+    case ADD_REMOVED_PHOTO:
+      return state.update('removedPhotos', removedPhotos =>
+        removedPhotos.set(removedPhotos.size, action.photoUrl)
+      );
+
+    case RESTORE_REMOVED_PHOTOS:
+      return state.merge({ removedPhotos: [] });
 
     default:
       return state;

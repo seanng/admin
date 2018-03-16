@@ -10,6 +10,9 @@ import {
   SAVE_HOTEL_PROFILE,
   SELECT_AMENITY,
   TOGGLE_AMENITIES_MODAL,
+  ADD_REMOVED_PHOTO,
+  RESTORE_REMOVED_PHOTOS,
+  ERASE_REMOVED_PHOTOS,
 } from './constants';
 
 export function getHotelInfo(id) {
@@ -26,10 +29,11 @@ export function toggleEditingMode(isEditingMode) {
   };
 }
 
-export function saveHotelProfile(hotelInfo) {
+export function saveHotelProfile(hotelInfo, shouldHandleImageBlobs) {
   return {
     type: SAVE_HOTEL_PROFILE,
     hotelInfo,
+    shouldHandleImageBlobs,
   };
 }
 
@@ -45,5 +49,25 @@ export function toggleAmenitiesModal(shouldDisplay, amenities) {
     type: TOGGLE_AMENITIES_MODAL,
     shouldDisplay,
     amenities,
+  };
+}
+
+export function addRemovedPhoto(photoUrl) {
+  return {
+    type: ADD_REMOVED_PHOTO,
+    photoUrl,
+  };
+}
+
+export function restoreRemovedPhotos() {
+  return {
+    type: RESTORE_REMOVED_PHOTOS,
+  };
+}
+
+export function eraseRemovedPhotos(photos) {
+  return {
+    type: ERASE_REMOVED_PHOTOS,
+    photos,
   };
 }

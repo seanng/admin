@@ -20,7 +20,10 @@ const Customer = sequelize.define('customer', {
   lastName: Sequelize.STRING,
   email: { type: Sequelize.STRING, unique: true },
   phoneNumber: Sequelize.STRING,
-  avatarUrl: Sequelize.STRING,
+  avatarUrl: {
+    type: Sequelize.STRING,
+    defaultValue: 'https://d30y9cdsu7xlg0.cloudfront.net/png/547789-200.png',
+  },
   accountStatus: Sequelize.INTEGER,
   paymentAuthStatus: Sequelize.INTEGER,
   stripeKey: Sequelize.STRING, // <-- this needs to be looked into further

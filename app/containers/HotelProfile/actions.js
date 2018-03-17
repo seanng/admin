@@ -12,7 +12,7 @@ import {
   TOGGLE_AMENITIES_MODAL,
   ADD_REMOVED_PHOTO,
   RESTORE_REMOVED_PHOTOS,
-  ERASE_REMOVED_PHOTOS,
+  ERASE_HOTEL_PHOTOS,
 } from './constants';
 
 export function getHotelInfo(id) {
@@ -65,9 +65,9 @@ export function restoreRemovedPhotos() {
   };
 }
 
-export function eraseRemovedPhotos(photos) {
+export function eraseHotelPhotos(photos) {
   return {
-    type: ERASE_REMOVED_PHOTOS,
+    type: ERASE_HOTEL_PHOTOS,
     photos,
   };
 }

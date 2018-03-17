@@ -29,7 +29,7 @@ import {
   toggleAmenitiesModal,
   addRemovedPhoto,
   restoreRemovedPhotos,
-  eraseRemovedPhotos,
+  eraseHotelPhotos,
 } from './actions';
 import {
   selectFormDomain,
@@ -513,7 +513,7 @@ const mapDispatchToProps = {
   toggleAmenitiesModal,
   addRemovedPhoto,
   restoreRemovedPhotos,
-  eraseRemovedPhotos,
+  eraseHotelPhotos,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(

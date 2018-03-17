@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { isDirty } from 'redux-form/immutable';
+import { isDirty, isValid } from 'redux-form/immutable';
 
 /**
  * Direct selector to the settings state domain
@@ -11,7 +11,7 @@ const selectSettingsDomain = () => state => state.get('settings');
  */
 
 export const selectIsFormDirty = () => state => isDirty('settings')(state);
-
+export const selectIsFormValid = () => state => isValid('settings')(state);
 export const selectFormDomain = () => state => state.get('form');
 
 /**

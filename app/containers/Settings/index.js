@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { reduxForm, Field, change, reset } from 'redux-form/immutable';
+import b64ToBlob from 'b64-to-blob';
 import TrashIcon from 'react-icons/lib/md/delete';
 import CrosshairIcon from 'react-icons/lib/md/add';
 import AddPhotoCard from 'components/AddPhotoCard';
@@ -23,9 +24,14 @@ import {
 } from 'utils/validators';
 import { normalizePhone, normalizeName } from 'utils/normalizers';
 import { formNotReady } from 'utils/helpers';
-import { displayConfirmUndo } from './actions';
+import {
+  displayConfirmUndo,
+  eraseEmployeePhoto,
+  saveEmployeeProfile,
+} from './actions';
 import {
   selectIsFormDirty,
+  selectIsFormValid,
   selectFormDomain,
   selectShouldDisplayConfirmationModal,
 } from './selectors';
@@ -42,10 +48,38 @@ import InputFieldRow from './InputFieldRow';
 import ContactSupportContainer from './ContactSupportContainer';
 import ContactLabel from './ContactLabel';
 
+const validateMinLength2 = validateMinLength(2);
+
 // eslint-disable-next-line react/prefer-stateless-function
 export class Settings extends React.PureComponent {
-  shouldDisableSaveButton = () =>
-    !this.props.formState.getIn(['settings', 'values', 'photoUrl']);
+  compileUserInfo = (updatedProfile, initialProfile) => {
+    let shouldHandleImageBlob = false;
+    let shouldEraseOldPhoto = false;
+    let profile = updatedProfile;
+    const oldPhoto = initialProfile.get('photoUrl');
+    const newPhoto = updatedProfile.get('photoUrl');
+    const isOldPhotoFromBucket =
+      oldPhoto && oldPhoto.split('https://storage.googleapis.com/').length > 1;
+    if (isOldPhotoFromBucket && oldPhoto !== newPhoto) {
+      shouldEraseOldPhoto = true;
+    }
+    if (newPhoto && newPhoto !== oldPhoto) {
+      shouldHandleImageBlob = true;
+      const base64ImageContent = newPhoto.replace(
+        /^data:image\/(png|jpg|jpeg);base64,/,
+        ''
+      );
+      const photoBlob = b64ToBlob(base64ImageContent, 'image/png');
+      profile = updatedProfile.set('photoUrl', photoBlob);
+      console.log('the new profile?? ', updatedProfile);
+    }
+    return {
+      shouldHandleImageBlob,
+      shouldEraseOldPhoto,
+      oldPhoto,
+      profile,
+    };
+  };
 
   handlePhotoRemove = () =>
     this.props.dispatch(change('settings', 'photoUrl', null));
@@ -72,7 +106,27 @@ export class Settings extends React.PureComponent {
     this.props.displayConfirmUndo(true);
   };
 
-  handleSaveClick = () => {};
+  handleSaveClick = () => {
+    const {
+      formState,
+      initialValues,
+      saveEmployeeProfile: saveProfile,
+      eraseEmployeePhoto: erasePhoto,
+    } = this.props;
+    const {
+      shouldHandleImageBlob,
+      shouldEraseOldPhoto,
+      oldPhoto,
+      profile,
+    } = this.compileUserInfo(
+      formState.getIn(['settings', 'values']),
+      initialValues
+    );
+    if (shouldEraseOldPhoto) {
+      erasePhoto(oldPhoto);
+    }
+    saveProfile(profile, shouldHandleImageBlob);
+  };
 
   render() {
     if (formNotReady(this.props.formState, 'settings')) {
@@ -99,8 +153,8 @@ export class Settings extends React.PureComponent {
           {this.props.isDirty &&
             <HeadButton
               primary
-              disabled={this.shouldDisableSaveButton}
-              onClick={this.props.handleSaveClick}
+              disabled={!this.props.isValid}
+              onClick={this.handleSaveClick}
             >
               <FormattedMessage {...messages.save} />
             </HeadButton>}
@@ -135,7 +189,7 @@ export class Settings extends React.PureComponent {
                 width="548px"
                 type="text"
                 normalize={normalizeName}
-                validate={[validateRequired, validateMinLength]}
+                validate={[validateRequired, validateMinLength2]}
               />
               <Field
                 name="lastName"
@@ -145,7 +199,7 @@ export class Settings extends React.PureComponent {
                 width="548px"
                 type="text"
                 normalize={normalizeName}
-                validate={[validateRequired, validateMinLength]}
+                validate={[validateRequired, validateMinLength2]}
               />
               <Field
                 name="email"
@@ -212,12 +266,15 @@ export class Settings extends React.PureComponent {
 const mapStateToProps = createStructuredSelector({
   initialValues: selectUserPermanent(),
   isDirty: selectIsFormDirty(),
+  isValid: selectIsFormValid(),
   shouldDisplayConfirmUndo: selectShouldDisplayConfirmationModal(),
   formState: selectFormDomain(),
 });
 
 const mapDispatchToProps = {
   displayConfirmUndo,
+  eraseEmployeePhoto,
+  saveEmployeeProfile,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(

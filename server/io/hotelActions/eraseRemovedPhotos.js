@@ -1,4 +1,4 @@
-const { deleteFromCloudStorage } = require('../../services/imageHosting');
+const { erasePhotosArray } = require('../../services/imageHosting');
 const { reply } = require('../helpers');
 
 const handleSuccess = client =>
@@ -13,9 +13,8 @@ const handleFail = (client, error) =>
   });
 
 module.exports = (client, action) =>
-  new Promise((resolve, reject) => {
-    console.log('the photos?? ', action.photos);
-    return deleteFromCloudStorage(action.photos)
+  new Promise((resolve, reject) =>
+    erasePhotosArray(action.photos)
       .then(() => resolve(handleSuccess(client)))
-      .catch(error => reject(handleFail(client, error)));
-  });
+      .catch(error => reject(handleFail(client, error)))
+  );

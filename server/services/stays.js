@@ -39,7 +39,7 @@ const fetchHotelHistory = hotelId =>
       hotelId,
       status: 'CHECKED_OUT',
     },
-    include: [Customer],
+    include: [Customer, Hotel],
   });
 
 const fetchCustomerHistory = customerId =>

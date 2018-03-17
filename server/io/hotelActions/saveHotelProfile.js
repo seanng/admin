@@ -7,7 +7,7 @@ const {
 } = require('../../services/imageHosting');
 const { reply } = require('../helpers');
 
-const getImageUrls = oldPhotos =>
+const getImageUrls = (oldPhotos, hotelId) =>
   Promise.map(oldPhotos, oldPhoto => {
     const containsUrl =
       typeof oldPhoto === 'string' && oldPhoto.search('http') === 0;
@@ -15,7 +15,7 @@ const getImageUrls = oldPhotos =>
       return oldPhoto;
     }
     return createFile(oldPhoto)
-      .then(data => sendUploadToGCS(data, 'hotelProfile'))
+      .then(data => sendUploadToGCS(data, `hotels/profiles/${hotelId}`))
       .then(gcsname => getPublicUrl(gcsname))
       .then(photoUrl => photoUrl);
   });
@@ -41,7 +41,7 @@ module.exports = (client, action) =>
         .then(info => resolve(handleSuccess(info, client)))
         .catch(error => reject(handleFail(error, client)));
     }
-    return getImageUrls(hotelInfo.photos).then(photos => {
+    return getImageUrls(hotelInfo.photos, hotelInfo.id).then(photos => {
       hotelInfo.photos = photos;
       return hotel
         .updateProfile(hotelInfo)

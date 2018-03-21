@@ -4,6 +4,7 @@ const { getConfigurationValue } = require('../config/env');
 const BUCKET_NAME = 'haven-server-images';
 const fs = Promise.promisifyAll(require('fs'));
 const keyFilenamePath = 'GCS-key.json';
+const logger = require('../logger');
 
 const storage = Storage({
   projectId: getConfigurationValue('gcs').projectId,
@@ -21,16 +22,36 @@ const getInfoFromUrl = url => {
 };
 
 const createFile = blob =>
-  new Promise(resolve => {
+  new Promise((resolve, reject) => {
     const path = `${__dirname}/temp.png`;
     const fileStream = fs.createWriteStream(path);
     fileStream.write(blob);
     fileStream.end(() => {
       fs.readFile(path, (err, data) => {
+        if (err) {
+          logger.error('error in fs.readFile', err);
+          reject(err);
+        }
         fs.unlink(path);
         resolve(data);
       });
     });
+  }).catch(createFileErr => {
+    logger.error('error in createFile', createFileErr);
+  });
+
+const decodeBase64Image = dataString =>
+  new Promise((resolve, reject) => {
+    const matches = dataString.match(/^data:([A-Za-z-+/]+);base64,(.+)$/);
+    const response = {};
+
+    if (matches.length !== 3) {
+      return reject(new Error('Invalid input string'));
+    }
+
+    response.type = matches[1];
+    response.data = new Buffer(matches[2], 'base64');
+    return resolve(response.data);
   });
 
 const sendUploadToGCS = (fileBuffer, prefix) =>
@@ -67,4 +88,5 @@ module.exports = {
   sendUploadToGCS,
   erasePhotosArray,
   deletePhotoFromCloudStorage,
+  decodeBase64Image,
 };

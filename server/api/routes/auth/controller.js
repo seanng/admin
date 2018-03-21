@@ -6,7 +6,9 @@ const {
   validateToken,
   getCustomerBookingStatus,
 } = require('../../../db/helpers');
+const { fbRetrieveCustomer } = require('../../../services/customer');
 const rp = require('request-promise');
+const logger = require('../../../logger');
 const controller = {};
 
 controller.postAuth = (res, rej, req) => {
@@ -19,8 +21,10 @@ controller.postAuth = (res, rej, req) => {
       if (err) {
         return rej({ error: 'DB error' });
       } else if (isMatch) {
-        setCustomerSocketId(user.id, socketId);
-        return res({ token: signToken(user.id), user });
+        return getCustomerBookingStatus(user.id).then(data => {
+          setCustomerSocketId(user.id, socketId);
+          return res({ ...data, token: signToken(user.id) });
+        });
       }
       return rej('Invalid password');
     })
@@ -33,7 +37,7 @@ controller.validateToken = function validate(res, rej, req) {
     if (err) {
       return rej({ error: 'Decoding token error' });
     } else if (decoded) {
-      getCustomerBookingStatus(decoded.userId).then(data => {
+      return getCustomerBookingStatus(decoded.userId).then(data => {
         setCustomerSocketId(decoded.userId, socketId);
         if (data) {
           return res(data);
@@ -50,9 +54,8 @@ controller.validateToken = function validate(res, rej, req) {
           }
         });
       });
-    } else {
-      console.log('it aint decoded...', err, 'decoded : ', decoded);
     }
+    logger.error('it aint decoded...', err, 'decoded : ', decoded);
   });
 };
 
@@ -77,32 +80,30 @@ controller.facebook_authenticate = function facebookAuthenticate(
   req
 ) {
   const { accessToken, facebookId, socketId } = req.body;
-  getFbUser(accessToken).then(fbUser => {
-    if (fbUser.id === facebookId) {
-      Customer.findOne({ where: { facebookId: fbUser.id } })
-        .then(customer => {
-          if (customer === null) {
-            Customer.create({
-              firstName: fbUser.first_name,
-              lastName: fbUser.last_name,
-              email: fbUser.email,
-              facebookId: fbUser.id,
-            }).then(newCustomer => {
-              setCustomerSocketId(newCustomer.id, socketId);
-              return res({
-                token: signToken(newCustomer.id),
-                user: newCustomer,
-              });
-            });
-          } else {
-            res({ token: signToken(customer.id), user: customer });
-          }
-        })
-        .catch(rej);
-    } else {
-      rej(new Error('Invalid Access Token'));
-    }
-  });
+  getFbUser(accessToken)
+    .then(fbUser => {
+      if (fbUser.id === facebookId) {
+        return fbRetrieveCustomer(fbUser)
+          .then(({ customer, newlyCreated }) => {
+            setCustomerSocketId(customer.id, socketId);
+            const token = signToken(customer.id);
+            if (newlyCreated) {
+              return res({ ...customer, token });
+            }
+            return getCustomerBookingStatus(customer.id)
+              .then(data => {
+                if (data) {
+                  return res({ ...data, token });
+                }
+                return res({ ...customer, token });
+              })
+              .catch(rej);
+          })
+          .catch(error => console.log('wtf why is there an error??', error));
+      }
+      return rej(new Error('Invalid Access Token'));
+    })
+    .catch(error => logger.error('error in getFBuser!!', error));
 };
 
 module.exports = controller;

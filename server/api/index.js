@@ -1,6 +1,6 @@
 const pretty = require('pretty-error')();
 const routes = require('./routes');
-
+const logger = require('../logger');
 const notFound = { action: null, params: [] };
 
 const reducer = (prev, current) => {
@@ -33,16 +33,15 @@ module.exports = (req, res) => {
       .then(
         result => {
           if (result instanceof Function) {
-            result(res);
-          } else {
-            res.json(result);
+            return result(res);
           }
+          return res.json(result);
         },
         reason => {
           if (reason && reason.redirect) {
             res.redirect(reason.redirect);
           } else {
-            console.error('API ERROR:', pretty.render(reason));
+            logger.error('API ERROR:', pretty.render(reason));
             res.status(reason.status || 500).json(reason);
           }
         }

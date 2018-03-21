@@ -52,33 +52,22 @@ const validateMinLength2 = validateMinLength(2);
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class Settings extends React.PureComponent {
-  compileUserInfo = (updatedProfile, initialProfile) => {
-    let shouldHandleImageBlob = false;
-    let shouldEraseOldPhoto = false;
-    let profile = updatedProfile;
-    const oldPhoto = initialProfile.get('photoUrl');
-    const newPhoto = updatedProfile.get('photoUrl');
-    const isOldPhotoFromBucket =
-      oldPhoto && oldPhoto.split('https://storage.googleapis.com/').length > 1;
-    if (isOldPhotoFromBucket && oldPhoto !== newPhoto) {
-      shouldEraseOldPhoto = true;
-    }
-    if (newPhoto && newPhoto !== oldPhoto) {
-      shouldHandleImageBlob = true;
-      const base64ImageContent = newPhoto.replace(
+  getPhotoBlob = (photo, shouldHandleImageBlob) =>
+    new Promise(resolve => {
+      if (!shouldHandleImageBlob) {
+        return resolve(photo);
+      }
+      const base64ImageContent = photo.replace(
         /^data:image\/(png|jpg|jpeg);base64,/,
         ''
       );
-      const photoBlob = b64ToBlob(base64ImageContent, 'image/png');
-      profile = updatedProfile.set('photoUrl', photoBlob);
-      console.log('the new profile?? ', updatedProfile);
-    }
-    return {
-      shouldHandleImageBlob,
-      shouldEraseOldPhoto,
-      oldPhoto,
-      profile,
-    };
+      return resolve(b64ToBlob(base64ImageContent, 'image/png'));
+    });
+
+  shouldEraseOldPhoto = (oldPhoto, newPhoto) => {
+    const isOldPhotoFromBucket =
+      oldPhoto && oldPhoto.split('https://storage.googleapis.com/').length > 1;
+    return isOldPhotoFromBucket && oldPhoto !== newPhoto;
   };
 
   handlePhotoRemove = () =>
@@ -107,25 +96,21 @@ export class Settings extends React.PureComponent {
   };
 
   handleSaveClick = () => {
-    const {
-      formState,
-      initialValues,
-      saveEmployeeProfile: saveProfile,
-      eraseEmployeePhoto: erasePhoto,
-    } = this.props;
-    const {
-      shouldHandleImageBlob,
-      shouldEraseOldPhoto,
-      oldPhoto,
-      profile,
-    } = this.compileUserInfo(
-      formState.getIn(['settings', 'values']),
-      initialValues
-    );
-    if (shouldEraseOldPhoto) {
-      erasePhoto(oldPhoto);
+    const profile = this.props.formState.getIn(['settings', 'values']);
+    const oldPhoto = this.props.initialValues.get('photoUrl');
+    const newPhoto = profile.get('photoUrl');
+    const shouldHandleImageBlob = newPhoto && newPhoto !== oldPhoto;
+
+    if (this.shouldEraseOldPhoto(oldPhoto, newPhoto)) {
+      this.props.eraseEmployeePhoto(oldPhoto);
     }
-    saveProfile(profile, shouldHandleImageBlob);
+
+    this.getPhotoBlob(newPhoto, shouldHandleImageBlob).then(photoUrl =>
+      this.props.saveEmployeeProfile(
+        profile.set('photoUrl', photoUrl),
+        shouldHandleImageBlob
+      )
+    );
   };
 
   render() {

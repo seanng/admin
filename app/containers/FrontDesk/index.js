@@ -84,8 +84,8 @@ export class FrontDesk extends React.PureComponent {
   };
 
   handleAddRoom = () => {
-    const { createRoom: addRoom, addRoomInput: input } = this.props;
-    addRoom(input);
+    const { createRoom: addRoom, addRoomInput: input, hotelId } = this.props;
+    addRoom(hotelId, input);
   };
 
   handleCheckIn = () => {

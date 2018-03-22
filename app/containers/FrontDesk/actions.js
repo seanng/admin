@@ -59,9 +59,10 @@ export function displayRoomOptionsModal(bool) {
   };
 }
 
-export function createRoom(roomNumber) {
+export function createRoom(hotelId, roomNumber) {
   return {
     type: CREATE_ROOM,
+    hotelId,
     roomNumber,
   };
 }

@@ -16,7 +16,7 @@ exports.createPaymentMethod = req => {
     .then(stripeId => createPaymentSource(stripeId, tokenId))
     .then(source => {
       if (isDefaultPaymentMethod) {
-        updatePaymentCustomer(source.customer, { defaultSource: source.id });
+        updatePaymentCustomer(source.customer, { default_source: source.id });
       }
       return source;
     });
@@ -33,7 +33,7 @@ exports.getAllPaymentMethods = req => {
 exports.makeDefaultPaymentMethod = (req, paymentMethodId) => {
   const customerId = validateToken(req.headers.authorization).userId;
   return getCustomerStripeId(customerId).then(stripeId =>
-    updatePaymentCustomer(stripeId, { defaultSource: paymentMethodId })
+    updatePaymentCustomer(stripeId, { default_source: paymentMethodId })
   );
 };
 

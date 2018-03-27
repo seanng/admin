@@ -1,6 +1,6 @@
 const { Customer } = require('../db/models');
 
-const updateProfile = profile =>
+exports.updateProfile = profile =>
   Customer.update(profile, {
     where: { id: profile.id },
     returning: true,
@@ -8,7 +8,7 @@ const updateProfile = profile =>
     raw: true,
   }).then(data => data[1]);
 
-const fbRetrieveCustomer = fbUser =>
+exports.fbRetrieveCustomer = fbUser =>
   Customer.findOrCreate({
     where: { email: fbUser.email },
     returning: true,
@@ -27,8 +27,3 @@ const fbRetrieveCustomer = fbUser =>
       newlyCreated: data[1],
     };
   });
-
-module.exports = {
-  updateProfile,
-  fbRetrieveCustomer,
-};

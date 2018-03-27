@@ -268,6 +268,7 @@
     "sanitize.css": "4.1.0",
     "sequelize": "^3.30.4",
     "socket.io": "^2.0.3",
+    "stripe": "^5.5.0",
     "styled-components": "1.1.2",
     "victory": "^0.21.2",
     "warning": "3.0.0",

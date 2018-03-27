@@ -5,6 +5,7 @@ const employee = require('./employee');
 const hotels = require('./hotels');
 const profile = require('./profile');
 const stays = require('./stays');
+const paymentmethods = require('./paymentmethods');
 
 module.exports = {
   auth,
@@ -13,4 +14,5 @@ module.exports = {
   hotels,
   profile,
   stays,
+  paymentmethods,
 };

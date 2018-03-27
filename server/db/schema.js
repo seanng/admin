@@ -26,8 +26,8 @@ const Customer = sequelize.define('customer', {
   },
   accountStatus: Sequelize.INTEGER,
   paymentAuthStatus: Sequelize.INTEGER,
-  stripeKey: Sequelize.STRING, // <-- this needs to be looked into further
   rating: Sequelize.FLOAT,
+  stripeId: Sequelize.STRING,
 });
 
 const Employee = sequelize.define('employee', {
@@ -70,11 +70,6 @@ const Hotel = sequelize.define('hotel', {
 });
 
 const Stay = sequelize.define('stay', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
   status: Sequelize.STRING, // AVAILABLE, BOOKED, CANCELLED?, CHECKED IN, CHECKED OUT,
   bookingTime: Sequelize.DATE,
   checkInTime: Sequelize.DATE, // Update on check in
@@ -92,7 +87,6 @@ const Surcharge = sequelize.define('surcharge', {
 });
 
 /* Relationships */
-
 Customer.hasMany(Stay);
 Stay.belongsTo(Customer);
 

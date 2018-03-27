@@ -12,6 +12,7 @@ const config = {
   gcs: {
     projectId: process.env.GCS_PROJECT_ID,
   },
+  stripeSecretKey: process.env.STRIPE_SECRET_KEY,
 };
 
 const getConfigurationValue = key => _.get(config, key);

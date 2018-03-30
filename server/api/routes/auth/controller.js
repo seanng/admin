@@ -1,12 +1,9 @@
 /* eslint consistent-return:0 */
 const { Customer } = require('../../../db/models');
 const { setCustomerSocketId } = require('../../../io/helpers');
-const {
-  signToken,
-  validateToken,
-  getCustomerBookingStatus,
-} = require('../../../db/helpers');
+const { signToken, validateToken } = require('../../../db/helpers');
 const { fbRetrieveCustomer } = require('../../../services/customer');
+const { getCustomerBookingStatus } = require('../../../services/stays');
 const rp = require('request-promise');
 const logger = require('../../../logger');
 const controller = {};

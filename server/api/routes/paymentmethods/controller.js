@@ -1,18 +1,15 @@
 // const paymentMethods = require('../../../services/paymentMethods');
 const {
-  getCustomerStripeId,
   getAllPaymentSources,
   createPaymentSource,
   updatePaymentCustomer,
   deletePaymentMethod,
+  getStripeIdFromToken,
 } = require('../../../services/payments');
-const { validateToken } = require('../../../db/helpers');
 
 exports.createPaymentMethod = req => {
-  const customerId = validateToken(req.headers.authorization).userId;
   const { tokenId, isDefaultPaymentMethod } = req.body;
-
-  return getCustomerStripeId(customerId)
+  return getStripeIdFromToken(req)
     .then(stripeId => createPaymentSource(stripeId, tokenId))
     .then(source => {
       if (isDefaultPaymentMethod) {
@@ -22,24 +19,15 @@ exports.createPaymentMethod = req => {
     });
 };
 
-exports.getAllPaymentMethods = req => {
-  const customerId = validateToken(req.headers.authorization).userId;
+exports.getAllPaymentMethods = req =>
+  getStripeIdFromToken(req).then(stripeId => getAllPaymentSources(stripeId));
 
-  return getCustomerStripeId(customerId).then(stripeId =>
-    getAllPaymentSources(stripeId)
-  );
-};
-
-exports.makeDefaultPaymentMethod = (req, paymentMethodId) => {
-  const customerId = validateToken(req.headers.authorization).userId;
-  return getCustomerStripeId(customerId).then(stripeId =>
+exports.makeDefaultPaymentMethod = (req, paymentMethodId) =>
+  getStripeIdFromToken(req).then(stripeId =>
     updatePaymentCustomer(stripeId, { default_source: paymentMethodId })
   );
-};
 
-exports.deletePaymentMethod = (req, paymentMethodId) => {
-  const customerId = validateToken(req.headers.authorization).userId;
-  return getCustomerStripeId(customerId).then(stripeId =>
+exports.deletePaymentMethod = (req, paymentMethodId) =>
+  getStripeIdFromToken(req).then(stripeId =>
     deletePaymentMethod(stripeId, paymentMethodId)
   );
-};

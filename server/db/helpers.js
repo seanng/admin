@@ -1,72 +1,9 @@
 const jwt = require('jsonwebtoken');
-const { Stay, Customer, Hotel } = require('./schema');
 const secret = '19ajsadijmvz';
 
-function retrieveStays(hotelId, respond) {
-  Stay.findAll({
-    where: { hotelId },
-    include: [Customer],
-  })
-    .then(stays => {
-      const newStays = stays.map(stay => ({
-        bookingTime: stay.bookingTime,
-        checkInTime: stay.checkInTime,
-        checkOutTime: stay.checkOutTime,
-        customerName: `${stay.customer.firstName} ${stay.customer.lastName}`,
-        roomNumber: stay.roomNumber,
-        totalCharge: stay.totalCharge,
-      }));
-      respond(null, newStays);
-    })
-    .catch(err => respond(err));
-}
+exports.signToken = id =>
+  jwt.sign({ userId: id }, secret, { expiresIn: 94608000 });
 
-const getCustomerBookingStatus = customerId =>
-  Stay.findAll({
-    attributes: [
-      'id',
-      'status',
-      'bookingTime',
-      'checkInTime',
-      'roomNumber',
-      'roomType',
-    ],
-    raw: true,
-    where: {
-      customerId,
-      status: {
-        $or: ['BOOKED', 'CHECKED_IN'],
-      },
-    },
-    include: [
-      {
-        model: Customer,
-        attributes: { exclude: ['password'] },
-      },
-      {
-        model: Hotel,
-      },
-    ],
-  })
-    .then(data => data[0])
-    .catch(error => error);
+exports.validateToken = (token, cb) => jwt.verify(token, secret, cb);
 
-function signToken(id) {
-  return jwt.sign({ userId: id }, secret, { expiresIn: 94608000 });
-}
-
-function validateToken(token, cb) {
-  return jwt.verify(token, secret, cb);
-}
-
-function parseToken(token) {
-  return jwt.decode(token);
-}
-
-module.exports = {
-  retrieveStays,
-  getCustomerBookingStatus,
-  signToken,
-  validateToken,
-  parseToken,
-};
+exports.parseToken = token => jwt.decode(token);

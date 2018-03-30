@@ -1,6 +1,6 @@
 const { Stay, Hotel, Customer } = require('../db/models');
 
-const fetchActive = hotelId =>
+exports.fetchActive = hotelId =>
   Stay.findAll({
     attributes: [
       'id',
@@ -24,7 +24,7 @@ const fetchActive = hotelId =>
     ],
   });
 
-const fetchHotelHistory = hotelId =>
+exports.fetchHotelHistory = hotelId =>
   Stay.findAll({
     attributes: [
       'id',
@@ -42,7 +42,7 @@ const fetchHotelHistory = hotelId =>
     include: [Customer, Hotel],
   });
 
-const fetchCustomerHistory = customerId =>
+exports.fetchCustomerHistory = customerId =>
   Stay.findAll({
     attributes: [
       'id',
@@ -61,8 +61,32 @@ const fetchCustomerHistory = customerId =>
     include: [Hotel],
   });
 
-module.exports = {
-  fetchActive,
-  fetchHotelHistory,
-  fetchCustomerHistory,
-};
+exports.getCustomerBookingStatus = customerId =>
+  Stay.findAll({
+    attributes: [
+      'id',
+      'status',
+      'bookingTime',
+      'checkInTime',
+      'roomNumber',
+      'roomType',
+    ],
+    raw: true,
+    where: {
+      customerId,
+      status: {
+        $or: ['BOOKED', 'CHECKED_IN'],
+      },
+    },
+    include: [
+      {
+        model: Customer,
+        attributes: { exclude: ['password'] },
+      },
+      {
+        model: Hotel,
+      },
+    ],
+  })
+    .then(data => data[0])
+    .catch(error => error);

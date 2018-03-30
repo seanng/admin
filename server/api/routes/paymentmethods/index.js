@@ -16,4 +16,9 @@ module.exports = (req, params) => {
   if (req.method === 'POST') {
     return controller.createPaymentMethod(req);
   }
+
+  if (req.method === 'DELETE') {
+    const paymentMethodId = params[0];
+    return controller.deletePaymentMethod(req, paymentMethodId);
+  }
 };

@@ -6,9 +6,12 @@ const controller = require('./controller');
 
 // GET /api/hotels/:hotelId
 
-module.exports = (req, params) =>
-  new Promise((resolve, reject) => {
-    if (req.method === 'GET') {
-      return controller.getHotels(resolve, reject, req, params);
-    }
-  });
+module.exports = (req, params) => {
+  if (req.method === 'POST') {
+    return controller.createHotel(req, params);
+  }
+
+  if (req.method === 'GET') {
+    return controller.getHotels(req, params);
+  }
+};

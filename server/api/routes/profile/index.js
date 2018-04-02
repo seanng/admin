@@ -3,9 +3,8 @@ const controller = require('./controller');
 
 // PUT /api/profile
 
-module.exports = (req, params) =>
-  new Promise((resolve, reject) => {
-    if (req.method === 'PUT') {
-      return controller.update(resolve, reject, req, params);
-    }
-  });
+module.exports = req => {
+  if (req.method === 'PUT') {
+    return controller.update(req);
+  }
+};

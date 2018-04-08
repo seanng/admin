@@ -1,9 +1,8 @@
 /* eslint consistent-return:0 */
 /* eslint global-require:0 */
-const bodyParser = require('body-parser');
-const morgan = require('morgan');
 const argv = require('minimist')(process.argv.slice(2));
 const logger = require('./logger');
+const backendSetup = require('./config/backendMiddleware');
 const frontendSetup = require('./config/frontendMiddleware');
 const api = require('./api');
 const isDev = process.env.NODE_ENV !== 'production';
@@ -15,10 +14,8 @@ const resolve = require('path').resolve;
 const app = require('express')();
 const io = require('./io');
 
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(
-  morgan(':method :url :status :response-time ms - :res[content-length]')
-);
+backendSetup(app);
+
 app.use('/api', api);
 
 // In production we need to pass these values in instead of relying on webpack

@@ -1,4 +1,4 @@
-const { Employee } = require('../db/models');
+const { Employee, Hotel } = require('../db/models');
 const fetchOne = id => Employee.findOne({ where: { id } });
 
 const fetchAll = hotelId =>
@@ -9,7 +9,18 @@ const fetchAll = hotelId =>
     },
   });
 
-const create = userDetails => Employee.create(userDetails);
+const create = userDetails =>
+  Employee.create(userDetails, {
+    attributes: {
+      exclude: ['password'],
+    },
+    include: [
+      {
+        model: Hotel,
+        attributes: ['name'],
+      },
+    ],
+  });
 
 const updateProfile = profile =>
   Employee.update(profile, {

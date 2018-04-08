@@ -1,6 +1,6 @@
-const { Hotel } = require('../db/models');
+const { Hotel, Stay } = require('../db/models');
 
-const updateProfile = hotelInfo =>
+exports.updateProfile = hotelInfo =>
   Hotel.update(hotelInfo, {
     where: { id: hotelInfo.id },
     returning: true,
@@ -8,9 +8,20 @@ const updateProfile = hotelInfo =>
     raw: true,
   }).then(data => data[1]);
 
-const fetchOne = id => Hotel.findOne({ where: { id } });
+exports.fetchAll = () =>
+  Hotel.findAll({
+    attributes: { exclude: [] },
+    raw: true,
+  });
 
-module.exports = {
-  updateProfile,
-  fetchOne,
-};
+exports.getAvailability = hotelId =>
+  Stay.count({
+    where: {
+      hotelId,
+      status: 'AVAILABLE',
+    },
+  }).then(availableRooms => !!availableRooms && availableRooms > 0);
+
+exports.fetchOne = id => Hotel.findOne({ where: { id } });
+
+exports.create = hotelInfo => Hotel.create(hotelInfo);

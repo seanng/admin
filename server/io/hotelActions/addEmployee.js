@@ -1,7 +1,6 @@
 const { reply } = require('../helpers');
-const { generatePassword, generateEmailHtml } = require('../../utils/helpers');
-const sendMail = require('../../utils/sendMail');
-const employee = require('../../services/employee');
+const { generatePassword } = require('../../utils/helpers');
+const { employee, sendMail } = require('../../services');
 
 module.exports = (client, action) =>
   new Promise((resolve, reject) => {
@@ -13,13 +12,21 @@ module.exports = (client, action) =>
     };
     employee
       .create(newUserDetails)
-      .then(() => employee.fetchAll(action.hotelId))
-      .then(employees => {
-        const html = generateEmailHtml(newUserDetails);
+      .then(userInfo => {
+        const htmlOptions = {
+          firstName: userInfo.firstName,
+          password: newUserDetails.password,
+          userId: userInfo.id,
+          hotelName: userInfo['hotel.name'],
+          email: userInfo.email,
+        };
         sendMail({
           to: action.details.email,
-          html,
+          htmlOptions,
         });
+      })
+      .then(() => employee.fetchAll(action.hotelId))
+      .then(employees => {
         resolve(
           reply(client, {
             type: 'app/TeamManagement/ADD_EMPLOYEE_SUCCESS',

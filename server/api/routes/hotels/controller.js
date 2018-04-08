@@ -1,20 +1,17 @@
 const R = require('ramda');
 const Promise = require('bluebird');
-const { Hotel } = require('../../../db/models');
-const { getHotelAvailability } = require('../../../services/hotelAvailability');
+const { hotel, employee, sendMail } = require('../../../services');
 
 exports.getHotels = () =>
-  Hotel.findAll({
-    attributes: { exclude: [] },
-    raw: true,
-  }).then(hotels => {
+  hotel.fetchAll().then(hotels => {
     const hotelsAvailabilityPromise = Promise.map(
       R.map(R.prop('id'), hotels),
-      getHotelAvailability
+      hotel.getAvailability
     );
     return hotelsAvailabilityPromise.then(hotelsAvailability => {
       const hotelsWithAvailablity = R.zipWith(
-        (hotel, isAvailable) => Object.assign(hotel, { isAvailable }),
+        (availableHotel, isAvailable) =>
+          Object.assign(availableHotel, { isAvailable }),
         hotels,
         hotelsAvailability
       );
@@ -22,4 +19,29 @@ exports.getHotels = () =>
     });
   });
 
-exports.createHotel = req => Hotel.create(req.body);
+exports.createHotel = req =>
+  hotel
+    .create(req.body.hotel)
+    .then(hotelInfo =>
+      employee.create({
+        ...req.body.admin,
+        adminLevel: 2,
+        hotelId: hotelInfo.id,
+      })
+    )
+    .then(employeeInfo => {
+      // send email to that employee.
+      const htmlOptions = {
+        firstName: req.body.admin.firstName,
+        password: req.body.admin.password,
+        userId: employeeInfo.id,
+        hotelName: req.body.hotel.name,
+        email: req.body.admin.email,
+      };
+      sendMail({
+        subject: 'this is a test email. ',
+        to: 'shonum@gmail.com',
+        htmlOptions,
+      });
+      return employeeInfo;
+    });

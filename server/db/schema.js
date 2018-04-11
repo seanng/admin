@@ -67,6 +67,7 @@ const Hotel = sequelize.define('hotel', {
   paymentInfo: Sequelize.JSON, // <-- this needs to be looked into further
   rating: Sequelize.DECIMAL,
   roomType: Sequelize.STRING,
+  stripeAccount: Sequelize.STRING,
 });
 
 const Stay = sequelize.define('stay', {

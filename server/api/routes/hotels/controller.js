@@ -1,5 +1,6 @@
 const R = require('ramda');
 const Promise = require('bluebird');
+const logger = require('../../../logger');
 const { hotel, employee, sendMail } = require('../../../services');
 
 exports.getHotels = () =>
@@ -44,4 +45,5 @@ exports.createHotel = req =>
         htmlOptions,
       });
       return employeeInfo;
-    });
+    })
+    .catch(error => logger.error('the error', error));

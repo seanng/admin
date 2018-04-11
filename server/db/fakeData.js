@@ -67,6 +67,7 @@ const fakeData = {
       description:
         '<p>&hearts; nice job!</p><p>A 5-minute walk from Wan Chai Ferry Pier, this upscale, high-rise hotel with a glass facade is also an 8-minute walk from the Hong Kong Convention and Exhibition Centre and 4 km from Victoria Harbour.</p><p>Relaxed rooms with marble bathrooms feature flat-screen TVs, minibars and tea and coffeemaking facilities. Upgraded rooms add sitting areas and balconies with city/harbor views. Suites offer living/dining areas. Room service is available.</p><p><b>Amenities include 3 stylish eateries, a bar and a lounge with live music, plus a business center, a gym and an outdoor seasonal pool. Paid parking is available.</b></p>',
       roomType: 'Deluxe Room',
+      stripeAccount: 'ac_Cf3rwprMG5f0t5nJwx3gX7gxMy8kQCTQ',
       amenities: ['miniBar'],
     },
     {
@@ -92,6 +93,7 @@ const fakeData = {
   
       Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian comprehensam mediocritatem. Sale aperiri maiestatis pri eu, ea eam dolorem maiorum efficiendi, his te mentitum detraxit. Ferri laoreet deterruisset te sea. His nostro ceteros cu, et liber semper duo.`,
       roomType: 'Deluxe Room',
+      stripeAccount: 'ac_Cf3rwprMG5f0t5nJwx3gX7gxMy8kQCTQ',
       amenities: ['miniBar'],
     },
     {
@@ -102,6 +104,7 @@ const fakeData = {
       costCurrency: 'HK$',
       costMinCharge: 300,
       costPerMinute: 3,
+      stripeAccount: 'ac_Cf3rwprMG5f0t5nJwx3gX7gxMy8kQCTQ',
       costPerHour: 150,
       photos: [
         'https://www.scmp.com/sites/default/files/styles/660x385/public/2016/10/12/grand-hyatt-hong-kong-presidential-suite-bedroom-3608_2mb.jpg',
@@ -136,6 +139,7 @@ const fakeData = {
   
       Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian comprehensam mediocritatem. Sale aperiri maiestatis pri eu, ea eam dolorem maiorum efficiendi, his te mentitum detraxit. Ferri laoreet deterruisset te sea. His nostro ceteros cu, et liber semper duo.`,
       roomType: 'Deluxe Room',
+      stripeAccount: 'ac_Cf3rwprMG5f0t5nJwx3gX7gxMy8kQCTQ',
       amenities: [],
     },
   ],

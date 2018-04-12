@@ -54,19 +54,56 @@ const Employee = sequelize.define('employee', {
 
 const Hotel = sequelize.define('hotel', {
   name: Sequelize.STRING,
-  locationAddress: Sequelize.STRING,
-  locationLatitude: Sequelize.STRING,
-  locationLongitude: Sequelize.STRING,
-  costCurrency: Sequelize.STRING,
-  costMinCharge: Sequelize.FLOAT,
-  costPerHour: Sequelize.FLOAT,
-  costPerMinute: Sequelize.FLOAT,
-  photos: Sequelize.ARRAY(Sequelize.STRING), // array[0] would be the primary photoURL
-  description: Sequelize.TEXT,
-  amenities: Sequelize.ARRAY(Sequelize.STRING), // i.e. 'Free WiFi'
-  paymentInfo: Sequelize.JSON, // <-- this needs to be looked into further
-  rating: Sequelize.DECIMAL,
-  roomType: Sequelize.STRING,
+  locationAddress: {
+    type: Sequelize.STRING,
+    defaultValue: 'Please enter a valid address',
+  },
+  locationLatitude: {
+    type: Sequelize.STRING,
+    defaultValue: '22.3964',
+  },
+  locationLongitude: {
+    type: Sequelize.STRING,
+    defaultValue: '114.1095',
+  },
+  costCurrency: {
+    type: Sequelize.STRING,
+    defaultValue: 'HKD',
+  },
+  costMinCharge: {
+    type: Sequelize.FLOAT,
+    defaultValue: 0,
+  },
+  costPerHour: {
+    type: Sequelize.FLOAT,
+    defaultValue: 0,
+  },
+  costPerMinute: {
+    type: Sequelize.FLOAT,
+    defaultValue: 0,
+  },
+  photos: {
+    type: Sequelize.ARRAY(Sequelize.STRING), // array[0] would be the primary photoURL
+    defaultValue: [
+      'https://images.pexels.com/photos/271668/pexels-photo-271668.jpeg',
+    ],
+  },
+  description: {
+    type: Sequelize.TEXT,
+    defaultValue: 'Please add a description to your hotel.',
+  },
+  amenities: {
+    type: Sequelize.ARRAY(Sequelize.STRING), // i.e. 'Free WiFi'
+    defaultValue: [],
+  },
+  rating: {
+    type: Sequelize.DECIMAL,
+    defaultValue: 5,
+  },
+  roomType: {
+    type: Sequelize.STRING,
+    defaultValue: '',
+  },
   stripeAccount: Sequelize.STRING,
 });
 

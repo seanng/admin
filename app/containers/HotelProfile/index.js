@@ -117,7 +117,7 @@ export class HotelProfile extends React.PureComponent {
       formState,
       saveHotelProfile: saveProfile,
       removedPhotos,
-      eraseRemovedPhotos: erasePhotos,
+      eraseHotelPhotos: erasePhotos,
     } = this.props;
     const { data, shouldHandleImageBlobs } = this.compileRequestData(formState);
     if (removedPhotos.size > 0) {

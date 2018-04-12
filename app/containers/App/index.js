@@ -65,9 +65,9 @@ class App extends React.PureComponent {
           pathname={this.props.location.pathname}
           logout={this.props.logout}
         />
-        {this.shouldRenderSubNav() &&
+        {this.shouldRenderSubNav() && (
           <SubNavContainer>
-            {this.pathsWithSubNav.map((path, i) =>
+            {this.pathsWithSubNav.map((path, i) => (
               <SubNavButton
                 key={path}
                 first={i === 0}
@@ -76,11 +76,10 @@ class App extends React.PureComponent {
               >
                 <FormattedMessage {...messages[path]} />
               </SubNavButton>
-            )}
-          </SubNavContainer>}
-        <Container>
-          {React.Children.toArray(this.props.children)}
-        </Container>
+            ))}
+          </SubNavContainer>
+        )}
+        <Container>{React.Children.toArray(this.props.children)}</Container>
       </AppWrapper>
     );
   }

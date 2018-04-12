@@ -177,20 +177,17 @@ export class TeamManagement extends React.PureComponent {
                   ]}
                 />
               </PreviewInfoRow>
-              <PreviewInfoRow>
-                {previewedMemberJS.email}
-              </PreviewInfoRow>
-              <PreviewInfoRow>
-                {previewedMemberJS.phoneNumber}
-              </PreviewInfoRow>
+              <PreviewInfoRow>{previewedMemberJS.email}</PreviewInfoRow>
+              <PreviewInfoRow>{previewedMemberJS.phoneNumber}</PreviewInfoRow>
             </PreviewInfoCard>
-            {previewedMemberJS.adminLevel === 1 &&
+            {previewedMemberJS.adminLevel === 1 && (
               <PreviewButton
                 color={colors.primary}
                 onClick={this.promptUpgradeToAdmin}
               >
                 <FormattedMessage {...messages.upgradeToAdmin} />
-              </PreviewButton>}
+              </PreviewButton>
+            )}
             <PreviewButton
               color={colors.danger}
               onClick={this.promptDeleteAccount}
@@ -199,7 +196,7 @@ export class TeamManagement extends React.PureComponent {
             </PreviewButton>
           </PreviewContainer>
           <MemberListContainer>
-            {members.map((member, index) =>
+            {members.map((member, index) => (
               <TeamMemberCard
                 key={member.id}
                 src={member.photoUrl}
@@ -216,38 +213,43 @@ export class TeamManagement extends React.PureComponent {
                   </Label>
                 </OpacityLayer>
               </TeamMemberCard>
-            )}
+            ))}
           </MemberListContainer>
         </Body>
         <ConfirmationModal
           isOpen={confirmationModalOptions.get('shouldDisplay')}
           closeModal={this.handleConfirmationModalClose}
           headerMessage={
-            confirmationModalOptions.get('modalPromptId') &&
-            <FormattedMessage
-              {...messages[
-                `${confirmationModalOptions.get('modalPromptId')}Header`
-              ]}
-            />
+            confirmationModalOptions.get('modalPromptId') && (
+              <FormattedMessage
+                {...messages[
+                  `${confirmationModalOptions.get('modalPromptId')}Header`
+                ]}
+              />
+            )
           }
           confirmationMessage={
-            confirmationModalOptions.get('modalPromptId') &&
-            <FormattedMessage
-              {...messages[
-                `${confirmationModalOptions.get('modalPromptId')}Prompt`
-              ]}
-              values={{
-                name: `${previewedMemberJS.firstName} ${previewedMemberJS.lastName}`,
-              }}
-            />
+            confirmationModalOptions.get('modalPromptId') && (
+              <FormattedMessage
+                {...messages[
+                  `${confirmationModalOptions.get('modalPromptId')}Prompt`
+                ]}
+                values={{
+                  name: `${previewedMemberJS.firstName} ${
+                    previewedMemberJS.lastName
+                  }`,
+                }}
+              />
+            )
           }
           actionMessage={
-            confirmationModalOptions.get('modalPromptId') &&
-            <FormattedMessage
-              {...messages[
-                `${confirmationModalOptions.get('modalPromptId')}Action`
-              ]}
-            />
+            confirmationModalOptions.get('modalPromptId') && (
+              <FormattedMessage
+                {...messages[
+                  `${confirmationModalOptions.get('modalPromptId')}Action`
+                ]}
+              />
+            )
           }
           onConfirmClick={this.handleConfirmClick}
         />

@@ -1,8 +1,8 @@
 /**
-*
-* SubNavigation
-*
-*/
+ *
+ * SubNavigation
+ *
+ */
 
 import React from 'react';
 // import styled from 'styled-components';
@@ -14,7 +14,7 @@ import Button from './Button';
 function SubNavigation({ items, pathname, router }) {
   return (
     <Row>
-      {items.toJS().map(({ name, path }) =>
+      {items.toJS().map(({ name, path }) => (
         <Button
           key={name}
           selected={pathname === path}
@@ -26,7 +26,7 @@ function SubNavigation({ items, pathname, router }) {
             {name}
           </H5>
         </Button>
-      )}
+      ))}
     </Row>
   );
 }

@@ -120,7 +120,9 @@ export class HotelProfile extends React.PureComponent {
       eraseRemovedPhotos: erasePhotos,
     } = this.props;
     const { data, shouldHandleImageBlobs } = this.compileRequestData(formState);
-    removedPhotos.size > 0 && erasePhotos(removedPhotos);
+    if (removedPhotos.size > 0) {
+      erasePhotos(removedPhotos);
+    }
     saveProfile(data, shouldHandleImageBlobs);
   };
 
@@ -279,7 +281,7 @@ export class HotelProfile extends React.PureComponent {
             />
           </RowWrapper>
           <Amenities>
-            {this.getFormValueOf('amenities').map((amenity, i) =>
+            {this.getFormValueOf('amenities').map((amenity, i) => (
               <Amenity
                 isEditing
                 key={i}
@@ -287,11 +289,12 @@ export class HotelProfile extends React.PureComponent {
                 amenity={amenity}
                 removeAmenity={this.handleRemoveAmenity}
               />
-            )}
-            {this.getFormValueOf('amenities').length === 0 &&
+            ))}
+            {this.getFormValueOf('amenities').length === 0 && (
               <Placeholder>
                 <FormattedMessage {...messages.addAmenities} />
-              </Placeholder>}
+              </Placeholder>
+            )}
           </Amenities>
           <RowWrapper next>
             <Label>
@@ -325,9 +328,7 @@ export class HotelProfile extends React.PureComponent {
             <RatesWrapper>
               <div>
                 {this.props.initialValues.get('costCurrency')}{' '}
-                {Number(
-                  this.props.initialValues.get('costPerHour')
-                ).toFixed()}{' '}
+                {Number(this.props.initialValues.get('costPerHour')).toFixed()}{' '}
                 / <FormattedMessage {...messages.hour} />
               </div>
               <div>
@@ -354,9 +355,7 @@ export class HotelProfile extends React.PureComponent {
             <Label>
               <FormattedMessage {...messages.roomType} />
             </Label>
-            <div>
-              {this.props.initialValues.get('roomType')}
-            </div>
+            <div>{this.props.initialValues.get('roomType')}</div>
           </RowWrapper>
         </DetailsCard>
         <DetailsCard>
@@ -374,22 +373,21 @@ export class HotelProfile extends React.PureComponent {
           <Amenities>
             {this.props.initialValues
               .get('amenities')
-              .map((amenity, i) =>
+              .map((amenity, i) => (
                 <Amenity key={i} index={i} amenity={amenity} />
-              )}
-            {this.props.initialValues.get('amenities').size === 0 &&
+              ))}
+            {this.props.initialValues.get('amenities').size === 0 && (
               <Placeholder>
                 <FormattedMessage {...messages.addAmenities} />
-              </Placeholder>}
+              </Placeholder>
+            )}
           </Amenities>
         </DetailsCard>
         <DetailsCard>
           <Label>
             <FormattedMessage {...messages.location} />
           </Label>
-          <Description>
-            {this.props.initialValues.get('address')}
-          </Description>
+          <Description>{this.props.initialValues.get('address')}</Description>
           <LocationMap
             lat={this.props.initialValues.get('locationLatitude') * 1}
             lng={this.props.initialValues.get('locationLongitude') * 1}
@@ -414,22 +412,25 @@ export class HotelProfile extends React.PureComponent {
           <HotelName isEditingMode={this.props.isEditingMode}>
             {this.props.initialValues.get('name')}
           </HotelName>
-          {this.props.isEditingMode &&
+          {this.props.isEditingMode && (
             <HeadButton onClick={this.handleCancelEditingMode}>
               <FormattedMessage {...messages.cancel} />
-            </HeadButton>}
-          {this.props.isEditingMode &&
+            </HeadButton>
+          )}
+          {this.props.isEditingMode && (
             <HeadButton
               primary
               onClick={this.handleSaveHotelProfile}
               disabled={!this.props.isFormDirty || !this.props.isFormValid}
             >
               <FormattedMessage {...messages.save} />
-            </HeadButton>}
-          {!this.props.isEditingMode &&
+            </HeadButton>
+          )}
+          {!this.props.isEditingMode && (
             <HeadButton primary onClick={this.handleSetEditingMode}>
               <FormattedMessage {...messages.edit} />
-            </HeadButton>}
+            </HeadButton>
+          )}
         </Head>
         <Body>
           <PhotosContainer>
@@ -439,7 +440,7 @@ export class HotelProfile extends React.PureComponent {
               </OpacityLayer>
             </Photo>
             <DroppableZone>
-              {hotelPhotos.valueSeq().map((photo, i) =>
+              {hotelPhotos.valueSeq().map((photo, i) => (
                 <DraggablePhoto
                   key={i}
                   index={i}
@@ -449,18 +450,19 @@ export class HotelProfile extends React.PureComponent {
                   <Photo src={photo}>
                     <OpacityLayer isEditingMode={this.props.isEditingMode}>
                       {i + 1}
-                      {this.props.isEditingMode &&
+                      {this.props.isEditingMode && (
                         <TrashIcon
                           size={20}
                           color={colors.danger}
                           style={{ cursor: 'pointer' }}
                           onClick={() => this.handleDeletePhoto(i)}
-                        />}
+                        />
+                      )}
                     </OpacityLayer>
                   </Photo>
                 </DraggablePhoto>
-              )}
-              {this.props.isEditingMode &&
+              ))}
+              {this.props.isEditingMode && (
                 <AddPhoto>
                   {hotelPhotos.size + 1}
                   <CrosshairWrapper>
@@ -471,7 +473,8 @@ export class HotelProfile extends React.PureComponent {
                     type="file"
                     accept="image/png,image/gif,image/jpeg"
                   />
-                </AddPhoto>}
+                </AddPhoto>
+              )}
             </DroppableZone>
           </PhotosContainer>
           <DetailsContainer>

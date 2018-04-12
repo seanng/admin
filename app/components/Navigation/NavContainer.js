@@ -21,9 +21,7 @@ export default function NavContainer({ children }) {
   return (
     <FullWidthBar>
       <Container>
-        <Wrapper>
-          {children}
-        </Wrapper>
+        <Wrapper>{children}</Wrapper>
       </Container>
     </FullWidthBar>
   );

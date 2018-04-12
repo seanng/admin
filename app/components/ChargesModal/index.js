@@ -44,15 +44,9 @@ function ChargesModal({
         <FormattedMessage {...messages.header} />
       </Header>
       <Details>
-        <GuestName>
-          {stay.customerName}
-        </GuestName>
-        <RoomNumber>
-          {stay.roomNumber}
-        </RoomNumber>
-        <DateOfStay>
-          {date}
-        </DateOfStay>
+        <GuestName>{stay.customerName}</GuestName>
+        <RoomNumber>{stay.roomNumber}</RoomNumber>
+        <DateOfStay>{date}</DateOfStay>
       </Details>
       <AddChargeRow>
         <Input
@@ -63,9 +57,7 @@ function ChargesModal({
           onChange={handleInputChange}
           width="420px"
         />
-        <Currency>
-          {stay.costCurrency}
-        </Currency>
+        <Currency>{stay.costCurrency}</Currency>
         <Input
           name="priceInput"
           type="text"
@@ -96,24 +88,22 @@ function ChargesModal({
           </tr>
         </thead>
         <tbody>
-          {charges.map(({ service, updatedAt, status, charge }, i) =>
+          {charges.map(({ service, updatedAt, status, charge }, i) => (
             <tr key={i}>
               <TD first alignLeft>
                 {service}
               </TD>
+              <TD>{updatedAt ? getFormattedDate(new Date(updatedAt)) : '-'}</TD>
               <TD>
-                {updatedAt ? getFormattedDate(new Date(updatedAt)) : '-'}
+                {status === 'Settled' ? (
+                  <FormattedMessage {...messages.yes} />
+                ) : (
+                  '-'
+                )}
               </TD>
-              <TD>
-                {status === 'Settled'
-                  ? <FormattedMessage {...messages.yes} />
-                  : '-'}
-              </TD>
-              <TD>
-                {stay.costCurrency + charge}
-              </TD>
+              <TD>{stay.costCurrency + charge}</TD>
             </tr>
-          )}
+          ))}
           <tr>
             <LTD label>
               <FormattedMessage {...messages.total} />

@@ -1,8 +1,8 @@
 /**
-*
-* SubNavContainer
-*
-*/
+ *
+ * SubNavContainer
+ *
+ */
 
 import styled from 'styled-components';
 

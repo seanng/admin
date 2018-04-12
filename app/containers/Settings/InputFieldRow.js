@@ -20,16 +20,15 @@ export default function InputFieldRow({
 }) {
   return (
     <FormRow>
-      <FormLabel>
-        {labelMessage}
-      </FormLabel>
+      <FormLabel>{labelMessage}</FormLabel>
       <div>
         <Input {...input} {...otherProps} error={meta.touched && meta.error} />
         {meta.touched &&
-          meta.error &&
-          <ValidationErrorMessage>
-            <FormattedMessage {...messages[meta.error]} />
-          </ValidationErrorMessage>}
+          meta.error && (
+            <ValidationErrorMessage>
+              <FormattedMessage {...messages[meta.error]} />
+            </ValidationErrorMessage>
+          )}
       </div>
     </FormRow>
   );

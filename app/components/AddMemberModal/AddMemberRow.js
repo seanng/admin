@@ -31,10 +31,11 @@ export default function AddMemberRow({
       <div>
         <Input {...input} {...otherProps} error={meta.touched && meta.error} />
         {meta.touched &&
-          meta.error &&
-          <ValidationErrorMessage>
-            <FormattedMessage {...messages[meta.error]} />
-          </ValidationErrorMessage>}
+          meta.error && (
+            <ValidationErrorMessage>
+              <FormattedMessage {...messages[meta.error]} />
+            </ValidationErrorMessage>
+          )}
       </div>
     </Wrapper>
   );

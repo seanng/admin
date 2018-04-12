@@ -31,14 +31,14 @@ function AmenitiesModal({
         <FormattedMessage {...messages.header} />
       </Header>
       <Body>
-        {Object.keys(amenities).map(amenity =>
+        {Object.keys(amenities).map(amenity => (
           <AmenityEntry key={amenity}>
             <FormattedMessage {...amenities[amenity].message} />
             <Checkbox onClick={() => selectAmenity(amenity)}>
               {selectedAmenities.includes(amenity) && <CheckIcon size={20} />}
             </Checkbox>
           </AmenityEntry>
-        )}
+        ))}
       </Body>
       <Footer>
         <FooterButton onClick={closeModal}>

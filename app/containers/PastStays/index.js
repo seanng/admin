@@ -128,7 +128,7 @@ export class PastStays extends React.PureComponent {
               <FormattedMessage {...messages.totalAmount} />
             </HeaderCol>
           </HeaderRow>
-          {stays.toJS().map(stay =>
+          {stays.toJS().map(stay => (
             <BodyRow
               key={stay.id}
               onClick={() => this.props.fetchCharges(stay.id)}
@@ -139,18 +139,10 @@ export class PastStays extends React.PureComponent {
                   new Date(stay.checkOutTime)
                 )}
               </BodyCol>
-              <BodyCol width="204px">
-                {stay.customerName}
-              </BodyCol>
-              <BodyCol>
-                {stay.roomNumber}
-              </BodyCol>
-              <BodyCol>
-                {format(new Date(stay.checkInTime), 'h:mm a')}
-              </BodyCol>
-              <BodyCol>
-                {format(new Date(stay.checkOutTime), 'h:mm a')}
-              </BodyCol>
+              <BodyCol width="204px">{stay.customerName}</BodyCol>
+              <BodyCol>{stay.roomNumber}</BodyCol>
+              <BodyCol>{format(new Date(stay.checkInTime), 'h:mm a')}</BodyCol>
+              <BodyCol>{format(new Date(stay.checkOutTime), 'h:mm a')}</BodyCol>
               <BodyCol>
                 {getFormattedDuration(
                   new Date(stay.checkInTime),
@@ -167,7 +159,7 @@ export class PastStays extends React.PureComponent {
                 $ {(stay.totalCharge ? stay.totalCharge * 1 : 0).toFixed(2)}
               </BodyCol>
             </BodyRow>
-          )}
+          ))}
         </TableContainer>
         <ChargesModal
           isOpen={isModalOpen}

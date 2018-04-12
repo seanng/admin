@@ -18,11 +18,7 @@ function Photo({
   isEditingMode,
 }) {
   if (!isEditingMode) {
-    return (
-      <Container>
-        {children}
-      </Container>
-    );
+    return <Container>{children}</Container>;
   }
   return (
     <Container

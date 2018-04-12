@@ -9,7 +9,7 @@ const PreviewButton = styled(Button)`
   font-size: 14px;
   font-weight: 600;
   color: ${props => props.color && props.color};
-  box-shadow: 0 5px 10px 0 rgba(0,0,0,0.1);
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
   margin-top: 1px;
 `;
 

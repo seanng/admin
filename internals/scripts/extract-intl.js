@@ -151,9 +151,11 @@ const extractFromFile = async fileName => {
       // Sort the translation JSON file so that git diffing is easier
       // Otherwise the translation messages will jump around every time we extract
       let messages = {};
-      Object.keys(localeMappings[locale]).sort().forEach(function(key) {
-        messages[key] = localeMappings[locale][key];
-      });
+      Object.keys(localeMappings[locale])
+        .sort()
+        .forEach(function(key) {
+          messages[key] = localeMappings[locale][key];
+        });
 
       // Write to file the JSON representation of the translation messages
       const prettified = `${JSON.stringify(messages, null, 2)}\n`;

@@ -26,7 +26,10 @@ const mapUrl = (availableRoutes = {}, url = []) => {
 };
 
 module.exports = (req, res) => {
-  const splittedUrlPath = req.url.split('?')[0].split('/').slice(1);
+  const splittedUrlPath = req.url
+    .split('?')[0]
+    .split('/')
+    .slice(1);
   const { route, params } = mapUrl(routes, splittedUrlPath);
   if (route) {
     route(req, params)

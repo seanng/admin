@@ -126,7 +126,7 @@ export class FrontDesk extends React.PureComponent {
       <Container>
         <Header>
           <FiltersContainer>
-            {this.filterOptions.map(option =>
+            {this.filterOptions.map(option => (
               <FilterButton
                 key={option}
                 selected={option === activeFilter}
@@ -134,7 +134,7 @@ export class FrontDesk extends React.PureComponent {
               >
                 <FormattedMessage {...messages[option]} />
               </FilterButton>
-            )}
+            ))}
           </FiltersContainer>
           <AddRoomButton onClick={openAddRoomModal}>ADD ROOM</AddRoomButton>
         </Header>
@@ -176,7 +176,7 @@ export class FrontDesk extends React.PureComponent {
                   id,
                 },
                 index
-              ) =>
+              ) => (
                 <TableBodyRow
                   key={index}
                   onClick={() =>
@@ -187,7 +187,8 @@ export class FrontDesk extends React.PureComponent {
                       customerId,
                       customerName,
                       index
-                    )}
+                    )
+                  }
                 >
                   <TableBodyCol width="80px" ml="20px">
                     {index + 1}
@@ -210,6 +211,7 @@ export class FrontDesk extends React.PureComponent {
                       '-'}
                   </TableBodyCol>
                 </TableBodyRow>
+              )
             )}
           </TableContainer>
         </Body>

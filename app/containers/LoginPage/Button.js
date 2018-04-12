@@ -5,7 +5,7 @@ import NormalButton from 'components/Button';
 export default styled(NormalButton)`
   background-color: ${colors.primary};
   height: 60px;
-	box-shadow: 0 5px 10px 0 rgba(0,0,0,0.1);
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
   font-size: 14px;
   font-weight: 600;
   line-height: 19px;

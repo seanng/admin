@@ -7,7 +7,7 @@ const TH = styled.th`
   color: ${colors.base3};
   font-size: 14px;
   ${props => props.first && 'padding-left: 20px;'} ${props =>
-      props.alignLeft && 'text-align: left'};
+    props.alignLeft && 'text-align: left'};
 `;
 
 export default TH;

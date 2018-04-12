@@ -23,12 +23,8 @@ function ConfirmationModal({
       style={modalStyle}
       shouldCloseOnOverlayClick
     >
-      <Header>
-        {headerMessage}
-      </Header>
-      <Body>
-        {confirmationMessage}
-      </Body>
+      <Header>{headerMessage}</Header>
+      <Body>{confirmationMessage}</Body>
       <Button primary onClick={onConfirmClick}>
         {actionMessage}
       </Button>

@@ -29,19 +29,16 @@ function RoomOptionsModal({
       <RoomStatus>
         {roomStatus && <FormattedMessage {...messages[roomStatus]} />}
       </RoomStatus>
-      <RoomNumber>
-        {roomNumber}
-      </RoomNumber>
-      <GuestName>
-        {guestName}
-      </GuestName>
-      {roomStatus === 'occupied' &&
+      <RoomNumber>{roomNumber}</RoomNumber>
+      <GuestName>{guestName}</GuestName>
+      {roomStatus === 'occupied' && (
         <div>
           <Button bg={colors.base1} onClick={closeModal}>
             <FormattedMessage {...messages.cancel} />
           </Button>
-        </div>}
-      {roomStatus === 'reserved' &&
+        </div>
+      )}
+      {roomStatus === 'reserved' && (
         <div>
           <Button bg={colors.primary} onClick={checkIn}>
             <FormattedMessage {...messages.checkIn} />
@@ -49,8 +46,9 @@ function RoomOptionsModal({
           <Button bg={colors.base1} onClick={closeModal}>
             <FormattedMessage {...messages.cancel} />
           </Button>
-        </div>}
-      {roomStatus === 'available' &&
+        </div>
+      )}
+      {roomStatus === 'available' && (
         <div>
           <Button bg={colors.danger} onClick={removeRoom}>
             <FormattedMessage {...messages.removeRoom} />
@@ -58,7 +56,8 @@ function RoomOptionsModal({
           <Button bg={colors.base1} onClick={closeModal}>
             <FormattedMessage {...messages.cancel} />
           </Button>
-        </div>}
+        </div>
+      )}
     </Modal>
   );
 }

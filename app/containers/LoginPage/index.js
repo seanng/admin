@@ -81,10 +81,11 @@ export class LoginPage extends React.PureComponent {
               <FormattedMessage {...messages.signIn} />
             </Button>
           </ButtonRow>
-          {this.props.loginErrorMsg &&
+          {this.props.loginErrorMsg && (
             <ValidationErrorMessage big>
               {this.props.loginErrorMsg}
-            </ValidationErrorMessage>}
+            </ValidationErrorMessage>
+          )}
         </Card>
         <ContactSupportWrapper>
           <ContactLabel regular>

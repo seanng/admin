@@ -10,8 +10,9 @@ const SubNavButton = styled(Button)`
   font-weight: 600;
   line-height: 19px;
   color: ${props => (props.active ? colors.white : colors.base2)};
-  ${props => !props.active && 'box-shadow: 0 5px 10px 0 rgba(0,0,0,0.1);'}
-  ${props => !props.first && 'margin-left: 10px;'}
+  ${props =>
+    !props.active && 'box-shadow: 0 5px 10px 0 rgba(0,0,0,0.1);'} ${props =>
+    !props.first && 'margin-left: 10px;'};
 `;
 
 export default SubNavButton;

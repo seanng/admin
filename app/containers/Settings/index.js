@@ -128,42 +128,44 @@ export class Settings extends React.PureComponent {
     return (
       <Container>
         <Head>
-          <Heading isDirty={this.props.isDirty}>
-            {fullName}
-          </Heading>
-          {this.props.isDirty &&
+          <Heading isDirty={this.props.isDirty}>{fullName}</Heading>
+          {this.props.isDirty && (
             <HeadButton onClick={this.handleUndoClick}>
               <FormattedMessage {...messages.undo} />
-            </HeadButton>}
-          {this.props.isDirty &&
+            </HeadButton>
+          )}
+          {this.props.isDirty && (
             <HeadButton
               primary
               disabled={!this.props.isValid}
               onClick={this.handleSaveClick}
             >
               <FormattedMessage {...messages.save} />
-            </HeadButton>}
+            </HeadButton>
+          )}
         </Head>
         <Body>
-          {photoUrl
-            ? <AddPhotoCard src={photoUrl}>
-                <OpacityLayer>
-                  <TrashIcon
-                    color={colors.danger}
-                    size={20}
-                    style={{ cursor: 'pointer' }}
-                    onClick={this.handlePhotoRemove}
-                  />
-                </OpacityLayer>
-              </AddPhotoCard>
-            : <AddPhotoCard src={photoUrl}>
-                <CrosshairIcon size={20} color={colors.primary} />
-                <ImageFile
-                  onChange={this.handlePhotoChange}
-                  type="file"
-                  accept="image/png,image/gif,image/jpeg"
+          {photoUrl ? (
+            <AddPhotoCard src={photoUrl}>
+              <OpacityLayer>
+                <TrashIcon
+                  color={colors.danger}
+                  size={20}
+                  style={{ cursor: 'pointer' }}
+                  onClick={this.handlePhotoRemove}
                 />
-              </AddPhotoCard>}
+              </OpacityLayer>
+            </AddPhotoCard>
+          ) : (
+            <AddPhotoCard src={photoUrl}>
+              <CrosshairIcon size={20} color={colors.primary} />
+              <ImageFile
+                onChange={this.handlePhotoChange}
+                type="file"
+                accept="image/png,image/gif,image/jpeg"
+              />
+            </AddPhotoCard>
+          )}
           <div>
             <Details>
               <Field

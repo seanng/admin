@@ -19,13 +19,14 @@ const mapAmenityToIcon = {
 export default function Amenity({ amenity, index, isEditing, removeAmenity }) {
   return (
     <Container>
-      {isEditing &&
+      {isEditing && (
         <TrashIcon
           color={colors.danger}
           size={20}
           style={{ cursor: 'pointer', position: 'absolute' }}
           onClick={() => removeAmenity(index)}
-        />}
+        />
+      )}
       <Wrapper index={index}>
         <div style={{ marginBottom: '4px' }}>
           {/* TODO: change to image & source from amenities[amenity].imageSource */}

@@ -1,8 +1,8 @@
 /**
-*
-* AddMemberModal
-*
-*/
+ *
+ * AddMemberModal
+ *
+ */
 
 import React from 'react';
 import Modal from 'react-modal';
@@ -54,25 +54,27 @@ function AddMemberModal({
         <FormattedMessage {...messages.header} />
       </Header>
       <Body>
-        {photoUrl
-          ? <AddPhotoCard src={photoUrl}>
-              <OpacityLayer>
-                <TrashIcon
-                  color={colors.danger}
-                  size={20}
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handlePhotoRemove(dispatch)}
-                />
-              </OpacityLayer>
-            </AddPhotoCard>
-          : <AddPhotoCard src={photoUrl}>
-              <CrosshairIcon size={20} color={colors.primary} />
-              <ImageFile
-                onChange={e => handlePhotoChange(e, dispatch)}
-                type="file"
-                accept="image/png,image/gif,image/jpeg"
+        {photoUrl ? (
+          <AddPhotoCard src={photoUrl}>
+            <OpacityLayer>
+              <TrashIcon
+                color={colors.danger}
+                size={20}
+                style={{ cursor: 'pointer' }}
+                onClick={() => handlePhotoRemove(dispatch)}
               />
-            </AddPhotoCard>}
+            </OpacityLayer>
+          </AddPhotoCard>
+        ) : (
+          <AddPhotoCard src={photoUrl}>
+            <CrosshairIcon size={20} color={colors.primary} />
+            <ImageFile
+              onChange={e => handlePhotoChange(e, dispatch)}
+              type="file"
+              accept="image/png,image/gif,image/jpeg"
+            />
+          </AddPhotoCard>
+        )}
         <AddMemberDetails>
           <Field
             component={AddMemberRow}

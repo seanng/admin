@@ -13,9 +13,11 @@ const handleFail = (client, error) =>
     error,
   });
 
-module.exports = (client, action) =>
-  new Promise((resolve, reject) => {
-    fetchHotelHistory(action.hotelId)
-      .then(stays => resolve(handleSuccess(client, stays)))
-      .catch(error => reject(handleFail(client, error)));
-  });
+module.exports = async (client, action) => {
+  try {
+    const stays = await fetchHotelHistory(action.hotelId);
+    return handleSuccess(client, stays);
+  } catch (error) {
+    return handleFail(client, error);
+  }
+};

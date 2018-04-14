@@ -14,6 +14,8 @@ exports.fetchAll = () =>
     raw: true,
   });
 
+exports.fetchOne = id => Hotel.findOne({ where: { id } });
+
 exports.getAvailability = hotelId =>
   Stay.count({
     where: {

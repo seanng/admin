@@ -1,4 +1,6 @@
-const { Stay, Hotel, Customer } = require('../db/models');
+const { Stay, Hotel, Customer, Surcharge } = require('../db/models');
+
+exports.fetchCharges = queryParams => Surcharge.findAll({ where: queryParams });
 
 exports.fetchActive = hotelId =>
   Stay.findAll({

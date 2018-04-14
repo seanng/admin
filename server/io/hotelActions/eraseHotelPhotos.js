@@ -12,9 +12,11 @@ const handleFail = (client, error) =>
     error,
   });
 
-module.exports = (client, action) =>
-  new Promise((resolve, reject) =>
-    erasePhotosArray(action.photos)
-      .then(() => resolve(handleSuccess(client)))
-      .catch(error => reject(handleFail(client, error)))
-  );
+module.exports = async (client, action) => {
+  try {
+    await erasePhotosArray(action.photos);
+    return handleSuccess(client);
+  } catch (err) {
+    return handleFail(client, err);
+  }
+};

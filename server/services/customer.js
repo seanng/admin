@@ -1,5 +1,7 @@
 const { Customer } = require('../db/models');
 
+exports.fetchOne = queryParams => Customer.findOne({ where: queryParams });
+
 exports.updateProfile = profile =>
   Customer.update(profile, {
     where: { id: profile.id },

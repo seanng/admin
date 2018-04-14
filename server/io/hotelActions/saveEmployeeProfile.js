@@ -18,19 +18,22 @@ const handleFail = (err, client) =>
     err,
   });
 
-module.exports = (client, action) =>
-  new Promise((resolve, reject) => {
+module.exports = async (client, action) => {
+  try {
     const { profile, shouldHandleImageBlob } = action;
     if (!shouldHandleImageBlob) {
-      return updateProfile(profile)
-        .then(info => resolve(handleSuccess(info, client)))
-        .catch(error => reject(handleFail(error, client)));
+      const info = await updateProfile(profile);
+      return handleSuccess(info, client);
     }
-
-    return createFile(profile.photoUrl)
-      .then(data => sendUploadToGCS(data, `employees/profiles/${profile.id}`))
-      .then(gcsname => getPublicUrl(gcsname))
-      .then(photoUrl => updateProfile({ ...profile, photoUrl }))
-      .then(info => resolve(handleSuccess(info, client)))
-      .catch(error => reject(handleFail(error, client)));
-  });
+    const data = await createFile(profile.photoUrl);
+    const gcsname = await sendUploadToGCS(
+      data,
+      `employees/profiles/${profile.id}`
+    );
+    const photoUrl = await getPublicUrl(gcsname);
+    const info = await updateProfile({ ...profile, photoUrl });
+    return handleSuccess(info, client);
+  } catch (error) {
+    return handleFail(error, client);
+  }
+};

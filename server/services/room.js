@@ -1,15 +1,16 @@
 const { Stay, Hotel } = require('../db/models');
+const { customer, hotel, payments } = require('./index');
 
-const create = (hotelId, roomNumber) =>
+exports.create = (hotelId, roomNumber) =>
   Stay.create({
     hotelId,
     roomNumber,
     status: 'AVAILABLE',
   });
 
-const remove = id => Stay.destroy({ where: { id } });
+exports.remove = id => Stay.destroy({ where: { id } });
 
-const book = (customerId, hotelId) => {
+exports.book = (customerId, hotelId) => {
   let result;
   const updatedParams = {
     status: 'BOOKED',
@@ -40,7 +41,7 @@ const book = (customerId, hotelId) => {
     .then(() => ({ ...result, ...updatedParams }));
 };
 
-const checkIn = id =>
+exports.checkIn = id =>
   Stay.update(
     {
       status: 'CHECKED_IN',
@@ -55,11 +56,35 @@ const checkIn = id =>
     }
   );
 
-const checkOut = (id, customerId) =>
-  Stay.update(
+exports.checkOut = async ({
+  customerId,
+  hotelId,
+  stayId,
+  checkInTime,
+  costPerHour,
+  costPerMinute,
+  costMinCharge,
+}) => {
+  const checkOutTime = new Date().getTime();
+  const customerInfo = await customer.fetchOne(customerId);
+  const hotelInfo = await hotel.fetchOne(hotelId);
+  const roomCharge = payments.computeRoomCharge({
+    checkInTime,
+    checkOutTime,
+    costPerHour,
+    costPerMinute,
+    costMinCharge,
+  });
+  await payments.chargeCustomer(
+    customerInfo.stripeId,
+    hotelInfo.stripeAccount,
+    roomCharge
+  );
+  return Stay.update(
     {
       status: 'CHECKED_OUT',
       checkOutTime: new Date().getTime(),
+      roomCharge,
     },
     {
       attributes: [
@@ -73,14 +98,15 @@ const checkOut = (id, customerId) =>
         'status',
         'id',
       ],
-      where: { id, customerId },
+      where: { id: stayId, customerId },
       returning: true,
       plain: true,
       raw: true,
     }
   );
+};
 
-const cancel = (id, customerId) =>
+exports.cancel = (id, customerId) =>
   Stay.update(
     {
       status: 'AVAILABLE',
@@ -94,12 +120,3 @@ const cancel = (id, customerId) =>
       },
     }
   );
-
-module.exports = {
-  create,
-  book,
-  checkIn,
-  checkOut,
-  cancel,
-  remove,
-};

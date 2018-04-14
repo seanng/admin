@@ -1,34 +1,37 @@
 const io = require('../../io');
-const room = require('../../services/room');
+const { room } = require('../../services');
 const { validateToken } = require('../../db/helpers');
 const { emitToHotel, reply } = require('../helpers');
 
-module.exports = (client, action) =>
-  new Promise((resolve, reject) => {
-    const { token, hotelId, profile } = action;
-    validateToken(token, (err, { userId }) => {
-      room
-        .book(userId, hotelId)
-        .then(data => {
-          emitToHotel(io, hotelId, {
-            type: 'app/FrontDesk/SOCKET_CREATE_BOOKING',
-            booking: {
-              ...data,
-              customerName: `${profile.firstName} ${profile.lastName}`,
-            },
-          });
-          reply(client, {
-            type: 'CREATE_BOOKING_SUCCESS',
-            data,
-          });
-          resolve();
-        })
-        .catch(errorMsg => {
-          reply(client, {
-            type: 'CREATE_BOOKING_FAILURE',
-            errorMsg,
-          });
-          reject(errorMsg);
-        });
-    });
+const handleSuccess = (client, data, customerName, hotelId) => {
+  emitToHotel(io, hotelId, {
+    type: 'app/FrontDesk/SOCKET_CREATE_BOOKING',
+    booking: {
+      ...data,
+      customerName,
+    },
   });
+  reply(client, {
+    type: 'CREATE_BOOKING_SUCCESS',
+    data,
+  });
+};
+
+const handleFail = (client, errorMsg) =>
+  reply(client, {
+    type: 'CREATE_BOOKING_FAILURE',
+    errorMsg,
+  });
+
+module.exports = async (client, action) => {
+  try {
+    const customerName = `${action.profile.firstName} ${
+      action.profile.lastName
+    }`;
+    const userId = await validateToken(action.token);
+    const booking = await room.book(userId, action.hotelId);
+    return handleSuccess(client, booking, customerName, action.hotelId);
+  } catch (error) {
+    return handleFail(client, error);
+  }
+};

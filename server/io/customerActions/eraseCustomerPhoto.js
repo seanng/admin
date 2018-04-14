@@ -12,9 +12,11 @@ const handleFail = (client, error) =>
     error,
   });
 
-module.exports = (client, action) =>
-  new Promise((resolve, reject) =>
-    deletePhotoFromCloudStorage(action.photo)
-      .then(() => resolve(handleSuccess(client)))
-      .catch(error => reject(handleFail(client, error)))
-  );
+module.exports = async (client, action) => {
+  try {
+    await deletePhotoFromCloudStorage(action.photo);
+    return handleSuccess(client);
+  } catch (error) {
+    return handleFail(client, error);
+  }
+};

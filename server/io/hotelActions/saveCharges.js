@@ -1,34 +1,35 @@
 const { Stay, Surcharge } = require('../../db/models');
 const { reply } = require('../helpers');
 
-const saveCharges = (charges, totalCharge, stayId, respond) =>
-  // save charges into Surcharge
-  charges
-    .reduce(
-      (promiseChain, charge) => Surcharge.create(charge),
-      Promise.resolve()
-    )
-    .then(() =>
-      Stay.update({ totalCharge }, { where: { id: stayId } }).then(() =>
-        Surcharge.findAll({ where: { stayId } }).then(updatedCharges =>
-          respond(null, updatedCharges, totalCharge)
-        )
-      )
-    );
+const saveCharges = async (charges, totalCharge, stayId) => {
+  // eslint-disable-next-line
+  for (const charge of charges) {
+    await Surcharge.create(charge);
+  }
+  await Stay.update({ totalCharge }, { where: { id: stayId } });
+  return await Surcharge.findAll({ where: { stayId } });
+};
 
-module.exports = (client, action) => {
-  const { charges, newTotal, stayId } = action;
-  return saveCharges(charges, newTotal, stayId, (err, updatedCharges) => {
-    if (err) {
-      return reply(client, {
-        type: 'SAVE_CHARGES_ERROR',
-      });
-    }
-    return reply(client, {
-      type: 'app/PastStays/SAVE_CHARGES_SUCCESS',
-      updatedCharges,
-      stayId,
-      newTotal,
-    });
+const handleSuccess = (client, updatedCharges, stayId, newTotal) =>
+  reply(client, {
+    type: 'app/PastStays/SAVE_CHARGES_SUCCESS',
+    updatedCharges,
+    stayId,
+    newTotal,
   });
+
+const handleFail = (client, err) =>
+  reply(client, {
+    type: 'SAVE_CHARGES_ERROR',
+    err,
+  });
+
+module.exports = async (client, action) => {
+  try {
+    const { charges, newTotal, stayId } = action;
+    const updatedCharges = await saveCharges(charges, newTotal, stayId);
+    return handleSuccess(updatedCharges, stayId, newTotal);
+  } catch (error) {
+    return handleFail(error);
+  }
 };

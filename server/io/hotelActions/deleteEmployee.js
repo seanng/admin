@@ -1,24 +1,23 @@
-const { Employee } = require('../../db/models');
+const { employee } = require('../../services');
 const { reply } = require('../helpers');
 
-const deleteEmployee = (employeeId, respond) => {
-  Employee.destroy({
-    where: { id: employeeId },
-  })
-    .then(() => respond(null, employeeId))
-    .catch(err => respond(err));
-};
-
-module.exports = (client, action) =>
-  deleteEmployee(action.employeeId, (err, employeeId) => {
-    if (err) {
-      return reply(client, {
-        type: 'app/TeamManagement/DELETE_EMPLOYEE_FAIL',
-        err,
-      });
-    }
-    return reply(client, {
-      type: 'app/TeamManagement/DELETE_EMPLOYEE_SUCCESS',
-      employeeId,
-    });
+const handleSuccess = (client, employeeId) =>
+  reply(client, {
+    type: 'app/TeamManagement/DELETE_EMPLOYEE_SUCCESS',
+    employeeId,
   });
+
+const handleFail = (client, err) =>
+  reply(client, {
+    type: 'app/TeamManagement/DELETE_EMPLOYEE_FAIL',
+    err,
+  });
+
+module.exports = async (client, { employeeId }) => {
+  try {
+    await employee.destroy({ id: employeeId });
+    return handleSuccess(client, employeeId);
+  } catch (err) {
+    return handleFail(client, err);
+  }
+};

@@ -1,15 +1,16 @@
 const { Employee, Hotel } = require('../db/models');
-const fetchOne = id => Employee.findOne({ where: { id } });
 
-const fetchAll = hotelId =>
+exports.fetchOne = queryParams => Employee.findOne({ where: queryParams });
+
+exports.fetchAll = queryParams =>
   Employee.findAll({
-    where: { hotelId },
+    where: queryParams,
     attributes: {
       exclude: ['password', 'createdAt', 'regDate', 'updatedAt'],
     },
   });
 
-const create = userDetails =>
+exports.create = userDetails =>
   Employee.create(userDetails, {
     attributes: {
       exclude: ['password'],
@@ -22,7 +23,7 @@ const create = userDetails =>
     ],
   });
 
-const updateProfile = profile =>
+exports.updateProfile = profile =>
   Employee.update(profile, {
     where: { id: profile.id },
     returning: true,
@@ -30,9 +31,4 @@ const updateProfile = profile =>
     raw: true,
   }).then(data => data[1]);
 
-module.exports = {
-  fetchOne,
-  fetchAll,
-  create,
-  updateProfile,
-};
+exports.delete = queryParams => Employee.destroy({ where: queryParams });

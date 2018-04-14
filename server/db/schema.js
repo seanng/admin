@@ -115,7 +115,7 @@ const Stay = sequelize.define('stay', {
   roomNumber: Sequelize.STRING, // Update on create Room
   roomType: Sequelize.STRING,
   roomCharge: Sequelize.FLOAT,
-  totalCharge: Sequelize.FLOAT,
+  additionalCharges: Sequelize.FLOAT,
 });
 
 const Surcharge = sequelize.define('surcharge', {

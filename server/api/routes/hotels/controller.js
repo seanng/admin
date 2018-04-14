@@ -1,7 +1,8 @@
 const R = require('ramda');
 const Promise = require('bluebird');
 const logger = require('../../../logger');
-const { hotel, employee, sendMail } = require('../../../services');
+const { hotel, sendMail } = require('../../../services');
+const Employee = require('../../../db/models/Employee');
 
 exports.getHotels = () =>
   hotel.fetchAll().then(hotels => {
@@ -24,7 +25,7 @@ exports.createHotel = req =>
   hotel
     .create(req.body.hotel)
     .then(hotelInfo =>
-      employee.create({
+      Employee.createInitial({
         ...req.body.admin,
         adminLevel: 2,
         hotelId: hotelInfo.id,

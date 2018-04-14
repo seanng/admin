@@ -21,8 +21,7 @@ const handleFail = (client, err) =>
 
 module.exports = async (client, action) => {
   try {
-    const roomData = await room.checkIn(action.stayId);
-    const data = roomData[1];
+    const data = await room.checkIn(action.stayId);
     return handleSuccess(client, action.customerId, data);
   } catch (err) {
     return handleFail(client, err);

@@ -29,8 +29,9 @@ module.exports = async (client, action) => {
       action.profile.lastName
     }`;
     const userId = await validateToken(action.token);
-    const booking = await room.book(userId, action.hotelId);
-    return handleSuccess(client, booking, customerName, action.hotelId);
+    // validate if the card actually works.
+    const booking = await room.book(userId, action.hotel);
+    return handleSuccess(client, booking, customerName, action.hotel.id);
   } catch (error) {
     return handleFail(client, error);
   }

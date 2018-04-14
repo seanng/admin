@@ -1,4 +1,4 @@
-const { employee } = require('../../services');
+const Employee = require('../../db/models/Employee');
 const { reply } = require('../helpers');
 
 const handleSuccess = (client, employeeId) =>
@@ -15,7 +15,7 @@ const handleFail = (client, err) =>
 
 module.exports = async (client, { employeeId }) => {
   try {
-    await employee.destroy({ id: employeeId });
+    await Employee.delete({ id: employeeId });
     return handleSuccess(client, employeeId);
   } catch (err) {
     return handleFail(client, err);

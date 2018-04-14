@@ -1,6 +1,6 @@
 const { validateToken } = require('../../db/helpers');
 const { reply, linkEmployeeToHotelSockets } = require('../helpers');
-const { employee: employeeService } = require('../../services');
+const Employee = require('../../db/models/Employee');
 
 const handleSuccess = (client, user, token) =>
   reply(client, {
@@ -19,7 +19,7 @@ const handleFail = (client, err, token) =>
 module.exports = async (client, action) => {
   try {
     const { userId } = await validateToken(action.token);
-    const employee = await employeeService.fetchOne({ id: userId });
+    const employee = await Employee.fetchOne({ id: userId });
     linkEmployeeToHotelSockets(client, employee.hotelId);
     return handleSuccess(client, employee, action.token);
   } catch (error) {

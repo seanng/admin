@@ -17,7 +17,7 @@ const handleFail = (client, errorMsg) =>
 module.exports = async (client, action) => {
   try {
     const { userId } = await validateToken(action.token);
-    const bookings = await staysService.fetchCustomerHistory(userId);
+    const bookings = staysService.fetchCustomerHistory(userId);
     return handleSuccess(client, bookings);
   } catch (error) {
     return handleFail(client, error);

@@ -1,4 +1,4 @@
-const { updateProfile } = require('../../services/customer');
+const Customer = require('../../db/models/Customer');
 const {
   decodeBase64Image,
   createFile,
@@ -23,7 +23,7 @@ module.exports = async (client, action) => {
   try {
     const { profile, shouldHandleBase64 } = action;
     if (!shouldHandleBase64) {
-      const profileInfo = await updateProfile(profile);
+      const profileInfo = await Customer.updateProfile(profile);
       return handleSuccess(client, profileInfo);
     }
     const blob = await decodeBase64Image(profile.avatarUrl);
@@ -33,7 +33,7 @@ module.exports = async (client, action) => {
       `customers/profiles/${profile.id}`
     );
     const avatarUrl = await getPublicUrl(gcsname);
-    const info = await updateProfile({ ...profile, avatarUrl });
+    const info = await Customer.updateProfile({ ...profile, avatarUrl });
     return handleSuccess(info, client);
   } catch (error) {
     return handleFail(client, error);

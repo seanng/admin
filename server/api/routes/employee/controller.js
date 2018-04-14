@@ -1,24 +1,12 @@
 const { Employee } = require('../../../db/models');
 const { signToken } = require('../../../db/helpers');
-const controller = {};
+const logger = require('../../../logger');
 
-controller.createNewEmployee = (res, rej, req) => {
-  const { username, password, firstName, lastName, email, phoneNo } = req.body;
-
-  return Employee.create({
-    username,
-    password,
-    firstName,
-    lastName,
-    email,
-    phoneNo,
-  })
-    .then(user => ({ token: signToken(user.id), user }))
-    .then(data => res({ data }));
+exports.createNewEmployee = async req => {
+  try {
+    const user = Employee.create(req.body);
+    return { data: { token: signToken(user.id), user } };
+  } catch (error) {
+    return logger.error(error);
+  }
 };
-
-// controller.getEmployee = (res, rej, req) => {};
-
-// controller.putEmployee = (res, rej, req) => {};
-
-module.exports = controller;

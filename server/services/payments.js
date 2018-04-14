@@ -1,8 +1,9 @@
 const { getConfigurationValue } = require('../config/env');
 const stripe = require('stripe')(getConfigurationValue('stripeSecretKey'));
+const differenceInHours = require('date-fns/difference_in_hours');
+const differenceInMinutes = require('date-fns/difference_in_minutes');
 const logger = require('../logger');
 const { validateToken } = require('../db/helpers');
-const { updateProfile } = require('./customer');
 const { Customer } = require('../db/models');
 
 const getCustomerStripeId = id =>
@@ -16,7 +17,7 @@ const getCustomerStripeId = id =>
       return stripe.customers
         .create({ email })
         .then(response =>
-          updateProfile({
+          Customer.updateProfile({
             id,
             stripeId: response.id,
           })
@@ -47,3 +48,19 @@ exports.getAllPaymentSources = stripeId =>
     defaultMethod: response.default_source,
     paymentMethods: response.sources.data,
   }));
+
+exports.computeRoomCharge = ({
+  checkOutTime,
+  checkInTime,
+  costPerHour,
+  costPerMinute,
+  costMinCharge,
+}) => {
+  const totalHours = differenceInHours(checkOutTime, checkInTime);
+  const totalMinutes = differenceInMinutes(checkOutTime, checkInTime);
+  const accruedMinutes = totalMinutes - totalHours * 60;
+  const totalCharge = totalHours * costPerHour + accruedMinutes * costPerMinute;
+  return totalCharge > costMinCharge ? totalCharge : costMinCharge;
+};
+
+exports.chargeCustomer = () => {};

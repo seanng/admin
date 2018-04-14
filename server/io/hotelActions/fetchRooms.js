@@ -16,7 +16,6 @@ const handleFail = (client, error) =>
 module.exports = async (client, action) => {
   try {
     const rooms = await stays.fetchActive(action.hotelId);
-    console.log('we are in the rooms:::: ', rooms);
     return handleSuccess(client, rooms);
   } catch (error) {
     return handleFail(client, error);

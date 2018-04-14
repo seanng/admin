@@ -1,5 +1,6 @@
-const Promise = require('bluebird');
-const { employee: employeeService } = require('../../services');
+const { Employee } = require('../../db/models');
+const logger = require('../../logger');
+// const { employee: employeeService } = require('../../services');
 const { signToken } = require('../../db/helpers');
 const { linkEmployeeToHotelSockets } = require('../helpers');
 const { reply } = require('../helpers');
@@ -21,11 +22,12 @@ const handleFail = (client, err) => {
 module.exports = async (client, action) => {
   try {
     const { email, password } = action.info;
-    const employee = await employeeService.fetchOne({ email });
-    await Promise.promisify(employee.comparePassword(password));
+    const employee = await Employee.fetchOne({ email });
+    await employee.comparePassword(password);
     linkEmployeeToHotelSockets(client, employee.hotelId);
     return handleSuccess(client, employee);
   } catch (err) {
+    logger.error(err);
     return handleFail(client, err);
   }
 };

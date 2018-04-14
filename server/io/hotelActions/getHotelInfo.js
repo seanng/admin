@@ -1,5 +1,6 @@
-const hotel = require('../../services/hotel');
+const Hotel = require('../../db/models/Hotel');
 const { reply } = require('../helpers');
+const logger = require('../../logger');
 
 const handleSuccess = (client, info) =>
   reply(client, {
@@ -7,15 +8,17 @@ const handleSuccess = (client, info) =>
     info,
   });
 
-const handleFail = (client, err) =>
+const handleFail = (client, err) => {
+  logger.error(err);
   reply(client, {
     type: 'GET_HOTEL_INFO_ERROR',
     err,
   });
+};
 
 module.exports = async (client, action) => {
   try {
-    const hotelInfo = await hotel.fetchOne(action.id);
+    const hotelInfo = await Hotel.fetchOne({ id: action.id });
     return handleSuccess(client, hotelInfo);
   } catch (error) {
     return handleFail(client, error);

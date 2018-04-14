@@ -2,6 +2,15 @@ const bcrypt = require('bcrypt-nodejs');
 const Promise = require('bluebird');
 const { Customer } = require('../schema');
 const cipher = Promise.promisify(bcrypt.hash);
+const compare = Promise.promisify(bcrypt.compare);
+
+Customer.beforeBulkCreate(async users => {
+  // eslint-disable-next-line
+  for (const user of users) {
+    const hashedPw = await cipher(user.password, null, null);
+    user.password = hashedPw;
+  }
+});
 
 Customer.beforeCreate(user =>
   cipher(user.password, null, null).then(hashedPw => {
@@ -11,19 +20,19 @@ Customer.beforeCreate(user =>
 );
 
 Customer.Instance.prototype.comparePassword = function comparePassword(
-  candidatePassword,
-  cb
+  candidatePassword
 ) {
-  bcrypt.compare(
-    candidatePassword,
-    this.getDataValue('password'),
-    (err, isMatch) => {
-      if (err) {
-        return cb(err);
-      }
-      return cb(null, isMatch);
-    }
-  );
+  return compare(candidatePassword, this.getDataValue('password'));
 };
+
+Customer.fetchOne = params => Customer.findOne({ where: params });
+
+Customer.updateProfile = profile =>
+  Customer.update(profile, {
+    where: { id: profile.id },
+    returning: true,
+    plain: true,
+    raw: true,
+  }).then(data => data[1]);
 
 module.exports = Customer;

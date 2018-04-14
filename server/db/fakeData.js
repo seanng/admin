@@ -1,4 +1,5 @@
 const { sequelize } = require('./schema');
+const logger = require('../logger');
 const { Surcharge, Stay, Hotel, Customer, Employee } = require('./models');
 
 const fakeData = {
@@ -67,7 +68,7 @@ const fakeData = {
       description:
         '<p>&hearts; nice job!</p><p>A 5-minute walk from Wan Chai Ferry Pier, this upscale, high-rise hotel with a glass facade is also an 8-minute walk from the Hong Kong Convention and Exhibition Centre and 4 km from Victoria Harbour.</p><p>Relaxed rooms with marble bathrooms feature flat-screen TVs, minibars and tea and coffeemaking facilities. Upgraded rooms add sitting areas and balconies with city/harbor views. Suites offer living/dining areas. Room service is available.</p><p><b>Amenities include 3 stylish eateries, a bar and a lounge with live music, plus a business center, a gym and an outdoor seasonal pool. Paid parking is available.</b></p>',
       roomType: 'Deluxe Room',
-      stripeAccount: 'ac_Cf3rwprMG5f0t5nJwx3gX7gxMy8kQCTQ',
+      stripeId: 'ac_Cf3rwprMG5f0t5nJwx3gX7gxMy8kQCTQ',
       amenities: ['miniBar'],
     },
     {
@@ -93,7 +94,7 @@ const fakeData = {
   
       Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian comprehensam mediocritatem. Sale aperiri maiestatis pri eu, ea eam dolorem maiorum efficiendi, his te mentitum detraxit. Ferri laoreet deterruisset te sea. His nostro ceteros cu, et liber semper duo.`,
       roomType: 'Deluxe Room',
-      stripeAccount: 'ac_Cf3rwprMG5f0t5nJwx3gX7gxMy8kQCTQ',
+      stripeId: 'ac_Cf3rwprMG5f0t5nJwx3gX7gxMy8kQCTQ',
       amenities: ['miniBar'],
     },
     {
@@ -104,7 +105,7 @@ const fakeData = {
       costCurrency: 'HK$',
       costMinCharge: 300,
       costPerMinute: 3,
-      stripeAccount: 'ac_Cf3rwprMG5f0t5nJwx3gX7gxMy8kQCTQ',
+      stripeId: 'ac_Cf3rwprMG5f0t5nJwx3gX7gxMy8kQCTQ',
       costPerHour: 150,
       photos: [
         'https://www.scmp.com/sites/default/files/styles/660x385/public/2016/10/12/grand-hyatt-hong-kong-presidential-suite-bedroom-3608_2mb.jpg',
@@ -139,7 +140,7 @@ const fakeData = {
   
       Nec cu wisi errem. Eu ius reque nobis, nam commune epicurei no, ut sea apeirian comprehensam mediocritatem. Sale aperiri maiestatis pri eu, ea eam dolorem maiorum efficiendi, his te mentitum detraxit. Ferri laoreet deterruisset te sea. His nostro ceteros cu, et liber semper duo.`,
       roomType: 'Deluxe Room',
-      stripeAccount: 'ac_Cf3rwprMG5f0t5nJwx3gX7gxMy8kQCTQ',
+      stripeId: 'ac_Cf3rwprMG5f0t5nJwx3gX7gxMy8kQCTQ',
       amenities: [],
     },
   ],
@@ -431,43 +432,15 @@ const fakeData = {
   ],
 };
 
-module.exports = () =>
-  sequelize
-    .sync({
-      force: true,
-    })
-    .then(() =>
-      fakeData.customers
-        .reduce(
-          (promiseChain, customer) => Customer.create(customer),
-          Promise.resolve()
-        )
-        .then(() =>
-          fakeData.hotels
-            .reduce(
-              (promiseChain, hotel) => Hotel.create(hotel),
-              Promise.resolve()
-            )
-            .then(() =>
-              fakeData.stays
-                .reduce(
-                  (promiseChain, stay) => Stay.create(stay),
-                  Promise.resolve()
-                )
-                .then(() =>
-                  fakeData.surcharges
-                    .reduce(
-                      (promiseChain, surcharge) => Surcharge.create(surcharge),
-                      Promise.resolve()
-                    )
-                    .then(() =>
-                      fakeData.employees.reduce(
-                        (promiseChain, employee) => Employee.create(employee),
-                        Promise.resolve()
-                      )
-                    )
-                )
-            )
-        )
-    )
-    .catch(err => console.log(err));
+module.exports = async () => {
+  try {
+    await sequelize.sync({ force: true });
+    await Customer.bulkCreate(fakeData.customers);
+    await Hotel.bulkCreate(fakeData.hotels);
+    await Stay.bulkCreate(fakeData.stays);
+    await Surcharge.bulkCreate(fakeData.surcharges);
+    await Employee.bulkCreate(fakeData.employees);
+  } catch (error) {
+    logger.error(error);
+  }
+};

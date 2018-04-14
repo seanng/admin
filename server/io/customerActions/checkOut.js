@@ -1,5 +1,5 @@
 const io = require('../../io');
-const { checkOut } = require('../../services/payments');
+const { checkOut } = require('../../services/room');
 const { reply, emitToHotel } = require('../helpers');
 const { validateToken } = require('../../db/helpers');
 
@@ -23,9 +23,9 @@ const handleFail = (client, errorMsg) =>
 
 module.exports = async (client, action) => {
   try {
-    const { stayId, hotelId, checkInTime, token } = action;
+    const { stayId, token } = action;
     const { userId } = validateToken(token);
-    const data = checkOut({ customerId: userId, hotelId, stayId, checkInTime });
+    const data = await checkOut(userId, stayId);
     return handleSuccess(client, data);
   } catch (error) {
     return handleFail(client, error);

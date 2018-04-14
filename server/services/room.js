@@ -1,5 +1,5 @@
-const { Stay, Hotel } = require('../db/models');
-const { customer, hotel, payments } = require('./index');
+const { Stay } = require('../db/models');
+const { payments } = require('./index');
 
 exports.create = (hotelId, roomNumber) =>
   Stay.create({
@@ -10,113 +10,44 @@ exports.create = (hotelId, roomNumber) =>
 
 exports.remove = id => Stay.destroy({ where: { id } });
 
-exports.book = (customerId, hotelId) => {
-  let result;
+exports.book = async (customerId, hotel) => {
   const updatedParams = {
     status: 'BOOKED',
     customerId,
+    costMinCharge: hotel.costMinCharge,
+    costPerHour: hotel.costPerHour,
+    costPerMinute: hotel.costPerMinute,
     bookingTime: new Date().getTime(),
   };
-  return Stay.findOne({
-    raw: true,
-    where: {
-      hotelId,
-      status: 'AVAILABLE',
-    },
-    include: [
-      {
-        model: Hotel,
-      },
-    ],
-  })
-    .then(stay => {
-      if (stay === null) {
-        throw new Error('no stay is available for this hotel');
-      }
-      result = stay;
-      return Stay.update(updatedParams, {
-        where: { id: stay.id },
-      });
-    })
-    .then(() => ({ ...result, ...updatedParams }));
+  const stay = await Stay.findOneByHotelId(hotel.id);
+  if (stay === null) {
+    throw new Error('no stay is available for this hotel');
+  }
+  await Stay.update(updatedParams, {
+    where: { id: stay.id },
+  });
+  return { ...stay, ...updatedParams };
 };
 
-exports.checkIn = id =>
-  Stay.update(
-    {
-      status: 'CHECKED_IN',
-      checkInTime: new Date().getTime(),
-    },
-    {
-      attributes: ['checkInTime', 'status', 'id'],
-      where: { id },
-      returning: true,
-      plain: true,
-      raw: true,
-    }
-  );
+exports.checkIn = id => Stay.checkIn(id);
 
-exports.checkOut = async ({
-  customerId,
-  hotelId,
-  stayId,
-  checkInTime,
-  costPerHour,
-  costPerMinute,
-  costMinCharge,
-}) => {
+exports.checkOut = async (customerId, stayId) => {
   const checkOutTime = new Date().getTime();
-  const customerInfo = await customer.fetchOne(customerId);
-  const hotelInfo = await hotel.fetchOne(hotelId);
+  const stayInfo = await Stay.getDetailsForCheckOut(stayId);
   const roomCharge = payments.computeRoomCharge({
-    checkInTime,
     checkOutTime,
-    costPerHour,
-    costPerMinute,
-    costMinCharge,
+    checkInTime: stayInfo.checkInTime,
+    costPerHour: stayInfo.costPerHour,
+    costPerMinute: stayInfo.costPerMinute,
+    costMinCharge: stayInfo.costMinCharge,
   });
   await payments.chargeCustomer(
-    customerInfo.stripeId,
-    hotelInfo.stripeAccount,
+    stayInfo['customer.stripeId'],
+    stayInfo['hotel.stripeId'],
     roomCharge
   );
-  return Stay.update(
-    {
-      status: 'CHECKED_OUT',
-      checkOutTime: new Date().getTime(),
-      roomCharge,
-    },
-    {
-      attributes: [
-        'bookingTime',
-        'checkInTime',
-        'roomCharge',
-        'roomNumber',
-        'totalCharge',
-        'costCurrency',
-        'checkOutTime',
-        'status',
-        'id',
-      ],
-      where: { id: stayId, customerId },
-      returning: true,
-      plain: true,
-      raw: true,
-    }
-  );
+  return Stay.checkOut({ id: stayId, customerId, roomCharge, checkOutTime });
 };
 
-exports.cancel = (id, customerId) =>
-  Stay.update(
-    {
-      status: 'AVAILABLE',
-      bookingTime: null,
-      customerId: null,
-    },
-    {
-      where: {
-        id,
-        customerId,
-      },
-    }
-  );
+exports.cancel = async (id, customerId) =>
+  await Stay.cancelBooking(id, customerId);

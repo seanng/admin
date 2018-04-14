@@ -1,15 +1,5 @@
 const { Customer } = require('../db/models');
 
-exports.fetchOne = queryParams => Customer.findOne({ where: queryParams });
-
-exports.updateProfile = profile =>
-  Customer.update(profile, {
-    where: { id: profile.id },
-    returning: true,
-    plain: true,
-    raw: true,
-  }).then(data => data[1]);
-
 exports.fbRetrieveCustomer = fbUser =>
   Customer.findOrCreate({
     where: { email: fbUser.email },

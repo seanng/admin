@@ -1,24 +1,12 @@
 const { Customer } = require('../../../db/models');
 const { signToken } = require('../../../db/helpers');
-const controller = {};
+const logger = require('../../../logger');
 
-controller.createNewCustomer = (res, rej, req) => {
-  const { username, password, firstName, lastName, email, phoneNo } = req.body;
-
-  return Customer.create({
-    username,
-    password,
-    firstName,
-    lastName,
-    email,
-    phoneNo,
-  })
-    .then(user => ({ token: signToken(user.id), user }))
-    .then(data => res({ data }));
+exports.createNewCustomer = async req => {
+  try {
+    const customer = await Customer.create({ ...req.body });
+    return { data: { token: signToken(customer.Id), user: customer } };
+  } catch (error) {
+    return logger.error(error);
+  }
 };
-
-// controller.getCustomer = (res, rej, req) => {};
-
-// controller.putCustomer = (res, rej, req) => {};
-
-module.exports = controller;

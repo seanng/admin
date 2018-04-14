@@ -104,7 +104,7 @@ const Hotel = sequelize.define('hotel', {
     type: Sequelize.STRING,
     defaultValue: '',
   },
-  stripeAccount: Sequelize.STRING,
+  stripeId: Sequelize.STRING,
 });
 
 const Stay = sequelize.define('stay', {
@@ -115,7 +115,19 @@ const Stay = sequelize.define('stay', {
   roomNumber: Sequelize.STRING, // Update on create Room
   roomType: Sequelize.STRING,
   roomCharge: Sequelize.FLOAT,
-  additionalCharges: Sequelize.FLOAT,
+  totalCharge: Sequelize.FLOAT,
+  costMinCharge: {
+    type: Sequelize.FLOAT,
+    defaultValue: 0,
+  },
+  costPerHour: {
+    type: Sequelize.FLOAT,
+    defaultValue: 0,
+  },
+  costPerMinute: {
+    type: Sequelize.FLOAT,
+    defaultValue: 0,
+  },
 });
 
 const Surcharge = sequelize.define('surcharge', {

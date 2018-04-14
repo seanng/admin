@@ -1,5 +1,5 @@
 const Promise = require('bluebird');
-const { updateProfile } = require('../../services/hotel');
+const Hotel = require('../../db/models/Hotel');
 const {
   createFile,
   sendUploadToGCS,
@@ -36,12 +36,12 @@ module.exports = (client, action) =>
   new Promise((resolve, reject) => {
     const { hotelInfo, shouldHandleImageBlobs } = action;
     if (!shouldHandleImageBlobs) {
-      return updateProfile(hotelInfo)
+      return Hotel.updateProfile(hotelInfo)
         .then(info => resolve(handleSuccess(info, client)))
         .catch(error => reject(handleFail(error, client)));
     }
     return getImageUrls(hotelInfo.photos, hotelInfo.id)
-      .then(photos => updateProfile({ ...hotelInfo, photos }))
+      .then(photos => Hotel.updateProfile({ ...hotelInfo, photos }))
       .then(info => resolve(handleSuccess(info, client)))
       .catch(error => reject(handleFail(error, client)));
   });

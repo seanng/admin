@@ -1,4 +1,4 @@
-const employee = require('../../services/employee');
+const Employee = require('../../db/models/Employee');
 const { reply } = require('../helpers');
 
 const handleSuccess = (client, employees) =>
@@ -15,7 +15,7 @@ const handleFail = (client, err) =>
 
 module.exports = async (client, action) => {
   try {
-    const employees = await employee.fetchAll({ hotelId: action.hotelId });
+    const employees = await Employee.fetchAll({ hotelId: action.hotelId });
     return handleSuccess(client, employees);
   } catch (error) {
     return handleFail(client, error);

@@ -1,31 +1,23 @@
 const { Employee } = require('../../db/models');
 const { reply } = require('../helpers');
 
-const setAdmin = (employeeId, respond) => {
-  Employee.update(
-    {
-      adminLevel: 2,
-    },
-    {
-      where: {
-        id: employeeId,
-      },
-    }
-  )
-    .then(() => respond(null, employeeId))
-    .catch(err => respond(err));
-};
-
-module.exports = (client, action) =>
-  setAdmin(action.employeeId, (err, employeeId) => {
-    if (err) {
-      return reply(client, {
-        type: 'app/TeamManagement/SET_ADMIN_FAIL',
-        err,
-      });
-    }
-    return reply(client, {
-      type: 'app/TeamManagement/SET_ADMIN_SUCCESS',
-      employeeId,
-    });
+const handleSuccess = (client, employeeId) =>
+  reply(client, {
+    type: 'app/TeamManagement/SET_ADMIN_SUCCESS',
+    employeeId,
   });
+
+const handleFail = (client, err) =>
+  reply(client, {
+    type: 'app/TeamManagement/SET_ADMIN_FAIL',
+    err,
+  });
+
+module.exports = async (client, action) => {
+  try {
+    await Employee.setAdmin(action.employeeId);
+    return handleSuccess(client, action.employeeId);
+  } catch (error) {
+    return handleFail(client, error);
+  }
+};

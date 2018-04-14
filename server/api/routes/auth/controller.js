@@ -2,7 +2,7 @@
 const { setCustomerSocketId } = require('../../../io/helpers');
 const { signToken, validateToken } = require('../../../db/helpers');
 const { customer: customerService } = require('../../../services/');
-const { getCustomerBookingStatus } = require('../../../services/stays');
+const { Customer, Stay } = require('../../../db/models/');
 const rp = require('request-promise');
 const logger = require('../../../logger');
 
@@ -25,9 +25,11 @@ exports.postAuth = async (res, rej, req) => {
   try {
     const { password, socketId } = req.body;
     const email = req.body.email.toLowerCase();
-    const customer = await customerService.fetchOne({ email });
+    const customer = await Customer.fetchOne({ email });
     await Promise.promisify(customer.comparePassword(password));
-    const customerBookingStatus = await getCustomerBookingStatus(customer.id);
+    const customerBookingStatus = await Stay.getCustomerBookingStatus(
+      customer.id
+    );
     setCustomerSocketId(customer.id, socketId);
     return res({ ...customerBookingStatus, token: signToken(customer.id) });
   } catch (error) {
@@ -39,12 +41,12 @@ exports.validateToken = async function validate(res, rej, req) {
   try {
     const { token, socketId } = req.body;
     const { userId } = validateToken(token);
-    const customerBookingStatus = await getCustomerBookingStatus(userId);
+    const customerBookingStatus = await Stay.getCustomerBookingStatus(userId);
     setCustomerSocketId(userId, socketId);
     if (customerBookingStatus) {
       return res(customerBookingStatus);
     }
-    const customer = await customerService.fetchOne({ id: userId });
+    const customer = await Customer.fetchOne({ id: userId });
     if (customer) {
       res(customer);
     } else {
@@ -68,7 +70,7 @@ exports.facebook_authenticate = function facebookAuthenticate(res, rej, req) {
             if (newlyCreated) {
               return res({ ...customer, token });
             }
-            return getCustomerBookingStatus(customer.id)
+            return Stay.getCustomerBookingStatus(customer.id)
               .then(data => {
                 if (data) {
                   return res({ ...data, token });

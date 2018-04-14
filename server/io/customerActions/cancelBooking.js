@@ -19,11 +19,11 @@ const handleFail = (client, errorMsg) =>
     errorMsg,
   });
 
-module.exports = async (client, action) => {
+module.exports = (client, action) => {
   try {
     const { token, stayId, hotelId } = action;
     const { userId } = validateToken(token);
-    await room.cancel(stayId, userId);
+    room.cancel(stayId, userId);
     return handleSuccess(client, stayId, hotelId);
   } catch (error) {
     return handleFail(client, error);

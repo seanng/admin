@@ -1,6 +1,6 @@
 const { validateToken } = require('../../db/helpers');
+const Stay = require('../../db/models/Stay');
 const { reply } = require('../helpers');
-const staysService = require('../../services/stays');
 
 const handleSuccess = (client, bookings) =>
   reply(client, {
@@ -16,8 +16,8 @@ const handleFail = (client, errorMsg) =>
 
 module.exports = async (client, action) => {
   try {
-    const { userId } = await validateToken(action.token);
-    const bookings = staysService.fetchCustomerHistory(userId);
+    const { userId } = validateToken(action.token);
+    const bookings = await Stay.fetchCustomerHistory(userId);
     return handleSuccess(client, bookings);
   } catch (error) {
     return handleFail(client, error);

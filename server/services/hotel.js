@@ -1,3 +1,5 @@
+const payments = require('./payments');
+
 const { Hotel, Stay } = require('../db/models');
 
 exports.fetchAll = () =>
@@ -8,6 +10,10 @@ exports.fetchAll = () =>
 
 exports.getAvailability = hotelId => Stay.getHotelAvailability(hotelId);
 
-// exports.fetchOne = id => Hotel.findOne({ where: { id } });
-
-exports.create = hotelInfo => Hotel.create(hotelInfo);
+exports.create = async (hotelInfo, stripeCode) => {
+  const { stripe_user_id: stripeId } = await payments.getHotelStripeId(
+    stripeCode
+  );
+  hotelInfo.stripeId = stripeId;
+  return Hotel.create(hotelInfo);
+};

@@ -1,4 +1,4 @@
-const stays = require('../../services/stays');
+const Stay = require('../../db/models/Stay');
 const { reply } = require('../helpers');
 
 const handleSuccess = (client, rooms) =>
@@ -15,7 +15,7 @@ const handleFail = (client, error) =>
 
 module.exports = async (client, action) => {
   try {
-    const rooms = await stays.fetchActive(action.hotelId);
+    const rooms = await Stay.fetchActive(action.hotelId);
     return handleSuccess(client, rooms);
   } catch (error) {
     return handleFail(client, error);

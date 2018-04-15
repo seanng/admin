@@ -1,3 +1,4 @@
+const request = require('request-promise');
 const { getConfigurationValue } = require('../config/env');
 const stripe = require('stripe')(getConfigurationValue('stripeSecretKey'));
 const differenceInHours = require('date-fns/difference_in_hours');
@@ -5,6 +6,18 @@ const differenceInMinutes = require('date-fns/difference_in_minutes');
 const logger = require('../logger');
 const { validateToken } = require('../db/helpers');
 const { Customer } = require('../db/models');
+
+exports.getHotelStripeId = stripeCode =>
+  request({
+    method: 'POST',
+    uri: 'https://connect.stripe.com/oauth/token',
+    body: {
+      client_secret: getConfigurationValue('stripeSecretKey'),
+      code: stripeCode,
+      grant_type: 'authorization_code',
+    },
+    json: true,
+  });
 
 const getCustomerStripeId = id =>
   Customer.findById(id, {
@@ -63,4 +76,13 @@ exports.computeRoomCharge = ({
   return totalCharge > costMinCharge ? totalCharge : costMinCharge;
 };
 
-exports.chargeCustomer = () => {};
+exports.chargeCustomer = (customerStripeId, hotelStripeId, amount) =>
+  stripe.charges.create({
+    amount,
+    currency: 'hkd',
+    customer: customerStripeId,
+    destination: {
+      account: hotelStripeId,
+      amount: amount * 0.8, // assuming we take 20% cut.
+    },
+  });

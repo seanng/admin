@@ -1,4 +1,4 @@
-const { Stay } = require('../db/models');
+const Stay = require('../db/models/Stay');
 const { payments } = require('./index');
 
 exports.create = (hotelId, roomNumber) =>
@@ -41,12 +41,18 @@ exports.checkOut = async (customerId, stayId) => {
     costPerMinute: stayInfo.costPerMinute,
     costMinCharge: stayInfo.costMinCharge,
   });
-  await payments.chargeCustomer(
-    stayInfo['customer.stripeId'],
-    stayInfo['hotel.stripeId'],
-    roomCharge
+  const { id: stripeChargeId } = await payments.chargeCustomer(
+    stayInfo.customer.stripeId,
+    stayInfo.hotel.stripeId,
+    roomCharge * 100 // in cents.
   );
-  return Stay.checkOut({ id: stayId, customerId, roomCharge, checkOutTime });
+  return Stay.checkOut({
+    id: stayId,
+    customerId,
+    roomCharge,
+    checkOutTime,
+    stripeChargeId,
+  });
 };
 
 exports.cancel = async (id, customerId) =>

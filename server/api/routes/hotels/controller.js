@@ -23,7 +23,7 @@ exports.getHotels = () =>
 
 exports.createHotel = req =>
   hotel
-    .create(req.body.hotel)
+    .create(req.body.hotel, req.body.stripeCode)
     .then(hotelInfo =>
       Employee.createInitial({
         ...req.body.admin,

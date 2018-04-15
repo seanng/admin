@@ -2,11 +2,12 @@ const io = require('../../io');
 const { checkOut } = require('../../services/room');
 const { reply, emitToHotel } = require('../helpers');
 const { validateToken } = require('../../db/helpers');
+const logger = require('../../logger');
 
 const handleSuccess = (client, data) => {
   emitToHotel(io, data.hotelId, {
     type: 'app/FrontDesk/SOCKET_CHECK_OUT',
-    stayId: data.stayId,
+    stayId: data.id,
   });
 
   reply(client, {
@@ -28,6 +29,7 @@ module.exports = async (client, action) => {
     const data = await checkOut(userId, stayId);
     return handleSuccess(client, data);
   } catch (error) {
+    logger.error(error);
     return handleFail(client, error);
   }
 };

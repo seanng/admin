@@ -2,6 +2,7 @@ const io = require('../../io');
 const { room } = require('../../services');
 const { validateToken } = require('../../db/helpers');
 const { emitToHotel, reply } = require('../helpers');
+const logger = require('../../logger');
 
 const handleSuccess = (client, data, customerName, hotelId) => {
   emitToHotel(io, hotelId, {
@@ -28,11 +29,12 @@ module.exports = async (client, action) => {
     const customerName = `${action.profile.firstName} ${
       action.profile.lastName
     }`;
-    const userId = await validateToken(action.token);
+    const { userId } = await validateToken(action.token);
     // validate if the card actually works.
     const booking = await room.book(userId, action.hotel);
     return handleSuccess(client, booking, customerName, action.hotel.id);
   } catch (error) {
+    logger.error(error);
     return handleFail(client, error);
   }
 };

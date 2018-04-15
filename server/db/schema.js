@@ -128,6 +128,7 @@ const Stay = sequelize.define('stay', {
     type: Sequelize.FLOAT,
     defaultValue: 0,
   },
+  stripeChargeId: Sequelize.STRING,
 });
 
 const Surcharge = sequelize.define('surcharge', {

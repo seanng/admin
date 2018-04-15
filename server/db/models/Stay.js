@@ -75,15 +75,13 @@ Stay.fetchCustomerHistory = customerId =>
   });
 
 Stay.getDetailsForCheckOut = id =>
-  Stay.findOne(
-    { where: { id } },
-    {
-      include: [
-        { model: Customer, attributes: ['stripeId'] },
-        { model: Hotel, attributes: ['id', 'stripeId'] },
-      ],
-    }
-  );
+  Stay.findOne({
+    where: { id },
+    include: [
+      { model: Customer, attributes: ['stripeId'] },
+      { model: Hotel, attributes: ['id', 'stripeId'] },
+    ],
+  });
 
 Stay.checkOut = ({ id, customerId, checkOutTime, roomCharge }) =>
   Stay.update(
@@ -91,6 +89,7 @@ Stay.checkOut = ({ id, customerId, checkOutTime, roomCharge }) =>
       status: 'CHECKED_OUT',
       checkOutTime,
       roomCharge,
+      totalCharge: roomCharge,
     },
     {
       attributes: [
@@ -102,6 +101,7 @@ Stay.checkOut = ({ id, customerId, checkOutTime, roomCharge }) =>
         'costCurrency',
         'checkOutTime',
         'status',
+        'hotelId',
         'id',
       ],
       where: { id, customerId },

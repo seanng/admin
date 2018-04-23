@@ -8,8 +8,6 @@ exports.create = (hotelId, roomNumber) =>
     status: 'AVAILABLE',
   });
 
-exports.remove = id => Stay.destroy({ where: { id } });
-
 exports.book = async (customerId, hotel) => {
   const updatedParams = {
     status: 'BOOKED',

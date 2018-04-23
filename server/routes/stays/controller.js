@@ -7,6 +7,9 @@ const { emitToHotel, setCustomerSocketId } = require('../../io/helpers');
 exports.createRoom = async req =>
   await room.create(req.body.hotelId, req.body.roomNumber);
 
+exports.deleteRoom = async req =>
+  await Stay.destroy({ where: { id: req.params.id } });
+
 exports.createBooking = (req, res) => {
   getUserIdByReq(req).then(userId =>
     room.book(userId, req.body.hotelId).then(booking => {

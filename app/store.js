@@ -12,7 +12,10 @@ import logger from 'redux-logger';
 import createReducer from './reducers';
 
 const sagaMiddleware = createSagaMiddleware();
-const socketIoMiddleware = createSocketIoMiddleware(io(), 'H_IO_');
+const socketIoMiddleware = createSocketIoMiddleware(
+  io.connect('localhost:5051'),
+  'H_IO_'
+);
 
 export default function configureStore(initialState = {}, history) {
   // Create the store with two middlewares

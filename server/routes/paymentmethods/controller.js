@@ -5,7 +5,7 @@ const {
   updatePaymentCustomer,
   deletePaymentMethod,
   getStripeIdFromToken,
-} = require('../../../services/payments');
+} = require('../../services/payments');
 
 exports.createPaymentMethod = req => {
   const { tokenId, isDefaultPaymentMethod } = req.body;
@@ -22,12 +22,12 @@ exports.createPaymentMethod = req => {
 exports.getAllPaymentMethods = req =>
   getStripeIdFromToken(req).then(stripeId => getAllPaymentSources(stripeId));
 
-exports.makeDefaultPaymentMethod = (req, paymentMethodId) =>
+exports.makeDefaultPaymentMethod = req =>
   getStripeIdFromToken(req).then(stripeId =>
-    updatePaymentCustomer(stripeId, { default_source: paymentMethodId })
+    updatePaymentCustomer(stripeId, { default_source: req.params.id })
   );
 
-exports.deletePaymentMethod = (req, paymentMethodId) =>
+exports.deletePaymentMethod = req =>
   getStripeIdFromToken(req).then(stripeId =>
-    deletePaymentMethod(stripeId, paymentMethodId)
+    deletePaymentMethod(stripeId, req.params.id)
   );

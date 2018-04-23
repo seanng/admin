@@ -1,6 +1,6 @@
-const Customer = require('../../../db/models/Customer');
-const logger = require('../../../logger');
-const { getUserIdByReq } = require('../../../utils/helpers');
+const Customer = require('../../db/models/Customer');
+const logger = require('../../logger');
+const { getUserIdByReq } = require('../../utils/helpers');
 
 exports.update = req =>
   getUserIdByReq(req)

@@ -1,11 +1,14 @@
 const R = require('ramda');
 const Promise = require('bluebird');
-const logger = require('../../../logger');
-const { hotel, sendMail } = require('../../../services');
-const Employee = require('../../../db/models/Employee');
+const logger = require('../../logger');
+const { hotel, sendMail } = require('../../services');
+const { Hotel, Employee } = require('../../db/models');
 
-exports.getHotels = () =>
-  hotel.fetchAll().then(hotels => {
+exports.getHotels = async req => {
+  if (req.params.id) {
+    return await Hotel.fetchOne({ id: req.params.id });
+  }
+  return hotel.fetchAll().then(hotels => {
     const hotelsAvailabilityPromise = Promise.map(
       R.map(R.prop('id'), hotels),
       hotel.getAvailability
@@ -20,6 +23,7 @@ exports.getHotels = () =>
       return { hotels: hotelsWithAvailablity };
     });
   });
+};
 
 exports.createHotel = req =>
   hotel

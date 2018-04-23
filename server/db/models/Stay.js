@@ -83,7 +83,7 @@ Stay.getDetailsForCheckOut = id =>
     ],
   });
 
-Stay.checkOut = ({ id, customerId, checkOutTime, roomCharge }) =>
+Stay.checkOut = ({ id, checkOutTime, roomCharge }) =>
   Stay.update(
     {
       status: 'CHECKED_OUT',
@@ -104,14 +104,14 @@ Stay.checkOut = ({ id, customerId, checkOutTime, roomCharge }) =>
         'hotelId',
         'id',
       ],
-      where: { id, customerId },
+      where: { id },
       returning: true,
       plain: true,
       raw: true,
     }
   );
 
-Stay.cancelBooking = (id, customerId) =>
+Stay.cancel = id =>
   Stay.update(
     {
       status: 'AVAILABLE',
@@ -121,7 +121,6 @@ Stay.cancelBooking = (id, customerId) =>
     {
       where: {
         id,
-        customerId,
       },
     }
   );

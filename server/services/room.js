@@ -27,7 +27,7 @@ exports.book = async (customerId, hotel) => {
   return { ...stay, ...updatedParams };
 };
 
-exports.checkOut = async (customerId, stayId) => {
+exports.checkOut = async stayId => {
   const checkOutTime = new Date().getTime();
   const stayInfo = await Stay.getDetailsForCheckOut(stayId);
   const roomCharge = payments.computeRoomCharge({
@@ -44,12 +44,8 @@ exports.checkOut = async (customerId, stayId) => {
   );
   return Stay.checkOut({
     id: stayId,
-    customerId,
     roomCharge,
     checkOutTime,
     stripeChargeId,
   });
 };
-
-exports.cancel = async (id, customerId) =>
-  await Stay.cancelBooking(id, customerId);

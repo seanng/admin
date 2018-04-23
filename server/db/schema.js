@@ -118,15 +118,15 @@ const Stay = sequelize.define('stay', {
   totalCharge: Sequelize.FLOAT,
   costMinCharge: {
     type: Sequelize.FLOAT,
-    defaultValue: 0,
+    defaultValue: 400,
   },
   costPerHour: {
     type: Sequelize.FLOAT,
-    defaultValue: 0,
+    defaultValue: 200,
   },
   costPerMinute: {
     type: Sequelize.FLOAT,
-    defaultValue: 0,
+    defaultValue: 5,
   },
   stripeChargeId: Sequelize.STRING,
 });

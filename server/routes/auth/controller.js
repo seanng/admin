@@ -1,5 +1,4 @@
 /* eslint consistent-return:0 */
-const { setCustomerSocketId } = require('../../io/helpers');
 const { signToken, validateToken } = require('../../db/helpers');
 const { customer: customerService } = require('../../services/');
 const { Customer, Stay, Employee } = require('../../db/models/');
@@ -21,16 +20,18 @@ const getFbUser = accessToken => {
   return rp(options);
 };
 
-exports.customerPostAuth = async (req, res) => {
-  const { password, socketId } = req.body;
+exports.customerPostAuth = async req => {
+  const { password } = req.body;
   const email = req.body.email.toLowerCase();
   const customer = await Customer.fetchOne({ email });
-  await Promise.promisify(customer.comparePassword(password));
+  await customer.comparePassword(password);
   const customerBookingStatus = await Stay.getCustomerBookingStatus(
     customer.id
   );
-  setCustomerSocketId(customer.id, socketId);
-  return res({ ...customerBookingStatus, token: signToken(customer.id) });
+  return {
+    data: { ...customerBookingStatus, token: signToken(customer.id) },
+    customerId: customer.id,
+  };
 };
 
 exports.employeePostAuth = async req => {
@@ -42,17 +43,18 @@ exports.employeePostAuth = async req => {
   return { token, employee };
 };
 
-exports.validateCustomerToken = async function validate(req, res) {
-  const { token, socketId } = req.body;
+exports.validateCustomerToken = async function validate(req) {
+  const { token } = req.body;
   const { userId } = validateToken(token);
   const customerBookingStatus = await Stay.getCustomerBookingStatus(userId);
-  setCustomerSocketId(userId, socketId);
   if (customerBookingStatus) {
-    return res(customerBookingStatus);
+    return {
+      data: { ...customerBookingStatus, token },
+    };
   }
   const customer = await Customer.fetchOne({ id: userId });
   if (customer) {
-    res(customer);
+    return { data: { ...customer, token } };
   }
 };
 
@@ -64,14 +66,14 @@ exports.validateEmployeeToken = async req => {
 };
 
 exports.facebook_authenticate = function facebookAuthenticate(req, res) {
-  const { accessToken, facebookId, socketId } = req.body;
+  const { accessToken, facebookId } = req.body;
   getFbUser(accessToken)
     .then(fbUser => {
       if (fbUser.id === facebookId) {
         return customerService
           .fbRetrieveCustomer(fbUser)
           .then(({ customer, newlyCreated }) => {
-            setCustomerSocketId(customer.id, socketId);
+            // setCustomerSocketId(customer.id, socketId);
             const token = signToken(customer.id);
             if (newlyCreated) {
               return res({ ...customer, token });

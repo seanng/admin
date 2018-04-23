@@ -21,8 +21,6 @@ function handleSocketAction(client) {
     logger.socket.onAction(client, action);
     if (action.type && action.type.split('_IO_').length > 1) {
       const actionType = action.type.split('_IO_');
-      actionType[0] === 'H' &&
-        routeActionToFile(action, 'hotelActions', client, io);
       actionType[0] === 'C' &&
         routeActionToFile(action, 'customerActions', client, io);
     }

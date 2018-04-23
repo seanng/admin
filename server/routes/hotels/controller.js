@@ -1,10 +1,10 @@
 const R = require('ramda');
 const Promise = require('bluebird');
 const logger = require('../../logger');
-const { hotel, sendMail } = require('../../services');
+const { hotel, sendMail, imageHosting } = require('../../services');
 const { Hotel, Employee } = require('../../db/models');
 
-exports.getHotels = async req => {
+exports.get = async req => {
   if (req.params.id) {
     return await Hotel.fetchOne({ id: req.params.id });
   }
@@ -25,7 +25,7 @@ exports.getHotels = async req => {
   });
 };
 
-exports.createHotel = req =>
+exports.create = req =>
   hotel
     .create(req.body.hotel, req.body.stripeCode)
     .then(hotelInfo =>
@@ -52,3 +52,18 @@ exports.createHotel = req =>
       return employeeInfo;
     })
     .catch(error => logger.error('the error', error));
+
+exports.update = async req => {
+  const { hotelInfo, shouldHandleImageBlobs } = req.body;
+  if (!shouldHandleImageBlobs) {
+    return Hotel.updateProfile(hotelInfo);
+  }
+  const photos = await imageHosting.getImageUrls(
+    hotelInfo.photos,
+    hotelInfo.id
+  );
+  return Hotel.updateProfile({ ...hotelInfo, photos });
+};
+
+exports.deletePhotos = async req =>
+  await imageHosting.erasePhotosArray(req.body.photos);

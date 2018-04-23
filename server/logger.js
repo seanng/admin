@@ -10,8 +10,8 @@ const divider = chalk.gray('\n-----------------------------------');
  */
 const logger = {
   // Called whenever there's an error on the server we want to print
-  error: err => {
-    console.error(chalk.red(err));
+  error: (...err) => {
+    console.error(chalk.red(err.join('')));
   },
 
   // Called when express.js app starts on given port w/o errors

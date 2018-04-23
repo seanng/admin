@@ -56,16 +56,4 @@ Employee.updateProfile = profile =>
     raw: true,
   }).then(data => data[1]);
 
-Employee.setAdmin = id =>
-  Employee.update(
-    {
-      adminLevel: 2,
-    },
-    {
-      where: {
-        id,
-      },
-    }
-  );
-
 module.exports = Employee;

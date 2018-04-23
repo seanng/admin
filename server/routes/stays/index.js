@@ -4,7 +4,9 @@ const controller = require('./controller');
 
 routes.put('/', controller.createBooking);
 routes.put('/checkin/:id', handleTryCatch(controller.checkIn));
-routes.get('/active/:id', handleTryCatch(controller.fetchActive));
+
+routes.get('/hotel/:id', handleTryCatch(controller.fetchByHotelId));
+
 routes.post('/', handleTryCatch(controller.createRoom));
 routes.delete('/:id', handleTryCatch(controller.deleteRoom));
 

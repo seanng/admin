@@ -75,12 +75,25 @@ const deletePhotoFromCloudStorage = photoUrl => {
   return bucket.file(fileName).delete();
 };
 
-const erasePhotosArray = photos =>
-  photos.reduce(
-    (promise, photoUrl) =>
-      promise.then(() => deletePhotoFromCloudStorage(photoUrl)),
-    Promise.resolve()
-  );
+const erasePhotosArray = async photos => {
+  // eslint-disable-next-line
+  for (const url of photos) {
+    await deletePhotoFromCloudStorage(url);
+  }
+};
+
+const getImageUrls = (oldPhotos, hotelId) =>
+  Promise.map(oldPhotos, oldPhoto => {
+    const containsUrl =
+      typeof oldPhoto === 'string' && oldPhoto.search('http') === 0;
+    if (containsUrl) {
+      return oldPhoto;
+    }
+    return createFile(oldPhoto)
+      .then(data => sendUploadToGCS(data, `hotels/profiles/${hotelId}`))
+      .then(gcsname => getPublicUrl(gcsname))
+      .then(photoUrl => photoUrl);
+  });
 
 module.exports = {
   createFile,
@@ -89,4 +102,5 @@ module.exports = {
   erasePhotosArray,
   deletePhotoFromCloudStorage,
   decodeBase64Image,
+  getImageUrls,
 };

@@ -16,5 +16,6 @@ routes.post(
   '/facebook_authentication',
   handleTryCatch(controller.facebook_authenticate)
 );
+routes.post('/employee', handleTryCatch(controller.employeePostAuth));
 
 module.exports = routes;

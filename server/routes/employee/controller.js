@@ -2,6 +2,9 @@ const { Employee } = require('../../db/models');
 const { generatePassword } = require('../../utils/helpers');
 const { sendMail } = require('../../services');
 
+exports.getHotelEmployees = async req =>
+  Employee.fetchAll({ hotelId: req.params.hotelId });
+
 exports.addEmployee = async req => {
   const newUserDetails = {
     ...req.body.details,
@@ -26,3 +29,6 @@ exports.addEmployee = async req => {
   });
   return employees;
 };
+
+exports.deleteEmployee = async req =>
+  await Employee.delete({ id: req.params.id });

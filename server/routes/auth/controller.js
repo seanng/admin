@@ -33,6 +33,15 @@ exports.customerPostAuth = async (req, res) => {
   return res({ ...customerBookingStatus, token: signToken(customer.id) });
 };
 
+exports.employeePostAuth = async req => {
+  const { password } = req.body;
+  const email = req.body.email.toLowerCase();
+  const employee = await Employee.fetchOne({ email });
+  await employee.comparePassword(password);
+  const token = signToken(employee.id);
+  return { token, employee };
+};
+
 exports.validateCustomerToken = async function validate(req, res) {
   const { token, socketId } = req.body;
   const { userId } = validateToken(token);

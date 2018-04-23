@@ -29,8 +29,6 @@ exports.book = async (customerId, hotel) => {
   return { ...stay, ...updatedParams };
 };
 
-exports.checkIn = id => Stay.checkIn(id);
-
 exports.checkOut = async (customerId, stayId) => {
   const checkOutTime = new Date().getTime();
   const stayInfo = await Stay.getDetailsForCheckOut(stayId);

@@ -21,3 +21,5 @@ exports.createBooking = (req, res) => {
 };
 
 exports.fetchActive = async req => await Stay.fetchActive(req.params.id);
+
+exports.checkIn = async req => await Stay.checkIn(req.params.id);

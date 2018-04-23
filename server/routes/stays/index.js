@@ -3,6 +3,7 @@ const handleTryCatch = require('../../utils/handleTryCatch');
 const controller = require('./controller');
 
 routes.put('/', controller.createBooking);
+routes.put('/checkin/:id', handleTryCatch(controller.checkIn));
 routes.get('/active/:id', handleTryCatch(controller.fetchActive));
 routes.post('/', handleTryCatch(controller.createRoom));
 

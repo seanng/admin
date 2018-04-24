@@ -2,9 +2,7 @@
 /* eslint global-require:0 */
 const argv = require('minimist')(process.argv.slice(2));
 const logger = require('./logger');
-const backendSetup = require('./config/backendMiddleware');
 const frontendSetup = require('./config/frontendMiddleware');
-const handleRouting = require('./routes');
 const isDev = process.env.NODE_ENV !== 'production';
 const ngrok =
   (isDev && process.env.ENABLE_TUNNEL) || argv.tunnel
@@ -12,11 +10,6 @@ const ngrok =
     : false;
 const resolve = require('path').resolve;
 const app = require('express')();
-
-backendSetup(app);
-handleRouting(app);
-
-// app.use('/api', routes);
 
 // In production we need to pass these values in instead of relying on webpack
 frontendSetup(app, {
@@ -48,9 +41,4 @@ app.listen(port, host, err => {
   } else {
     logger.appStarted(port, prettyHost);
   }
-
-  // preload with fake data
-  // require('./db/fakeData')();
 });
-// initialize server-side sockets
-// io.attach(server);

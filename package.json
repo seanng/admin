@@ -24,6 +24,7 @@
     "build": "cross-env NODE_ENV=production webpack --config internals/webpack/webpack.prod.babel.js --color -p --progress",
     "build:clean": "npm run test:clean && rimraf ./build",
     "build:dll": "node ./internals/scripts/dependencies.js",
+    "start": "cross-env NODE_ENV=development node server",
     "start:watch": "cross-env NODE_ENV=development nodemon server",
     "start:tunnel": "cross-env NODE_ENV=development ENABLE_TUNNEL=true node server",
     "start:production": "npm run test && npm run build && npm run start:prod",
@@ -68,7 +69,9 @@
     ],
     "env": {
       "production": {
-        "only": [ "app" ],
+        "only": [
+          "app"
+        ],
         "plugins": [
           "transform-react-remove-prop-types",
           "transform-react-constant-elements",
@@ -85,14 +88,22 @@
   },
   "eslintConfig": {
     "parser": "babel-eslint",
-    "extends": [ "airbnb", "prettier", "prettier/react" ],
+    "extends": [
+      "airbnb",
+      "prettier",
+      "prettier/react"
+    ],
     "env": {
       "browser": true,
       "node": true,
       "jest": true,
       "es6": true
     },
-    "plugins": [ "redux-saga", "react", "jsx-a11y" ],
+    "plugins": [
+      "redux-saga",
+      "react",
+      "jsx-a11y"
+    ],
     "parserOptions": {
       "ecmaVersion": 6,
       "sourceType": "module",
@@ -102,7 +113,10 @@
     },
     "rules": {
       "arrow-parens": 0,
-      "arrow-body-style": [ 2, "as-needed" ],
+      "arrow-body-style": [
+        2,
+        "as-needed"
+      ],
       "import/imports-first": 0,
       "import/newline-after-import": 0,
       "import/no-dynamic-require": 0,
@@ -136,7 +150,10 @@
       "no-use-before-define": 0,
       "prefer-template": 2,
       "class-methods-use-this": 0,
-      "react/jsx-first-prop-new-line": [ 2, "multiline" ],
+      "react/jsx-first-prop-new-line": [
+        2,
+        "multiline"
+      ],
       "react/jsx-filename-extension": 0,
       "react/prop-types": 0,
       "react/jsx-no-target-blank": 0,
@@ -166,7 +183,11 @@
       "minimist",
       "sanitize.css"
     ],
-    "include": [ "core-js", "lodash", "eventsource-polyfill" ]
+    "include": [
+      "core-js",
+      "lodash",
+      "eventsource-polyfill"
+    ]
   },
   "jest": {
     "collectCoverageFrom": [
@@ -184,7 +205,10 @@
         "lines": 98
       }
     },
-    "moduleDirectories": [ "node_modules", "app" ],
+    "moduleDirectories": [
+      "node_modules",
+      "app"
+    ],
     "moduleNameMapper": {
       ".*\\.(css|less|styl|scss|sass)$": "<rootDir>/internals/mocks/cssModule.js",
       ".*\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/internals/mocks/image.js"
@@ -193,16 +217,11 @@
     "testRegex": "tests/.*\\.test\\.js$"
   },
   "dependencies": {
-    "@google-cloud/storage": "^1.6.0",
-    "@sendgrid/mail": "^6.1.2",
     "b64-to-blob": "^1.2.19",
     "babel-polyfill": "6.20.0",
-    "bcrypt-nodejs": "^0.0.3",
-    "bluebird": "^3.5.0",
-    "body-parser": "^1.17.2",
+    "bluebird": "^3.5.1",
     "chalk": "^1.1.3",
     "compression": "1.6.2",
-    "cors": "^2.8.4",
     "cross-env": "3.1.3",
     "date-fns": "^1.28.5",
     "dotenv": "^4.0.0",
@@ -211,12 +230,9 @@
     "immutable": "3.8.1",
     "intl": "1.2.5",
     "invariant": "2.2.2",
-    "ip": "1.1.4",
-    "jsonwebtoken": "^7.4.1",
+    "ip": "^1.1.5",
     "lodash": "4.17.2",
     "minimist": "1.2.0",
-    "morgan": "^1.9.0",
-    "pg": "^6.4.1",
     "ramda": "^0.25.0",
     "react": "15.4.1",
     "react-dnd": "^2.5.4",
@@ -243,9 +259,7 @@
     "request-promise": "^4.2.2",
     "reselect": "2.5.4",
     "sanitize.css": "4.1.0",
-    "sequelize": "^3.30.4",
     "socket.io": "^2.0.3",
-    "stripe": "^5.5.0",
     "styled-components": "1.1.2",
     "victory": "^0.21.2",
     "warning": "3.0.0",
@@ -300,7 +314,6 @@
     "react-addons-test-utils": "15.4.1",
     "rimraf": "2.5.4",
     "shelljs": "^0.7.5",
-    "sinon": "2.0.0-pre",
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",
     "webpack": "2.2.0-rc.3",

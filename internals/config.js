@@ -31,6 +31,8 @@ const ReactBoilerplate = {
         'net',
         'tls',
         'hiredis',
+        'dotenv',
+        'socket.io',
       ],
 
       /**
